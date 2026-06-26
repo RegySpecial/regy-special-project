@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#ff00ff"
+    android:orientation="horizontal"
+    android:layout_rowSpan="2"
+    android:layout_columnSpan="2">
+
+    <Button
+        android:id="@+id/Play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:backgroundTint="#0000ff"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Play"
+        android:textColor="#ff0000" />
+
+    <Button
+        android:id="@+id/Exit"
+        android:backgroundTint="#0000ff"
+        android:text="Exit"
+        android:textColor="#ff0000"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_row="1"
+        android:layout_column="2"/>
+
+    <Button
+        android:id="@+id/Options"
+        android:backgroundTint="#0000ff"
+        android:text="Options"
+        android:textColor="#ff0000"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_row="2"
+        android:layout_column="1"/>
+
+    <Button
+        android:id="@+id/Credits"
+        android:backgroundTint="#0000ff"
+        android:text="Credits"
+        android:textColor="#ff0000"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_row="2"
+        android:layout_column="2"/>
+</GridLayout>
