@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Title</title>
+    <style>
+      div div{
+        color:red;
+        background:blue;
+        position:fixed;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="width:100vw;height:100vh;background:cyan;position:fixed;"></div>
+    <script>
+      function gridLayout(gridX,gridY,gridWidth,gridHeight,rows,columns,xGap,yGap){
+        for(y=0;y<rows;y++){
+          for(x=0;x<columns;x++){
+            /*
+            gridX+xGap+gridWidth/columns*x,
+            gridY+yGap+gridHeight/rows*y,
+            gridWidth/columns-2*xGap,
+            gridHeight/rows-2*xGap
+            */
+            document.querySelector('div').style.left=`${gridX}px`
+            document.querySelector('div').style.top=`${gridY}px`
+            document.querySelector('div').style.width=`${gridWidth}px`
+            document.querySelector('div').style.height=`${gridHeight}px`
+            const element=document.createElement("div")
+            element.style.left=`${gridX+xGap+gridWidth/columns*x}px`
+            element.style.top=`${gridY+yGap+gridHeight/rows*y}px`
+            element.style.width=`${gridWidth/columns-2*xGap}px`
+            element.style.height=`${gridHeight/rows-2*yGap}px`
+            document.querySelector('div').append(element)
+          }
+        }
+      }
+      gridLayout(20,30,500,500,2,4,20,20)
+    </script>
+  </body>
+</html>

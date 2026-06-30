@@ -1,0 +1,128 @@
+# Makefile to automate the various steps of compilation for the videogame
+# @author Regy Special
+# @date 2026 January 16th Friday, 21:11:03
+# @license GNU General Public License
+# @date (LEO AI) on 2026 May 19th Tuesday, 15:08:53
+
+# --- Main Source Files ---
+mainFileWindowsUNIX=./Windows-UNIX/src/main/RegySpecial.cpp
+mainFileMacOS=./Apple/src/main/RegySpecial.swift
+resourceScript=./Windows-UNIX/src/res/Windows.rc
+
+# --- Compilers (Host & Cross) ---
+# Native
+MinGWcpp=C:/MinGW/bin/g++.exe
+MinGWwindres=C:/MinGW/bin/windres.exe
+
+# Cross-compilers (Linux/Unix host)
+# x86_64 (AMD64)
+MinGWunix_cpp_x64=x86_64-w64-mingw32-g++
+MinGWunix_windres_x64=x86_64-w64-mingw32-windres
+# i686 (32-bit x86)
+MinGWunix_cpp_x86=i686-w64-mingw32-g++
+MinGWunix_windres_x86=i686-w64-mingw32-windres
+# ARM64 (AArch64)
+MinGWunix_cpp_arm64=aarch64-w64-mingw32-g++
+MinGWunix_windres_arm64=aarch64-w64-mingw32-windres
+# ARM (32-bit)
+MinGWunix_cpp_arm=arm-w64-mingw32-g++
+MinGWunix_windres_arm=arm-w64-mingw32-windres
+
+# --- Libraries ---
+bitManipulationLibrary=./Windows-UNIX/lib/C++/bitManipulation.cpp
+arraysLibrary=./Windows-UNIX/lib/C++/DSA/Algorithms/arrays.cpp
+cgo-image=./Windows-UNIX/lib/CGO/CImage.go
+imageManipulationArchive=./Windows-UNIX/lib/bin/static/CGO/CImage.a
+
+# --- Output Directories & Files ---
+# Windows
+windowsPE_x64=./Windows-UNIX/Windows/x86_64/RegySpecial.exe
+windowsPE_x86=./Windows-UNIX/Windows/i686/RegySpecial.exe
+windowsPE_arm64=./Windows-UNIX/Windows/arm64/RegySpecial.exe
+windowsPE_arm=./Windows-UNIX/Windows/arm/RegySpecial.exe
+
+# Linux
+linuxELF_x64=./Windows-UNIX/Linux/x86_64/RegySpecial
+linuxELF_x86=./Windows-UNIX/Linux/i686/RegySpecial
+linuxELF_arm64=./Windows-UNIX/Linux/aarch64/RegySpecial
+linuxELF_arm=./Windows-UNIX/Linux/arm/RegySpecial
+
+# macOS
+macOSMachO_x64=./Apple/x86_64/RegySpecial
+macOSMachO_arm64=./Apple/arm64/RegySpecial
+
+# --- Default Target ---
+all: build-linux-x64 build-linux-x86 build-linux-arm64 build-linux-arm build-windows-x64 build-windows-x86 build-windows-arm64 build-windows-arm build-macos-x64 build-macos-arm64
+
+# --- Build Image Library (Generic) ---
+build-image-a: $(imageManipulationLibrary)
+	go build -buildmode=c-archive -o $(imageManipulationArchive) $(imageManipulationLibrary)
+	mv ./Windows-UNIX/lib/bin/static/CGO/CImage.h ./Windows-UNIX/include/CGO
+
+# --- Linux Builds (Native & Cross) ---
+# x86_64
+build-linux-x64: build-image-a
+	g++ -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x64) -lX11 -lodbc -lGL
+
+# i686 (32-bit)
+build-linux-x86: build-image-a
+	g++ -m32 -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x86) -lX11 -lodbc -lGL
+
+# aarch64 (ARM64) - Requires cross-compiler
+build-linux-arm64: build-image-a
+	aarch64-linux-gnu-g++ -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_arm64) -lX11 -lodbc -lGL
+
+# arm (32-bit)
+build-linux-arm: build-image-a
+	arm-linux-gnueabihf-g++ -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_arm) -lX11 -lodbc -lGL
+
+# --- Windows Builds (Cross-Compile from Linux/Unix) ---
+# x86_64
+build-windows-x64: build-image-a
+	$(MinGWunix_cpp_x64) -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_x64) -lwinmm -lgdiplus -lgdi32 -lodbc32
+
+# i686
+build-windows-x86: build-image-a
+	$(MinGWunix_cpp_x86) -m32 -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_x86) -lwinmm -lgdiplus -lgdi32 -lodbc32
+
+# aarch64
+build-windows-arm64: build-image-a
+	$(MinGWunix_cpp_arm64) -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_arm64) -lwinmm -lgdiplus -lgdi32 -lodbc32
+
+# arm (32-bit) - Note: MinGW-64 ARM support is experimental
+build-windows-arm: build-image-a
+	$(MinGWunix_cpp_arm) -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_arm) -lwinmm -lgdiplus -lgdi32 -lodbc32
+
+# --- macOS Builds (Native) ---
+# x86_64 (Intel)
+build-macos-x64: $(mainFileMacOS)
+	swiftc -arch x86_64 -O $(mainFileMacOS) -o $(macOSMachO_x64) -framework Cocoa -framework AppKit
+
+# arm64 (Apple Silicon M1/M2/M3)
+build-macos-arm64: $(mainFileMacOS)
+	swiftc -arch arm64 -O $(mainFileMacOS) -o $(macOSMachO_arm64) -framework Cocoa -framework AppKit
+
+# Universal Binary (Both x86_64 and arm64)
+build-macos-universal: $(mainFileMacOS)
+	swiftc -arch x86_64 -arch arm64 -O $(mainFileMacOS) -o ./Apple/RegySpecial_Universal -framework Cocoa -framework AppKit
+
+# --- Debug & Sanitize Variants (Example for x64) ---
+debug-linux-x64: build-image-a
+	g++ -std=c++26 -Wall -g $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x64)-debug -lX11 -lodbc -lGL
+
+sanitize-linux-x64: build-image-a
+	g++ -std=c++26 -Wall -g -fsanitize=address $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x64)-sanitize -lX11 -lodbc -lGL
+
+# --- Clean ---
+clean:
+	rm -rf ./Windows-UNIX/Windows/*/RegySpecial*
+	rm -rf ./Windows-UNIX/Linux/*/RegySpecial*
+	rm -rf ./Apple/*/RegySpecial*
+	rm -f $(imageManipulationArchive)
+	rm -f ./Windows-UNIX/include/CGO/CImage.h
+	rm -f $(windowsResources)
+
+.PHONY: all build-image-a build-linux-x64 build-linux-x86 build-linux-arm64 build-linux-arm \
+    build-windows-x64 build-windows-x86 build-windows-arm64 build-windows-arm \
+    build-macos-x64 build-macos-arm64 build-macos-universal \
+    debug-linux-x64 sanitize-linux-x64 clean
