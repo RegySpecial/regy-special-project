@@ -32,6 +32,9 @@ namespace x11{
       int nextEvent(XEvent*event){
         return XNextEvent(this->nativeHandle,event);
       }
+      void flush(){
+        XFlush(this->nativeHandle);
+      }
   };
   class window{
     public:
@@ -49,6 +52,7 @@ namespace x11{
       long propertyMask=0,
                    eventMask=0,
                    doNotPropagateMask=0;
+      
       window(x11::display*display){
         this->display=display;
         XSetWindowAttributes windowAttributes={
@@ -85,6 +89,23 @@ namespace x11{
         XDestroyWindow(this->display->nativeHandle,this->id);
       }
   };
+  class cursor{
+    public:
+      x11::display*display;
+      Cursor id;
+      unsigned int shape;
+      cursor(x11::display*display,unsigned char type,unsigned int shape){
+        this->display=display;
+        this->id=XCreateFontCursor(this->display->nativeHandle,shape);
+      }
+      ~cursor(){
+        XFreeCursor(this->display->nativeHandle,this->id);
+      }
+  };
+  typedef union{
+    x11::window*window;
+    x11::cursor*cursor;
+  }drawable;
   class graphicContext{
     public:
       GC id;
@@ -98,8 +119,15 @@ namespace x11{
         XGCValues gcValues;
         this->id=XCreateGC(window->display->nativeHandle,this->window->id,this->propertyMask,&gcValues);
       }
+      inline void flush(){
+        XFlushGC(this->window->display->nativeHandle,this->id);
+      }
       ~graphicContext(){
         XFreeGC(this->window->display->nativeHandle,this->id);
       }
+  };
+  class pixmap{
+    public:
+      x11::drawable*drawable;
   };
 }

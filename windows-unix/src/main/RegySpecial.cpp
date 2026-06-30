@@ -18,10 +18,6 @@
 #include<X11/XKBlib.h>
 #include<X11/keysym.h>
 #include<X11/Xatom.h>
-#ifdef __linux__
-#include<getopt.h>
-#endif
-#include<sys/wait.h>
 #include<sys/time.h>
 #include<pthread.h>
 #endif
@@ -33,14 +29,9 @@
 //include C/C++ standard input/output libraries
 #include<iostream>
 #include<fstream>
-#include<stdlib.h>
 #include<signal.h>
-//include C/C++ string manipulation libraries
-#include<string.h>//C
-#include<string>//C++
-//inlcude C/C++ math library
-#include<math.h>//C
-#include<assert.h>
+#include<string>
+#include<math.h>
 //include CGO image functions for image manipulation contained in CImage.go
 #include"../../include/CGO/CImage.h"
 //include bit manipulation functions contained in bitManipulation.cpp
@@ -52,8 +43,7 @@
 #include"../../include/C/info/user/os.h"
 #include"../../include/C/info/user/byteOrder.h"
 #include"../../include/C/info/vendor/compiler.h"
-#include"../../include/C/generalPurposeMaskBits.h"
-#include"../../include/C/audio/beep.h"
+#include"../../include/C/manageArguments.h"
 typedef enum MainWindowId{
   MainWindow_MainWindow,
   MainWindow_UsernameTextView,
@@ -488,10 +478,8 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
 }
 #else
 int main(int argc,char*argv[],char*envp[]){
-  char userInput[41]={},//user name input (its size is incremented by 1 because of the null terminating character)
-     *suboptionValue;
-  unsigned char generalPurposeMask=1,//Mask pattern:.|.|.|.|.|dialogBindToWindow|eventLoop|debug
-                dialogIndex=0,
+  gameContextStructure gameCtxtStruct={{},0,0};
+  unsigned char dialogIndex=0,
                 dialogButtonsIndex=0,
                 mainScreenButtonX=0,
                 mainScreenButtonY=0,
@@ -530,144 +518,12 @@ int main(int argc,char*argv[],char*envp[]){
     unsigned char size=0;
   }keyHandler;
   
-  manageArguments(argc,argv);
-  const struct option longOptions[]={
-    {"help",optional_argument,NULL,'h'},
-    {"user",required_argument,NULL,'u'},
-    {"background",required_argument,NULL,'b'},
-    {"audio",required_argument,NULL,'m'},
-    {"debug",no_argument,NULL,'d'}
-  };
-  int gotOptions,gotSuboptions;
-
-  /*
-    "::" of "h::u::b:a:d" means optional_argument
-    ":" of "h::u::b:a:d" means required_argument
-    else no_argument
-  */
-  while((gotOptions=getopt_long(argc,argv,"h::u:b:a:d",longOptions,NULL))!=-1){
-    char *userSuboptions[]={
-           "user",
-           "idenitifier"
-         },
-         *backgroundSuboptions[]={
-           "color",
-           "pixelmap",
-           "path"
-         };
-    switch(gotOptions){
-      default:
-        failureMessage("Invalid flag!");
-        return 1;
-        break;
-      case 'u':
-        while((gotSuboptions=getsubopt(&optarg,userSuboptions,&suboptionValue))!=-1){
-          switch(gotSuboptions){
-            case 0://handle name suboption case
-              if(strlen(suboptionValue)>40){
-                failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!");
-                abort();
-              }
-              //connect to the database and check if name is redondant or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              break;
-            case 1://handle identifier suboption case
-              if(atoi(suboptionValue)<0){
-                failureMessage("Identifier rejected: the user identifier must be positive!");
-                abort();
-              }
-              //connect to the database and check if the user is identified or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              return 0;
-              break;
-          }
-        }
-        break;
-      case 'b':
-        while((gotSuboptions=getsubopt(&optarg,backgroundSuboptions,&suboptionValue))!=-1){
-          switch(gotSuboptions){
-            case 0://handle name suboption case
-              if(strlen(suboptionValue)>40){
-                failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!");
-                abort();
-              }
-              //connect to the database and check if name is redondant or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              break;
-            case 1://handle identifier suboption case
-              if(atoi(suboptionValue)<0){
-                failureMessage("Identifier rejected: the user identifier must be positive!");
-                abort();
-              }
-              //connect to the database and check if the user is identified or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              break;
-          }
-        }
-        break;
-      case 'd':
-        generalPurposeMask=setBit<unsigned char>(generalPurposeMask,generalPurposeMaskBits_debug);//set debug bit to 1
-        break;
-      case 'h':
-        if(strcmp(optarg,"user")==0){
-          printf("Usage: %s [-u [name=<userName>,identifier=<userId>]|--user=[name<userName>,identifier=<userId>]]\n",argv[0]);
-          puts("-u or --user suboption:");
-          puts("  name=<userName> Access to your account by name");
-          puts("  identifier=<userId> Access to your account by id");
-          puts("Description:");
-          printf("If <username> is empty, when the game is opened, a form to input it will appear,");
-          printf(" else if <userIdentifier> is empty and <username> is the same as any user name in the database,");
-          puts(" the same form will require you to input <userIdentifier> instead.");
-          return 0;
-        }
-        if(strcmp(optarg,"background")==0){
-          printf("Usage: %s [-b [url=<backgroundURL>,path=<backgroundPath>,color=<backgroundColor>,pixmap=<backgroundPixmap>]|--background=[url=<backgroundURL>,path=<backgroundPath>,color=<backgroundColor>,pixmap=<backgroundPixmap>]]\n",argv[0]);
-          printf("-b or --background suboption:\v");
-          printf("path=<background path>\v");
-          printf("color=<background color>\v");
-          printf("pixmap=<pixmap data>\v");
-          printf("Description:\v");
-          puts("Draw the background of the play screen in the following order: color,pixelmap,backgroundImageFromPath");
-          return 0;
-        }
-        if(optarg==NULL){
-          puts("Regy Special videogame");
-          printf("Usage: %s [options] \n",argv[0]);
-          puts("Options:");
-          puts("  --help Display this information");
-          char*helpSubopts[]={"--help=user","--help=background"};
-          for(unsigned char i=0;i<sizeof helpSubopts/sizeof *helpSubopts;i++){
-            int forkHelpProcess=fork(),executionImage;
-            switch(forkHelpProcess){
-              case -1:
-                failureMessage(strerror(3));
-                return 1;
-                break;
-              case 0:
-                int executionImage=execl(argv[0],argv[0],helpSubopts[i]);
-                if(readBit<unsigned char>(generalPurposeMask,generalPurposeMaskBits_debug))assert(executionImage!=-1);
-                else if(executionImage==-1){
-                  failureMessage(strerror(3));
-                  return 1;
-                }
-                break;
-            }
-          }
-          wait(0);
-          return 0;
-        }
-        break;
-    }
-  }
-
-  //handle the extra options
-  while(optind<argc)
-    printf("Extra args #%u %s",optind++,optarg);
+  manageArguments(argc,argv,&gameCtxtStruct);
 
   if(argc==1){
     assert(system(strcat(argv[0]," --help"))==0);
     //assert(system("ffplay -nodisp blob/audios/Sinister_Dark_Ambient_Background_Music_-_Dark_Rage_[_YouConvert.net_].mp3")==0);
-    generalPurposeMask=setBit<unsigned char>(generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
+      gameCtxtStruct.generalPurposeMask=setBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
   }
 
   char logoImage[]="/media/regyspecial/REGYSPECIAL/Regy Special/regy-special-project/blob/images/bird-1834401_1280.jpg", //path of the image about the creator of the videogame
@@ -677,7 +533,7 @@ int main(int argc,char*argv[],char*envp[]){
     RetrieveDataFromJpegImage_return
       logo=RetrieveDataFromJpegImage(logoImage),
       background=RetrieveDataFromJpegImage(backgroundImage);
-  if(readBit<unsigned char>(generalPurposeMask,generalPurposeMaskBits_debug))
+  if(readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_debug))
     assert(XInitThreads());
   else if(XInitThreads())
     OKMessage("X Threads Initialized successfully!");
@@ -688,7 +544,7 @@ int main(int argc,char*argv[],char*envp[]){
   
   Display*display=XOpenDisplay(getenv("DISPLAY"));
 
-  if(readBit<unsigned char>(generalPurposeMask,generalPurposeMaskBits_debug))
+  if(readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_debug))
     assert(display!=NULL);
   else if(display==NULL){
     failureMessage("Failed to connect to X Graphic server!");
@@ -834,7 +690,7 @@ int main(int argc,char*argv[],char*envp[]){
     dialogs[5],
     gameModeButton[5],
     helpRechargeButtons[2];
-  if(readBit<unsigned char>(generalPurposeMask,generalPurposeMaskBits_debug))
+  if(readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_debug))
     assert(
       XSetStandardProperties(
         display,//display
@@ -939,11 +795,11 @@ int main(int argc,char*argv[],char*envp[]){
     }
   }
 
-  if(readBit<unsigned char>(generalPurposeMask,2)==0){
+  if(readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,2)==0){
     if(XMapRaised(display,form)==0){
       perror("Failed to map form");
       return 1;
-    }else generalPurposeMask=setBit<unsigned char>(generalPurposeMask,1);
+    }else gameCtxtStruct.generalPurposeMask=setBit<unsigned char>(gameCtxtStruct.generalPurposeMask,1);
     if(XMapSubwindows(display,form)==0){
       perror("Failed to map form children");
       return 1;
@@ -1045,7 +901,7 @@ int main(int argc,char*argv[],char*envp[]){
       &modeButtonsAttributes
     );
   }
-  for(XEvent event;readBit<unsigned char>(generalPurposeMask,0)==1;XNextEvent(display,&event)){//while main window event loop is running 
+  for(XEvent event;readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_eventLoop);XNextEvent(display,&event)){//while main window event loop is running 
     for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++){
       const char*modeTextes[5]={"Semplice","Intermedia","Avanzata","Estrema","Personalizzata"};
       if(event.xany.window==gameModeButton[gameModeIndex]&&event.type==Expose)
@@ -1194,7 +1050,7 @@ int main(int argc,char*argv[],char*envp[]){
     }
     for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++){
       for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++){
-        if(event.xany.window==mainScreenButtons[mainScreenButtonY][mainScreenButtonX]&&!readBit<unsigned char>(generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow)){
+        if(event.xany.window==mainScreenButtons[mainScreenButtonY][mainScreenButtonX]&&!readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow)){
           switch(event.type){
             case Expose:
               XDrawString(
@@ -1272,7 +1128,7 @@ int main(int argc,char*argv[],char*envp[]){
       for(dialogButtonsIndex=0;dialogButtonsIndex<2;dialogButtonsIndex++){
         if(event.xany.window==dialogButtons[dialogIndex][dialogButtonsIndex]&&event.type==ButtonPress){
           XUnmapWindow(display,dialogs[dialogIndex]);
-          if(dialogIndex==dialogType_exit&&dialogButtonsIndex==0)generalPurposeMask=clearBit<unsigned char>(generalPurposeMask,0);
+          if(dialogIndex==dialogType_exit&&dialogButtonsIndex==0)gameCtxtStruct.generalPurposeMask=clearBit<unsigned char>(gameCtxtStruct.generalPurposeMask,0);
         }
         if(event.xany.window==dialogButtons[dialogIndex][dialogButtonsIndex]&&event.type==Expose){
           XDrawString(
@@ -1363,9 +1219,9 @@ int main(int argc,char*argv[],char*envp[]){
     }
 
     if(event.xany.window==formSubmitButton&&event.type==ButtonPress){
-      if(strcmp(userInput,"")==0||strcmp(userInput," ")==0)beep(1000,100);
+      if(strcmp(gameCtxtStruct.userName,"")==0||strcmp(gameCtxtStruct.userName," ")==0)beep(1000,100);
       else{
-        generalPurposeMask=clearBit<unsigned char>(generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
+        gameCtxtStruct.generalPurposeMask=clearBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
         XUnmapSubwindows(display,form);
         XUnmapWindow(display,form);
         for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
@@ -1385,14 +1241,14 @@ int main(int argc,char*argv[],char*envp[]){
           mainScreenButtonsGC,
           screen->width/4,
           screen->height/4,
-          userInput,
+          gameCtxtStruct.userName,
           keyHandler.size
         );
       }
     }
 
     if(event.xany.window==form&&event.type==Expose){
-      generalPurposeMask=setBit<unsigned char>(generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
+      gameCtxtStruct.generalPurposeMask=setBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
       XDrawString(
         display,
         formSubmitButton,
@@ -1439,8 +1295,8 @@ int main(int argc,char*argv[],char*envp[]){
                 beep(1000,100);
               else{
                 keyHandler.pointer-=1;
-                for(unsigned char I=keyHandler.pointer;userInput[I]!=0;I++)
-                  userInput[I]=userInput[I+1];
+                for(unsigned char I=keyHandler.pointer;gameCtxtStruct.userName[I]!=0;I++)
+                  gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I+1];
                 keyHandler.size-=1;
               }
               break;
@@ -1459,8 +1315,8 @@ int main(int argc,char*argv[],char*envp[]){
               break;
             case 119://canc key case
               if(keyHandler.pointer<keyHandler.size){
-                for(unsigned char I=keyHandler.pointer;userInput[I]!=0;I++)
-                  userInput[I]=userInput[I+1];
+                for(unsigned char I=keyHandler.pointer;gameCtxtStruct.userName[I]!=0;I++)
+                  gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I+1];
                 keyHandler.size-=1;
               }else
                 beep(1000,100);
@@ -1471,8 +1327,8 @@ int main(int argc,char*argv[],char*envp[]){
               else{
                 keyHandler.size+=1;
                 for(unsigned char I=keyHandler.size;I>keyHandler.pointer;I--)
-                  userInput[I]=userInput[I-1];
-                userInput[keyHandler.pointer]=trueKey;
+                  gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I-1];
+                gameCtxtStruct.userName[keyHandler.pointer]=trueKey;
                 keyHandler.pointer+=1;
               }
               break;
@@ -1484,7 +1340,7 @@ int main(int argc,char*argv[],char*envp[]){
             userInputGC,
             20,
             20,
-            userInput,
+            gameCtxtStruct.userName,
             keyHandler.size
           );
           break;
