@@ -30,6 +30,8 @@ windowsResources=windows-unix/Windows/src/res/Windows.res
 
 #executable files (final results)
 x86_64-elf-obj=windows-unix/bin/elf/linux/x86_64/beep.o
+x86_64-pe-obj=windows-unix/bin/pe/windows/x86_64/beep.o
+x86_64-mach-o-obj=windows-unix/bin/pe/windows/x86_64/beep.o
 x86_64-pe=windows-unix/bin/pe/windows/x86_64/RegySpecial.exe
 x86_64-elf=windows-unix/bin/elf/linux/x86_64/RegySpecial
 x86_64-mach-o=apple/bin/x86_64/mach-o/macos/RegySpecial

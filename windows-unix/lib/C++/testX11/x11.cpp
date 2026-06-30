@@ -128,6 +128,25 @@ namespace x11{
   };
   class pixmap{
     public:
+      Pixmap id;
       x11::drawable*drawable;
+      char*data;
+      unsigned int x=0,y=0,width,height;
+      pixmap(x11::drawable*drawable){
+        this->drawable=drawable;
+        this->id=XCreatePixmap(
+          this->drawable->window->display->nativeHandle,
+          this->drawable->window->id,
+          this->width,
+          this->height,
+          this->drawable->window->display->depth
+        );
+      }
+      ~pixmap(){
+        XFreePixmap(
+          this->drawable->window->display->nativeHandle,
+          this->drawable->window->id
+        );
+      }
   };
 }

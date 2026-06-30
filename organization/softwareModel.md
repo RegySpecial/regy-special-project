@@ -28,6 +28,8 @@ flowchart
   consoleH[lib/C/console.c]
   audioBeepH[lib/C/audio/beep.c]
   manageArguments[lib/C/manageArguments.c]
+
+  CImage[lib/CGO/CImage.go]
   
   C-->|is the programming language of|stdlibH
   C-->|is the programming language of|stdioH
@@ -48,11 +50,18 @@ flowchart
   C-->|is the programming language of|audioBeepH
   C-->|is the programming language of|manageArguments
 
+  Go-->|is the programming language of|CImage
+
   stdlibH-->|is included in|manageArguments
   stdioH-->|is included in|console
   unistdH-->|is included in|audioBeep
   sysWaitH-->|is included in|manageArguments
   consoleH-->|is included in|audioBeep
   audioBeepH-->|is included in|manageArguments
-  bitManipulation{bitManipulation.h}-->|is included in|console
+  bitManipulationHpp-->|is included in|console
+
+  bitManipulationHpp-->|define the source code of|bitManipulation
+  consoleH-->|define the source code of|console
+  audioBeepH-->|define the source code of|audioBeep
+  manageArgumentsH-->|define the source code of|manageArgumants
 ```
