@@ -18,10 +18,10 @@ public:
   sizeDataType size=0;
   capacityDataType capacity=32;
   inline itemsDataType operator[](sizeDataType index){
-    return*(this->items+index);
+    return this->items[index];
   }
   inline itemsDataType at(sizeDataType index){
-    return*(this->items+index);
+    return this->items[index];
   }
   void insert(itemsDataType item,sizeDataType index){
     if(index<this->size){

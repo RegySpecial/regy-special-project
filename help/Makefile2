@@ -29,9 +29,9 @@ MinGWunix_cpp_arm=arm-w64-mingw32-g++
 MinGWunix_windres_arm=arm-w64-mingw32-windres
 
 # --- Libraries ---
-bitManipulationLibrary=./Windows-UNIX/lib/C++/bitManipulation.cpp
-arraysLibrary=./Windows-UNIX/lib/C++/DSA/Algorithms/arrays.cpp
-cgo-image=./Windows-UNIX/lib/CGO/CImage.go
+bitManipulationLibrary=./Windows-UNIX/lib/c++/bitManipulation.cpp
+arraysLibrary=./Windows-UNIX/lib/c++/DSA/Algorithms/arrays.cpp
+cgo-image=./Windows-UNIX/lib/cgo/CImage.go
 imageManipulationArchive=./Windows-UNIX/lib/bin/static/CGO/CImage.a
 
 # --- Output Directories & Files ---

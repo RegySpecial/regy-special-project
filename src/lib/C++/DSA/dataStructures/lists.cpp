@@ -10,7 +10,6 @@ public:
   dataType value;
   linkedList*next;
   linkedList(dataType value){
-    this=new linkedList(value);
     this->value=value;
     this->next=NULL;
   }
@@ -36,22 +35,22 @@ public:
     }
   }
   linkedList<dataType>filter(unsigned char(*filterFunction)(dataType,unsigned int)){
-    linkedList filterLinkedList;
+    linkedList<dataType>filterLinkedList(0);
     this->forEach([&](dataType element,unsigned int index){
-      if(filterFunction(element,index)>0)filterLinkedList.add(head->value,nodeIndex);
+      if(filterFunction(element,index)){
+        filterLinkedList->value=element;
+        filterLinkedList->next=&filterLinkedList;
+      }
     });
   }
   dataType at(unsigned long index){
-    dataType valueAtIndex;
     this->forEach([&](dataType item,unsigned long i,linkedList<dataType>*original){
-      if(i==index)valueAtIndex=item;
+      if(i==index)return item;
     });
-    return valueAtIndex;
   }
-  linkedList<dataType>push(dataType value){
+  void push(dataType value){
     linkedList<dataType>newNode(value);
     this->next=&newNode;
-    return newNode;
   }
   linkedList<dataType>pop(){
     this->value=0;
