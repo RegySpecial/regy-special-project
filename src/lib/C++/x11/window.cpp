@@ -39,7 +39,27 @@ int x11::window::sendEvent(bool propagation,long eventMask,XEvent*eventSend){
     eventSend
   );
 }
+int x11::window::setStandardProperties(const char*windowName,const char*windowIcon,Pixmap iconPixmap,char**argv,int argc,XSizeHints*hints){
+  return XSetStandardProperties(
+    this->display->nativeHandle,
+    this->id,
+    windowName,
+    windowIcon,
+    iconPixmap,
+    argv,
+    argc,
+    hints
+  );
+}
+int x11::window::map(unsigned int microseconds){
+  usleep(microseconds);
+  return XMapWindow(this->display->nativeHandle,this->id);
+}
+int x11::window::mapRaised(unsigned int microseconds){
+  usleep(microseconds);
+  return XMapRaised(this->display->nativeHandle,this->id);
+}
 x11::window::~window(){
-  XDestroySubwindows(this->display->nativeHandle,this->id);
-  XDestroyWindow(this->display->nativeHandle,this->id);
+  assert(XDestroySubwindows(this->display->nativeHandle,this->id));
+  assert(XDestroyWindow(this->display->nativeHandle,this->id));
 }

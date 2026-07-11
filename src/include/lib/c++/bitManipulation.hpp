@@ -24,6 +24,6 @@ inline numberType toggleBit(numberType data,unsigned char bitPosition){
 //read the bit from a specific position from right to left
 template<typename numberType>
 inline bool readBit(numberType data,unsigned char bitPosition){
-  return data>>bitPosition&1;
+  return data>>position&1;
 }
 #endif

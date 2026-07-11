@@ -5,7 +5,8 @@
 #else
 #include<X11/Xlib.h>
 #include<X11/Xutil.h>
-#include"../../include/lib/c/audio/beep.h"
+#include"../../lib/c/audio/beep.h"
+#include"../../lib/c++/DSA/dataStructures/dynamicArrays.hpp"
 #endif
 class mainWindow{
   unsigned int x=0,
@@ -27,6 +28,7 @@ class mainWindow{
   char*title;
   Display*display;
   Window id;
+  dynamicArray<Window>subWindows;
   struct{
     unsigned int width=1;
     unsigned long color:24=0;
@@ -38,6 +40,9 @@ class mainWindow{
   mainWindow(const char*title);
   mainWindow(unsigned int x,unsigned int y,int width,int height);
   mainWindow(const char*title,unsigned int x,unsigned int y,int width,int height);
+  mainWindow(int argc,char*argv[],char*envp[],const char*title);
+  mainWindow(int argc,char*argv[],char*envp[],unsigned int x,unsigned int y,int width,int height);
+  mainWindow(int argc,char*argv[],char*envp[],const char*title,unsigned int x,unsigned int y,int width,int height);
   void onresize(mainWindow*target,XEvent*event);
   void onclientmessage(mainWindow*target,XEvent*event);
   ~mainWindow();

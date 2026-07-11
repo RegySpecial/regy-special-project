@@ -16,7 +16,7 @@ template<
 >
 class hashTable{
 public:
-  struct hashTableItems<keyDataType,valueDataType>*items;
+  struct hashTableItems<keyDataType,valueDataType>**items;
   capacityDataType capacity;
   static unsigned long long hash(keyDataType key){
     unsigned long long hash=0;
@@ -24,7 +24,7 @@ public:
     return hash%this->capacity;
   }
   hashTable(hashTableItems<keyDataType,valueDataType>*items,capacityDataType capacity){
-    this->items=(hashTableItems<keyDataType,valueDataType>*)malloc(sizeof hashTableItems<keyDataType,valueDataType>);
+    this->items=(hashTableItems<keyDataType,valueDataType>*)malloc(sizeof(hashTableItems<keyDataType,valueDataType>)*capacity);
     for(capacityDataType index=0;index<capacity;index++){
       if(this->items[hashTable::hash(index)]){
         this->items[hashTable::hash(index)].next=

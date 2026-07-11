@@ -354,7 +354,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
     if(strcmp(args,"user")==0){
       strcpy(user,args);
     }else{
-      perror("name cannot be greater than 40 characters\n");
+      failureMessage("name cannot be greater than 40 characters\n");
       return 1;
     }
   }
@@ -362,7 +362,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
     char*programName=GetCommandLine();
     int helpProcess=system(strcat(programName," help"));
     if(!helpProcess){
-      perror("Failed to create help process\n");
+      failureMessage("Failed to create help process\n");
       return 1;
     }
     unsigned long unsignedLongPointer;
@@ -385,7 +385,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
       LR_LOADFROMFILE
     );
     if(RegisterClassA(&windowClass)==0){
-      perror("Failed to register the main window class RegySpecial\n");
+      failureMessage("Failed to register the main window class RegySpecial\n");
       return 1;
     }
     const HWND MainWindow=CreateWindowA(
@@ -723,7 +723,7 @@ int main(int argc,char*argv[],char*envp[]){
 
   if(XMapRaised(display,mainWindow)==1)puts("\e[38;2;255;255;255m[\e[38;2;0;255;0mOK\e[38;2;255;255;255m]The main window has been mapped raised succesfully!");
   else{
-    perror("\e[38;2;255;255;255m[\e[38;2;255;0;0mFailed\e[38;2;255;255;255m]Something wrong occured while trying to map raised the main window!");
+    failureMessage("\e[38;2;255;255;255m[\e[38;2;255;0;0mFailed\e[38;2;255;255;255m]Something wrong occured while trying to map raised the main window!");
     return 1;
   }
 
@@ -797,11 +797,11 @@ int main(int argc,char*argv[],char*envp[]){
 
   if(readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,2)==0){
     if(XMapRaised(display,form)==0){
-      perror("Failed to map form");
+      failureMessage("Failed to map form");
       return 1;
     }else gameCtxtStruct.generalPurposeMask=setBit<unsigned char>(gameCtxtStruct.generalPurposeMask,1);
     if(XMapSubwindows(display,form)==0){
-      perror("Failed to map form children");
+      failureMessage("Failed to map form children");
       return 1;
     }
   }

@@ -21,5 +21,5 @@ int x11::graphicContext::drawString(int x,int y,char*string,int length){
   );
 }
 x11::graphicContext::~graphicContext(){
-  XFreeGC(this->drawable->display->nativeHandle,this->id);
+  assert(XFreeGC(this->drawable->display->nativeHandle,this->id));
 }

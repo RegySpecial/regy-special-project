@@ -10,8 +10,8 @@ x11::pixmap::pixmap(x11::drawable*drawable){
   );
 }
 x11::pixmap::~pixmap(){
-  XFreePixmap(
+  assert(XFreePixmap(
     this->drawable->display->nativeHandle,
     this->drawable->id
-  );
+  ));
 }

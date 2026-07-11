@@ -6,6 +6,10 @@ flowchart
   programmingLanguage((programming language))
 ```
 ```mermaid
+---
+title: Include structure
+fontSize: 100
+---
 flowchart
   C((C))
   Cpp((C++))

@@ -1,3 +1,5 @@
+#ifndef drawableHpp
+#define drawableHpp
 #include"display.hpp"
 namespace x11{
   class drawable{
@@ -18,3 +20,4 @@ namespace x11{
                    doNotPropagateMask=0;
   };
 }
+#endif
