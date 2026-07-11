@@ -19,7 +19,7 @@ flowchart
 erDiagram
   User{
     int identifier PK "autoincrement"
-    char(40) name
+    char(40) name "not null"
   }
   Location{
     int identifier PK "autoincrement"
@@ -28,7 +28,7 @@ erDiagram
   }
   Item{
     int identifier PK "autoincrement"
-    char(40) name
+    char(40) name "not null"
     bool zoomable "default=0"
     bit(8) size "default=1"
     bit(8) capacity "default=255"
@@ -37,13 +37,13 @@ erDiagram
     bit(8) volume "default=127"
     enum(en-it-es-fr-de-zh) language "default=en"
   }
-  User }o--o{ Location : "Explores
+  User 0+--0+ Location : "Explores
   Is explored"
-  Location }o--o{ Item : "Hides
+  Location 0+--0+ Item : "Hides
   Is hidden"
-  User }o--o{ Item : "Discover
+  User 0+--0+ Item : "Discover
   Is discover"
-  User }|--|{ Options :"Set
+  User 1+--1+ Options :"Set
   Is set"
 
 ```
