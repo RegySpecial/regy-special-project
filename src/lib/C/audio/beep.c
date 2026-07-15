@@ -1,12 +1,10 @@
-#if defined __WIN32||defined __WIN64
-#include<windows.h>
-#elifdef __linux__
-#include <linux/kd.h>
-#endif
-#include<fcntl.h>
-#include<sys/ioctl.h>
-#include"../../../include/C/console.h"
-#include<unistd.h>
+/*
+*@description C header file about the definition of the beep C function
+*@author Regy Special
+*@date 2026 June 15th Monday, 12:09:12
+*@license GNU General Public License to stop private corporation to not share source code
+*/
+#include "../../../include/lib/c/audio/beep.h"
 //open driver /dev/tty0 to produce beep sound using ioctl system call
 void beep(unsigned long frequency,unsigned long time){
   #if defined __WIN32||defined __WIN64

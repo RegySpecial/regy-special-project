@@ -1,17 +1,10 @@
-#include<getopt.h>
-#include<stdlib.h>
-#include<string.h>
-#include<sys/wait.h>
-#include<assert.h>
-#include<errno.h>
-#include"../../include/C/audio/beep.h"
-#include"../../include/C++/bitManipulation.hpp"
-#include"../../include/C/generalPurposeMaskBits.h"
-typedef struct{
-  char userName[41];
-  unsigned char generalPurposeMask,
-                errorNumber;
-}gameContextStructure;
+/*
+*@description Header file where is defined the dynamic array data structure class of the dynamic array data structure library
+*@author Regy Special
+*@date (First version [Linux/Parrot OS]) 2026 March 7th Saturday, 16:12:08
+*@license GNU General Public License to stop private corporation to not share source code
+*/
+#include "../../include/main/c/manageArguments.h"
 int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
   int flag,flagArgs;
   const struct option options[]={
@@ -23,7 +16,7 @@ int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
     {NULL,0,NULL,0}
   };
   while((flag=getopt_long(argc,argv,"h::u:b:a:d",options,NULL))!=-1){
-    char*userSuboptions[]={
+    char* const userSuboptions[]={
           "user",
           "idenitifier"
         },
@@ -34,30 +27,75 @@ int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
         },
         *suboptionValue;
     switch(flag){
+      case 'u':
+        while((flagArgs=getsubopt(&optarg,userSuboptions,&suboptionValue))!=-1){
+          switch(flagArgs){
+            case 0://handle name suboption case
+              if(strlen(suboptionValue)>40){
+                failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!");
+                return (gCtxtStruct->errorNumber=1);
+              }
+              //connect to the database and check if name is redondant or not
+              informationMessage("Ottienimento informazioni non disponibile al momento");
+              break;
+            case 1://handle identifier suboption case
+              if(atoi(suboptionValue)<0){
+                failureMessage("Identifier rejected: the user identifier must be positive!");
+                return (gCtxtStruct->errorNumber=1);
+              }
+              //connect to the database and check if the user is identified or not
+              informationMessage("Ottienimento informazioni non disponibile al momento");
+              return 0;
+              break;
+          }
+        }
+        break;
+      case 'b':
+        while((flagArgs=getsubopt(&optarg,backgroundSuboptions,&suboptionValue))!=-1){
+          switch(flagArgs){
+            case 0://handle name suboption case
+              if(strlen(suboptionValue)>40){
+                failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!");
+                return (gCtxtStruct->errorNumber=1);
+              }
+              //connect to the database and check if name is redondant or not
+              informationMessage("Ottienimento informazioni non disponibile al momento");
+              break;
+            case 1://handle identifier suboption case
+              if(atoi(suboptionValue)<0){
+                failureMessage("Identifier rejected: the user identifier must be positive!");
+                return (gCtxtStruct->errorNumber=1);
+              }
+              //connect to the database and check if the user is identified or not
+              informationMessage("Ottienimento informazioni non disponibile al momento");
+              break;
+          }
+        }
+        break;
       default:
         failureMessage(strcat("Invalid flag ",optarg));
         gCtxtStruct->errorNumber=1;
-        abort();
+        return 1;
         break;
       case 'd':
-        gCtxtStruct->generalPurposeMask=setBit(gCtxtStruct->generalPurposeMask,generalPurposeMaskBits_debug);
+        gCtxtStruct->generalPurposeMask|=1<<generalPurposeMaskBits_debug;
         break;
       case 'h':
-        if(optarg!=0){
-          if(strncmp(optarg,"user",4)==0){
+        if(optarg){
+          if(!strncmp(optarg,"user",4)){
             puts("Aiuto utente");
             return (gCtxtStruct->errorNumber=0);
           }
-          if(strncmp(optarg,"debug",5)==0){
+          if(!strncmp(optarg,"debug",5)){
             puts("Aiuto debug");
             return (gCtxtStruct->errorNumber=0);
           }
-          if(strncmp(optarg,"background",10)==0){
+          if(!strncmp(optarg,"background",10)){
             puts("Aiuto background");
             return (gCtxtStruct->errorNumber=0);
           }
         }
-        char*newArgv[]={
+        const char*newArgv[]={
           "--help=user",
           "--help=debug",
           "--help=background"
@@ -80,55 +118,6 @@ int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
         }
         waitpid(-1,NULL,0);
         return (gCtxtStruct->errorNumber=0);
-        break;
-      case 'u':
-        while((flagArgs=getsubopt(&optarg,userSuboptions,&suboptionValue))!=-1){
-          switch(flagArgs){
-            case 0://handle name suboption case
-              if(strlen(suboptionValue)>40){
-                failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!");
-                gCtxtStruct->errorNumber=1;
-                abort();
-              }
-              //connect to the database and check if name is redondant or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              break;
-            case 1://handle identifier suboption case
-              if(atoi(suboptionValue)<0){
-                failureMessage("Identifier rejected: the user identifier must be positive!");
-                gCtxtStruct->errorNumber=1;
-                abort();
-              }
-              //connect to the database and check if the user is identified or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              return 0;
-              break;
-          }
-        }
-        break;
-      case 'b':
-        while((flagArgs=getsubopt(&optarg,backgroundSuboptions,&suboptionValue))!=-1){
-          switch(flagArgs){
-            case 0://handle name suboption case
-              if(strlen(suboptionValue)>40){
-                failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!");
-                gCtxtStruct->errorNumber=1;
-                abort();
-              }
-              //connect to the database and check if name is redondant or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              break;
-            case 1://handle identifier suboption case
-              if(atoi(suboptionValue)<0){
-                failureMessage("Identifier rejected: the user identifier must be positive!");
-                gCtxtStruct->errorNumber=1;
-                abort();
-              }
-              //connect to the database and check if the user is identified or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              break;
-          }
-        }
         break;
     }
   }

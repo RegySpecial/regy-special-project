@@ -9,3 +9,7 @@ inline double average(double numbers[],unsigned long long left,unsigned long lon
 double ythRootOfX(double x,double y){
   
 }
+template<typename domainArgument>
+long double sin(domainArgument theta){
+  
+}

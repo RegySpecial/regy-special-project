@@ -1,3 +1,10 @@
+/*
+*@description Windows resource script where are defined information about PE file informations of the videogame and dialog windows structures
+*@author Regy Special
+*@date (First version [Windows 11]) 2026 June 11th Thursday, 00:05:17
+*@license GNU General Public License to stop private corporation to not share source code
+*/
+
 IconId ICON "F:/Regy Special/Regy Special Project/binary large objects/images/RegySpecial.ico"
 1 VERSIONINFO
 FILEVERSION 0,0,0,0

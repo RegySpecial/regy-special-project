@@ -1,11 +1,11 @@
+#ifndef dynamicArraysHpp
+#define dynamicArraysHpp
 /*
 *@description Header file where is defined the dynamic array data structure class of the dynamic array data structure library
 *@author Regy Special
 *@date (First version [Linux/Parrot OS]) 2026 March 7th Saturday, 16:12:08
 *@license GNU General Public License to stop private corporation to not share source code
 */
-#ifndef dynamicArraysHpp
-#define dynamicArraysHpp
 #include<iostream>
 #include<stdlib.h>
 #include"../../../c/console.h"
@@ -296,8 +296,6 @@ public:
     return everyCondition;
   }
 
-  //coso shish sus
-
   bool some(bool(*someFunction)(itemsDataType)){
     bool someCondition=0;
     for(sizeDataType index=0;index<this->size;index++)
@@ -383,36 +381,28 @@ public:
     }
   }
   void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
-    for(sizeDataType index=0;index<sourceDynamicArray->size;index++)
+    for(sizeDataType index=0;index<size;index++)
       this->push(sourceDynamicArray->items[index]);
   }
   void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray,sizeDataType size){
-    if(size>0){
-      this->push(sourceDynamicArray->items[size]);
-      this->concat(sourceDynamicArray,size-1);
-    }
+    for(sizeDataType index=0;index<size&&size<=this->size;index++)
+      this->push(sourceDynamicArray->items[index]);
   }
   void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray,sizeDataType left,sizeDataType right){
-    if(left<right){
+    for(;0<=left&&left<right&&right<=this->size;left++)
       this->push(sourceDynamicArray->items[left]);
-      this->concat(sourceDynamicArray,left+1,right);
-    }
   }
   void copy(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
-    for(sizeDataType index=0;index<sourceDynamicArray->size;index++)
+    for(sizeDataType index=0;index<size;index++)
       this->items[index]=sourceDynamicArray->items[index];
   }
   void copy(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray,sizeDataType size){
-    if(size>0){
-      this->items[size-1]=sourceDynamicArray->items[size-1];
-      this->copy(sourceDynamicArray,size-1);
-    }
+    for(sizeDataType index=0;index<size&&size<=this->size;index++)
+      this->items[index]=sourceDynamicArray->items[index];
   }
   void copy(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray,sizeDataType left,sizeDataType right){
-    if(left<right){
+    for(;0<=left&&left<right&&right<=this->size;left++)
       this->items[left]=sourceDynamicArray->items[left];
-      this->copy(sourceDynamicArray,left+1,right);
-    }
   }
   ~dynamicArray(){
     free(this->items);

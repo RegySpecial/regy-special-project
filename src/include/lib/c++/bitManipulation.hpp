@@ -11,19 +11,22 @@ template<typename numberType>
 inline numberType setBit(numberType data,unsigned char bitPosition){
   return data|1<<bitPosition;
 }
+
 //clear the bit on a specific position to 0 from right to left
 template<typename numberType>
 inline numberType clearBit(numberType data,unsigned char bitPosition){
   return data&~(1<<bitPosition);
 }
+
 //toggle the bit from a specific position from right to left
 template<typename numberType>
 inline numberType toggleBit(numberType data,unsigned char bitPosition){
   return data^1<<bitPosition;
 }
+
 //read the bit from a specific position from right to left
 template<typename numberType>
 inline bool readBit(numberType data,unsigned char bitPosition){
-  return data>>position&1;
+  return data>>bitPosition&1;
 }
 #endif

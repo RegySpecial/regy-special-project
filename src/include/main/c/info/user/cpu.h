@@ -1,5 +1,11 @@
 #ifndef cpuH
 #define cpuH
+/*
+*@description C header file about the definition of the beep C function
+*@author Regy Special
+*@date 2026 June 15th Monday, 12:09:12
+*@license GNU General Public License to stop private corporation to not share source code
+*/
 #if defined __i386__||defined _M_IX86
 #define cpu "CPU: x86 32 bit"
 #elif defined __x86_64__||defined _M_X64

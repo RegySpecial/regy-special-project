@@ -3,7 +3,7 @@
   <head>
     <title>My VideoGame</title>
     <meta name="author" content="Regy Special">
-    <meta name="description" content="Tentativo di creare un videogioco da zero">
+    <meta name="description" content="Web version of the regy-special-prject videogame">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="Regy Special, RegySpecial, regyspecial, REGYSPECIAL, regy special, REGY SPECIAL">
     <meta charset="UTF-8">
@@ -53,7 +53,6 @@
       foreach (["Play","Exit","Options","More information"] as $buttonText)
     ?>
     <dialog id="<?php echo $buttonText,"Dialog"; ?>">
-
     </dialog>
   </body>
 </html>

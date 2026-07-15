@@ -1,5 +1,5 @@
 /*
-Main entry point of the videogame (Apple Operating Systems)
+*@description Main entry point of the videogame (Apple Operating Systems)
 *@author Regy Special
 *@date (First version [MacOS]) 2026 January 19th Monday, 17:55:46
 *@license GNU General Public License to stop private corporation to not share source code
@@ -137,6 +137,8 @@ if CommandLine.argc==1{
   )
   let helpProcess:Process=try Process.run(programLocation,arguments:["help"])
 }else{
+
+  //manageArguments C function from src/main/c/manageArguments.c
   manageArguments(CommandLine.argc,CommandLine.unsafeArgv)
   let appShare=NSApplication.shared
   let appDelegate=ApplicationDelegate()

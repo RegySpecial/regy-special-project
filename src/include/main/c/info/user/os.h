@@ -1,5 +1,11 @@
 #ifndef osH
 #define osH
+/*
+*@description C header file about the definition of the beep C function
+*@author Regy Special
+*@date 2026 June 15th Monday, 12:09:12
+*@license GNU General Public License to stop private corporation to not share source code
+*/
 #ifdef _WIN32
 #define os "OS: Windows (32 o 64 bit)"
 #elifdef _WIN64

@@ -1,6 +1,11 @@
 #ifndef windowOrganizationH
 #define windowOrganizationH
-
+/*
+*@description C header file about the definition of the beep C function
+*@author Regy Special
+*@date 2026 June 15th Monday, 12:09:12
+*@license GNU General Public License to stop private corporation to not share source code
+*/
 #if defined __WIN32||defined __WIN64
 typedef enum{
   MainWindow_MainWindow,
