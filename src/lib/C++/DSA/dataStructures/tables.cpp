@@ -27,7 +27,7 @@ public:
     this->items=(hashTableItems<keyDataType,valueDataType>*)malloc(sizeof(hashTableItems<keyDataType,valueDataType>)*capacity);
     for(capacityDataType index=0;index<capacity;index++){
       if(this->items[hashTable::hash(index)]){
-        this->items[hashTable::hash(index)].next=
+        this->items[hashTable::hash(index)].next=NULL;
       }else{
         this->items[hashTable::hash(index)]=items[hashTable::hash(index)];
       }

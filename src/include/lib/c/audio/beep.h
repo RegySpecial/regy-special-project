@@ -16,10 +16,7 @@
 #include"../console.h"
 #include<unistd.h>
 #if defined __cplusplus || defined c_plusplus
-extern "C"{
+extern "C"
 #endif
-  void beep(unsigned long frequency,unsigned long time);
-#if defined __cplusplus || defined c_plusplus
-}
-#endif
+void beep(unsigned long frequency,unsigned long time);
 #endif

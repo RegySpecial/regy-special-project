@@ -53,6 +53,38 @@
       foreach (["Play","Exit","Options","More information"] as $buttonText)
     ?>
     <dialog id="<?php echo $buttonText,"Dialog"; ?>">
+    <?php
+      switch ($buttonText) {
+        case "Play":
+    ?>
+      <button>Semplice</button>
+      <button>Intermedia</button>
+      <button>Avanzata</button>
+      <button>Estrema</button>
+      <button>Personalizzata</button>
+    <?php
+          break;
+        case "Exit":
+    ?>
+      <p>Sei sicuro di voler uscire</p>
+    <?php 
+          break;
+        case "Options":
+    ?>
+      <input type="range" min="0" max="255" value="127" name="music" id="music">
+      <input type="range" min="0" max="255" value="127" name="voice" id="voice">
+      <input type="range" min="0" max="255" value="127" name="sound" id="sound">
+    <?php
+          break;
+        case "More Information":
+    ?>
+      <p id="moreinfo"></p>
+    <?php
+          break;
+      } 
+    ?>
+      <button>Annulla</button>
+      <button>Conferma</button>
     </dialog>
   </body>
 </html>

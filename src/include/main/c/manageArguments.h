@@ -12,8 +12,8 @@
 #include<sys/wait.h>
 #include<assert.h>
 #include<errno.h>
-#include"../../lib/c/audio/beep.h"
-#include"../c/generalPurposeMaskBits.h"
+#include"../../lib/c/console.h"
+#include"generalPurposeMaskBits.h"
 #if defined __cplusplus || defined c_plusplus
 extern "C"{
 #endif

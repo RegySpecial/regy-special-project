@@ -19,7 +19,7 @@ extern "C"{
     dialogType_play,
     dialogType_exit,
     dialogType_options,
-    dialogType_moreInformation
+    dialogType_moreInformation,
   }dialogType;
   typedef enum{
     gameMode_simple,

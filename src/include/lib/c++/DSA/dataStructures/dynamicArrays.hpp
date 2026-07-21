@@ -21,14 +21,14 @@ public:
   capacityDataType capacity=32;
   itemsDataType operator[](sizeDataType index){
     if(0<=index&&index<=this->capacity)return this->items[index];
-    else failureMessage("Index out of range");
+    else failureMessage("Index out of range\n");
   }
   inline itemsDataType at(sizeDataType index){
     return this->items[index%this->size];
   }
   void insert(itemsDataType item,sizeDataType index){
     if(index>=this->size)
-      failureMessage("Index of out range");
+      failureMessage("Index out of range");
     else{
       if(this->size==this->capacity){
         this->capacity*=2;
@@ -85,40 +85,48 @@ public:
     this->size=0;
     this->capacity=32;
     this->items=(itemsDataType*)calloc(this->capacity,sizeof(itemsDataType));
-    if(!this->items)
-      failureMessage("Failed to allocate memory for the dynamic array");
+    if(!this->items){
+      failureMessage("Failed to reallocate memory for the dynamic array");
+      return;
+    }
   }
   dynamicArray(capacityDataType capacity){
     this->size=0;
     this->capacity=capacity;
     this->items=(itemsDataType*)calloc(this->capacity,sizeof(itemsDataType));
-    if(!this->items)
-      failureMessage("Failed to allocate memory for the dynamic array");
+    if(!this->items){
+      failureMessage("Failed to reallocate memory for the dynamic array");
+      return;
+    }
   }
-  dynamicArray(itemsDataType items,capacityDataType capacity){
+  dynamicArray(itemsDataType*items,capacityDataType capacity){
     this->size=(this->capacity=capacity);
     this->items=(itemsDataType*)calloc(this->capacity,sizeof(itemsDataType));
-    if(!this->items)
-      failureMessage("Failed to allocate memory for the dynamic array");
-    else for(sizeDataType index=0;index<this->size;index++)
+    if(!this->items){
+      failureMessage("Failed to reallocate memory for the dynamic array");
+      return;
+    }
+    for(sizeDataType index=0;index<this->size;index++)
       this->items[index]=items[index];
   }
   dynamicArray(sizeDataType size,capacityDataType capacity){
     this->size=size;
     this->capacity=capacity;
-    this->items=(itemsDataType*)malloc(sizeof(itemsDataType)*this->capacity);
-    if(!this->items)
+    this->items=(itemsDataType*)calloc(this->capacity,sizeof(itemsDataType));
+    if(!this->items){
       failureMessage("Failed to reallocate memory for the dynamic array");
-    else for(sizeDataType index=0;index<this->size;index++)
-      this->items[index]=0;
+      return;
+    }
   }
-  dynamicArray(itemsDataType items,sizeDataType size,capacityDataType capacity){
+  dynamicArray(itemsDataType*items,sizeDataType size,capacityDataType capacity){
     this->capacity=capacity;
     this->size=size;
-    this->items=(itemsDataType*)malloc(sizeof(itemsDataType)*this->capacity);
-    if(!this->items)
-      failureMessage("Failed to allocate memory for the dynamic array");
-    else for(sizeDataType index=0;index<this->size;index++)
+    this->items=(itemsDataType*)calloc(this->capacity,sizeof(itemsDataType));
+    if(!this->items){
+      failureMessage("Failed to reallocate memory for the dynamic array");
+      return;
+    }
+    for(sizeDataType index=0;index<this->size;index++)
       this->items[index]=items[index];
   }
 
@@ -353,26 +361,158 @@ public:
     return someCondition;
   }
 
-  void sort(sizeDataType left,sizeDataType right,itemsDataType(*comparisonFunction)(itemsDataType,itemsDataType)){
-    if(left<right){
-      sizeDataType j=left,i=j-1,pivot=right;
-      itemsDataType temp;
-      for(;j<pivot;j++){
-        if(comparisonFunction(this->items[j],this->items[pivot])<0){
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  map(itemsDataType(*mapFunction)(itemsDataType)){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType>mapDynamicArray(0,this->capacity);
+    for(sizeDataType index=0;index<this->size;index++)
+      mapDynamicArray->push(mapFunction(this->items[index]));
+    return mapDynamicArray;
+  }
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  map(itemsDataType(*mapFunction)(itemsDataType),sizeDataType size){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType>mapDynamicArray(0,this->capacity);
+    for(sizeDataType index=0;index<size&&size<=this->size;index++)
+      mapDynamicArray->push(mapFunction(this->items[index]));
+    return mapDynamicArray;
+  }
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  map(itemsDataType(*mapFunction)(itemsDataType),sizeDataType left,sizeDataType right){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType>mapDynamicArray(0,this->capacity);
+    for(;0<=left&&left<right&&right<=this->size;left++)
+      mapDynamicArray->push(mapFunction(this->items[left]));
+    return mapDynamicArray;
+  }
+
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  map(itemsDataType(*mapFunction)(itemsDataType,sizeDataType)){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType>mapDynamicArray(0,this->capacity);
+    for(sizeDataType index=0;index<this->size;index++)
+      mapDynamicArray->push(mapFunction(this->items[index],index));
+    return mapDynamicArray;
+  }
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  map(itemsDataType(*mapFunction)(itemsDataType,sizeDataType),sizeDataType size){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType>mapDynamicArray(0,this->capacity);
+    for(sizeDataType index=0;index<size&&size<=this->size;index++)
+      mapDynamicArray->push(mapFunction(this->items[index],index));
+    return mapDynamicArray;
+  }
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  map(itemsDataType(*mapFunction)(itemsDataType,sizeDataType),sizeDataType left,sizeDataType right){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType>mapDynamicArray(0,this->capacity);
+    for(;0<=left&&left<right&&right<=this->size;left++)
+      mapDynamicArray->push(mapFunction(this->items[left],left));
+    return mapDynamicArray;
+  }
+
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  map(itemsDataType(*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*)){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType>mapDynamicArray(0,this->capacity);
+    for(sizeDataType index=0;index<this->size;index++)
+      mapDynamicArray->push(mapFunction(this->items[index],index,this));
+    return mapDynamicArray;
+  }
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  map(itemsDataType(*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*),sizeDataType size){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType>mapDynamicArray(0,this->capacity);
+    for(sizeDataType index=0;index<size&&size<=this->size;index++)
+      mapDynamicArray->push(mapFunction(this->items[index],index,this));
+    return mapDynamicArray;
+  }
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  map(itemsDataType(*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*),sizeDataType left,sizeDataType right){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType>mapDynamicArray(0,this->capacity);
+    for(;0<=left&&left<right&&right<=this->size;left++)
+      mapDynamicArray->push(mapFunction(this->items[left],left,this));
+    return mapDynamicArray;
+  }
+
+  //reduce
+
+  template<typename accumulationValueDataType>
+  accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType),accumulationValueDataType accumulationValue){
+    for(sizeDataType index=0;index<this->size;index++)
+      accumulationValue=reduceFunction(this->items[index]);
+    return accumulationValue;
+  }
+  template<typename accumulationValueDataType>
+  accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType),accumulationValueDataType accumulationValue,sizeDataType size){
+    for(sizeDataType index=0;index<size&&size<=this->size;index++)
+      accumulationValue=reduceFunction(this->items[index]);
+    return accumulationValue;
+  }
+  template<typename accumulationValueDataType>
+  accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType),accumulationValueDataType accumulationValue,sizeDataType left,sizeDataType right){
+    for(;0<=left&&left<right&&right<=this->size;left++)
+      accumulationValue=reduceFunction(this->items[left]);
+    return accumulationValue;
+  }
+
+  template<typename accumulationValueDataType>
+  accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType,sizeDataType),accumulationValueDataType accumulationValue){
+    for(sizeDataType index=0;index<this->size;index++)
+      accumulationValue=reduceFunction(this->items[index],index);
+    return accumulationValue;
+  }
+  template<typename accumulationValueDataType>
+  accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType,sizeDataType),accumulationValueDataType accumulationValue,sizeDataType size){
+    for(sizeDataType index=0;index<size&&size<=this->size;index++)
+      accumulationValue=reduceFunction(this->items[index],index);
+    return accumulationValue;
+  }
+  template<typename accumulationValueDataType>
+  accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType,sizeDataType),accumulationValueDataType accumulationValue,sizeDataType left,sizeDataType right){
+    for(;0<=left&&left<right&&right<=this->size;left++)
+      accumulationValue=reduceFunction(this->items[left],left);
+    return accumulationValue;
+  }
+
+  template<typename accumulationValueDataType>
+  accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*),accumulationValueDataType accumulationValue){
+    for(sizeDataType index=0;index<this->size;index++)
+      accumulationValue=reduceFunction(this->items[index],index,this);
+    return accumulationValue;
+  }
+  template<typename accumulationValueDataType>
+  accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*),accumulationValueDataType accumulationValue,sizeDataType size){
+    for(sizeDataType index=0;index<size&&size<=this->size;index++)
+      accumulationValue=reduceFunction(this->items[index],index,this);
+    return accumulationValue;
+  }
+  template<typename accumulationValueDataType>
+  accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*),accumulationValueDataType accumulationValue,sizeDataType left,sizeDataType right){
+    for(;0<=left&&left<right&&right<=this->size;left++)
+      accumulationValue=reduceFunction(this->items[left],left,this);
+    return accumulationValue;
+  }
+
+  void sort(itemsDataType(*comparisonFunction)(itemsDataType,itemsDataType),sizeDataType left,sizeDataType right){
+    if(0<=left&&left<right&&right<=this->size){
+      sizeDataType i=left-1;
+      itemsDataType tmp;
+      for(;left<right;left++){
+        if(comparisonFunction(this->items[left],this->items[right])<0){
           i++;
-          temp=this->items[i];
-          this->items[i]=this->items[j];
-          this->items[j]=temp;
+          tmp=this->items[i];
+          this->items[i]=this->items[left];
+          this->items[left]=tmp;
         }
       }
       i++;
-      temp=this->items[i];
-      this->items[i]=this->items[pivot];
-      this->items[pivot]=temp;
-      this->sort(0,i-1,comparisonFunction);
-      this->sort(i+1,right,comparisonFunction);
+      tmp=this->items[i];
+      this->items[i]=this->items[right];
+      this->items[right]=tmp;
+      this->sort(comparisonFunction,0,i-1);
+      this->sort(comparisonFunction,i+1,right);
     }
   }
+  inline void sort(itemsDataType(*comparisonFunction)(itemsDataType,itemsDataType),sizeDataType size){
+    this->sort(comparisonFunction,0,size);
+  }
+  inline void sort(itemsDataType(*comparisonFunction)(itemsDataType,itemsDataType)){
+    this->sort(comparisonFunction,this->size);
+  }
+
   void reverse(){
     for(sizeDataType index=0;index<this->size/2;index++){
       itemsDataType tmp=this->items[index];
@@ -380,6 +520,21 @@ public:
       this->items[this->size-index-1]=tmp;
     }
   }
+  void reverse(sizeDataType size){
+    for(sizeDataType index=0;index<size/2&&size<=this->size;index++){
+      itemsDataType tmp=this->items[index];
+      this->items[index]=this->items[this->size-index-1];
+      this->items[this->size-index-1]=tmp;
+    }
+  }
+  void reverse(sizeDataType left,sizeDataType right){
+    for(;0<=left&&left<right/2&&right<=this->size;left++){
+      itemsDataType tmp=this->items[left];
+      this->items[left]=this->items[this->size-left-1];
+      this->items[this->size-left-1]=tmp;
+    }
+  }
+
   void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
     for(sizeDataType index=0;index<size;index++)
       this->push(sourceDynamicArray->items[index]);
@@ -392,6 +547,7 @@ public:
     for(;0<=left&&left<right&&right<=this->size;left++)
       this->push(sourceDynamicArray->items[left]);
   }
+
   void copy(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
     for(sizeDataType index=0;index<size;index++)
       this->items[index]=sourceDynamicArray->items[index];
@@ -404,6 +560,7 @@ public:
     for(;0<=left&&left<right&&right<=this->size;left++)
       this->items[left]=sourceDynamicArray->items[left];
   }
+
   ~dynamicArray(){
     free(this->items);
     this->items=NULL;

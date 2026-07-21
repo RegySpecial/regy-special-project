@@ -1,5 +1,8 @@
-class mainScreenButton{
+#include "mainWindow.hpp"
+#include "mainDialogs.hpp"
+class mainScreenButton:public commonWidgetInterface{
   public:
-    unsigned int x,y;
-    int width,height;  
+    mainWindow*root;
+    mainScreenButton(mainWindow*root,const char*text);
+    void onclick(XEvent*event,void*extraArgs);
 };

@@ -26,9 +26,8 @@ int x11::window::selectInput(long eventMask){
   this->eventMask=eventMask;
   return XSelectInput(this->display->nativeHandle,this->id,this->eventMask);
 }
-int x11::window::checkEvent(long eventMask){
-  XEvent event;
-  return XCheckWindowEvent(this->display->nativeHandle,this->id,eventMask,&event);
+int x11::window::checkEvent(long eventMask,XEvent*event){
+  return XCheckWindowEvent(this->display->nativeHandle,this->id,eventMask,event);
 }
 int x11::window::sendEvent(bool propagation,long eventMask,XEvent*eventSend){
   return XSendEvent(
@@ -40,6 +39,8 @@ int x11::window::sendEvent(bool propagation,long eventMask,XEvent*eventSend){
   );
 }
 int x11::window::setStandardProperties(const char*windowName,const char*windowIcon,Pixmap iconPixmap,char**argv,int argc,XSizeHints*hints){
+  this->title=windowName;
+  this->icon=windowIcon;
   return XSetStandardProperties(
     this->display->nativeHandle,
     this->id,

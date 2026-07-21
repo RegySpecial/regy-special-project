@@ -44,6 +44,7 @@
 #include"../../include/main/c/info/user/byteOrder.h"
 #include"../../include/main/c/info/vendor/compiler.h"
 #include"../../include/main/c/manageArguments.h"
+#include"../../include/lib/c/audio/beep.h"
 typedef enum MainWindowId{
   MainWindow_MainWindow,
   MainWindow_UsernameTextView,
