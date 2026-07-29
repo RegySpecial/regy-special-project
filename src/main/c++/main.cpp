@@ -902,7 +902,8 @@ int main(int argc,char*argv[],char*envp[]){
       &modeButtonsAttributes
     );
   }
-  for(XEvent event;readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_eventLoop);XNextEvent(display,&event)){//while main window event loop is running 
+  for(XEvent event;readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_eventLoop);){//while main window event loop is running 
+    XNextEvent(display,&event);
     for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++){
       const char*modeTextes[5]={"Semplice","Intermedia","Avanzata","Estrema","Personalizzata"};
       if(event.xany.window==gameModeButton[gameModeIndex]&&event.type==Expose)

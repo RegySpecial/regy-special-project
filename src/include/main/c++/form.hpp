@@ -1,16 +1,11 @@
-#ifndef mainWindowHpp
-#define mainWindowHpp
-#include "commonWidgetInterface.hpp"
-
-class mainWindow:public commonWidgetInterface{
+#ifndef formHpp
+#define formHpp
+#include"mainWindow.hpp"
+class form:public commonWidgetInterface{
 public:
-  Display*display;
-  XVisualInfo visualInfo={.c_class=InputOutput};
-  int argc;
-  char**argv,
-      **envp;
-  mainWindow(int argc,char*argv[],char*envp[],const char*title);
-  ~mainWindow();
+  mainWindow*root;
+  form(mainWindow*root);
+  ~form();
   int show(unsigned int microseconds) override;
   int hide(unsigned int microseconds) override;
   void onClientMessage(XClientMessageEvent*event,void*extraArgs) override;

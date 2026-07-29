@@ -16,4 +16,6 @@ Risultati attuali:
 
 Linguaggi di programmazione|Sistema operativo|Librerie
 ---------------------------|-----------------|--------
-C/C++|Windows e cloni (React OS, GreenTeaOS)|Librerie
+C/C++|Windows e cloni (React OS, GreenTeaOS)|WinAPI
+C/C++/Go|Unix e cloni (Linux, FreeBSD, NetBSD, OpenBSD...)|Xorg or Wayland Graphic Server
+C/Swift|MacOS e cloni (iOS, tvOS...)|Unix system calls,AppKit and UIKit Framework

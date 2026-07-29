@@ -3,9 +3,9 @@
 #@date 2026 January 16th Friday, 21:11:03
 #@license GNU General Public License to stop private corporation to not share source code
 
-#internal application source code files
-
-#main entry point programms for OS
+MinGWc =       C:/MinGW/bin/gcc.exe
+MinGWcpp =     C:/MinGW/bin/g++.exe
+MinGWwindres = C:/MinGW/bin/windres.exe
 
 cConsoleLibrary = src/lib/c/console.c
 
@@ -18,7 +18,7 @@ build-x86_64-windows-pe-console:$(cConsoleLibrary)
 	$(MinGWc) -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-console)
 build-x86_64-linux-elf-console:$(cConsoleLibrary)
 	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
-build-macos-machO-console:$(cConsoleLibrary)
+build-x86_64-macos-machO-console:$(cConsoleLibrary)
 	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
 
 cAudioBeepLibrary = src/lib/c/audio/beep.c
@@ -42,6 +42,8 @@ x86_64-windows-pe-manageArguments =  bin/lib/static/c/o/pe/windows/x86_64/manage
 x86_64-ios-machO-manageArguments =   bin/lib/static/c/o/mach-o/ios/x86_64/manageArguments.o
 x86_64-macos-machO-manageArguments = bin/lib/static/c/o/mach-o/macos/x86_64/manageArguments.o
 
+build-x86_64-windows-pe-manageArguments:$(cConsoleLibrary)
+	$(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
 build-x86_64-elf-manageArguments:$(cConsoleLibrary)
 	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
 build-x86_64-macos-machO-manageArguments:$(cConsoleLibrary)
@@ -55,27 +57,108 @@ x86_64-ios-machO-testManageArguments =   bin/lib/static/c/o/mach-o/ios/x86_64/ma
 x86_64-macos-machO-testManageArguments = bin/lib/static/c/o/mach-o/macos/x86_64/manageArguments
 
 build-x86_64-windows-pe-testManageArguments: $(testManageArguments) $(x86_64-windows-pe-manageArguments)
-	$(MinGWc) -std=c++26 -Wall -O $(testManageArguments) $(x86_64-windows-pe-manageArguments) -o $(x86_64-windows-pe-testManageArguments)
+	$(MinGWcpp) -std=c++26 -Wall -O $(testManageArguments) $(x86_64-windows-pe-manageArguments) -o $(x86_64-windows-pe-testManageArguments)
 build-x86_64-linux-elf-testManageArguments: $(testManageArguments) $(x86_64-linux-elf-manageArguments)
 	g++ -std=c++26 -Wall -O $(testManageArguments) $(x86_64-linux-elf-manageArguments) -o $(x86_64-linux-elf-testManageArguments)
 build-x86_64-macos-machO-testManageArguments: $(testManageArguments) $(x86_64-macos-machO-manageArguments)
 	g++ -std=c++26 -Wall -O $(testManageArguments) $(x86_64-macos-machO-manageArguments) -o $(x86_64-macos-machO-testManageArguments)
 
 goImageLibrary =                src/lib/go/CImage.go
-x86_64-linux-elf-imageLibrary = bin/lib/static/go/a/CImage.a
+x86_64-linux-elf-imageLibrary = bin/lib/static/go/a/linux/elf/x86_64/CImage.a
 
 build-x86_64-linux-elf-image-a: $(goImageLibrary)
 	GOOS=linux GOARCH=x86_64 go build  -buildmode=c-archive -o $(goImageLibraryArchive) $(goImageLibrary)
-	mv bin/lib/static/go/a/CImage.h src/include/lib/go
+	mv bin/lib/static/go/a/linux/elf/x86_64/CImage.h src/include/lib/go
 
-main =      src/main/c++/main.cpp
-appleMain = src/main/swift/main.swift
+mainWindow =       src/main/c++/mainWindow.cpp
+apple-mainWindow = src/main/swift/mainWindow.swift
+
+x86_64-windows-pe-mainWindow =  bin/lib/static/c++/o/windows/pe/x86_64/mainWindow.o
+x86_64-linux-elf-mainWindow =   bin/lib/static/c++/o/linux/elf/x86_64/mainWindow.o
+x86_64-macos-machO-mainWindow = bin/lib/static/swift/o/macos/machO/x86_64/mainWindow.o
+
+build-x86_64-windows-pe-mainWindow:$(cConsoleLibrary)
+        $(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
+build-x86_64-elf-mainWindow:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
+build-x86_64-macos-machO-mainWindow:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
+
+mainScreenButtons =       src/main/c++/mainScreenButtons.cpp
+apple-mainScreenButtons = src/main/swift/mainScreenButtons.swift
+
+x86_64-windows-pe-mainScreenButtons =  bin/lib/static/c++/o/windows/pe/x86_64/mainScreenButtons.o
+x86_64-linux-elf-mainScreenButtons =   bin/lib/static/c++/o/linux/elf/x86_64/mainScreenButtons.o
+x86_64-macos-machO-mainScreenButtons = bin/lib/static/swift/o/macos/machO/x86_64/mainScreenButtons.o
+
+build-x86_64-windows-pe-mainScreenButtons:$(cConsoleLibrary)
+        $(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
+build-x86_64-elf-mainScreenButtons:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
+build-x86_64-macos-machO-mainScreenButtons:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
+
+mainDialogs =       src/main/c++/mainDialogs.cpp
+apple-mainDialogs = src/main/swift/mainDialogs.swift
+
+x86_64-windows-pe-mainDialogs =  bin/lib/static/c++/o/windows/pe/x86_64/mainDialogs.o
+x86_64-linux-elf-mainDialogs =   bin/lib/static/c++/o/linux/elf/x86_64/mainDialogs.o
+x86_64-macos-machO-mainDialogs = bin/lib/static/swift/o/macos/machO/x86_64/mainDialogs.o
+
+build-x86_64-windows-pe-mainDialogs:$(cConsoleLibrary)
+        $(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
+build-x86_64-elf-mainDialogs:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
+build-x86_64-macos-machO-mainDialogs:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
+
+gameModeButtons =       src/main/c++/gameModeButtons.cpp
+apple-gameModeButtons = src/main/swift/gameModeButtons.swift
+
+x86_64-windows-pe-gameModeButtons =  bin/lib/static/c++/o/windows/pe/x86_64/gameModeButtons.o
+x86_64-linux-elf-gameModeButtons =   bin/lib/static/c++/o/linux/elf/x86_64/gameModeButtons.o
+x86_64-macos-machO-gameModeButtons = bin/lib/static/swift/o/macos/machO/x86_64/gameModeButtons.o
+
+build-x86_64-windows-pe-gameModeButtons:$(cConsoleLibrary)
+        $(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
+build-x86_64-elf-gameModeButtons:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
+build-x86_64-macos-machO-gameModeButtons:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
+
+form =       src/main/c++/form.cpp
+apple-form = src/main/swift/form.swift
+
+x86_64-windows-pe-form =  bin/lib/static/c++/o/windows/pe/x86_64/gameModeButtons.o
+x86_64-linux-elf-form =   bin/lib/static/c++/o/linux/elf/x86_64/gameModeButtons.o
+x86_64-macos-machO-form = bin/lib/static/swift/o/macos/machO/x86_64/gameModeButtons.o
+
+build-x86_64-windows-pe-form:$(cConsoleLibrary)
+        $(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
+build-x86_64-elf-form:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
+build-x86_64-macos-machO-form:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
+
+formTextBox =       src/main/c++/formTextBox.cpp
+apple-formTextBox = src/main/swift/formTextBox.swift
+                
+x86_64-windows-pe-formTextBox =  bin/lib/static/c++/o/windows/pe/x86_64/.o
+x86_64-linux-elf-formTextBox =   bin/lib/static/c++/o/linux/elf/x86_64/formTextBox.o
+x86_64-macos-machO-formTextBox = bin/lib/static/swift/o/macos/machO/x86_64/formTextBox.o
+
+build-x86_64-windows-pe-formTextBox:$(cConsoleLibrary)
+        $(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
+build-x86_64-elf-formTextBox:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
+build-x86_64-macos-machO-formTextBox:$(cConsoleLibrary)
+        gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
+
+
+main =       src/main/c++/main.cpp
+apple-main = src/main/swift/main.swift
 
 resourceScript = scripts/build/windows.rc
-
-MinGWc =       C:/MinGW/bin/gcc.exe
-MinGWcpp =     C:/MinGW/bin/g++.exe
-MinGWwindres = C:/MinGW/bin/windres.exe
 
 #binary object files
 x86_64-windowsResources = bin/exec/pe/windows/x86_64/windows.res
@@ -107,13 +190,22 @@ build-docker-image:
 build-windows-res: $(resourceScript)
 	$(MinGWwindres) $(resourceScript) -O coff -o $(windowsResources)
 
-build-x86_64-pe: $(mainFile) $(windowsResources) $(consoleLibrary)
+build-x86_64-windows-pe: $(mainFile) $(windowsResources) $(consoleLibrary)
 	$(MinGWcpp) -std=c++26 -O $(mainFile) $(windowsResources) $(consoleLibrary) -o $(x86_64-pe) -lwinmm -lgdiplus -lgdi32 -lodbc32
 
-debug-x86_64-pe: $(mainFile) $(windowsResources) $(consoleLibrary)
+debug-x86_64-windows-pe: $(mainFile) $(windowsResources) $(consoleLibrary)
 	$(MinGWcpp) -std=c++26 -g $(mainFile) $(windowsResources) $(consoleLibrary) -o $(x86_64-pe) -lwinmm -lgdiplus -lgdi32 -lodbc32
 
-sanitize-x86_64-pe: $(mainFile) $(windowsResources) $(consoleLibrary)
+sanitize-x86_64-windows-pe: $(mainFile) $(windowsResources) $(consoleLibrary)
+	$(MinGWcpp) -std=c++26 -g -fsanitize $(mainFile) $(windowsResources) $(consoleLibrary) -o $(x86_64-pe) -lwinmm -lgdiplus -lgdi32 -lodbc32
+
+build-x86_64-windows-pe-save-temps: $(mainFile) $(windowsResources) $(consoleLibrary)
+	$(MinGWcpp) -std=c++26 -O $(mainFile) $(windowsResources) $(consoleLibrary) -o $(x86_64-pe) -lwinmm -lgdiplus -lgdi32 -lodbc32
+
+debug-x86_64-windows-pe-save-temps: $(mainFile) $(windowsResources) $(consoleLibrary)
+	$(MinGWcpp) -std=c++26 -g $(mainFile) $(windowsResources) $(consoleLibrary) -o $(x86_64-pe) -lwinmm -lgdiplus -lgdi32 -lodbc32
+
+sanitize-x86_64-windows-pe-save-temps: $(mainFile) $(windowsResources) $(consoleLibrary)
 	$(MinGWcpp) -std=c++26 -g -fsanitize $(mainFile) $(windowsResources) $(consoleLibrary) -o $(x86_64-pe) -lwinmm -lgdiplus -lgdi32 -lodbc32
 
 build-x86_64-linux-elf:$(x86_64-linux-elf-audioBeep) $(x86_64-linux-elf-console) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
@@ -145,6 +237,7 @@ sanitize-x86_64-linux-elf:$(x86_64-linux-elf-audioBeep) $(x86_64-linux-elf-conso
 	$(beepLibrary) \
 	-o $(x86_64-elf) \
 	-lX11 -lodbc -lGL
+
 build-x86_64-linux-elf-save-temps: 
 	g++ -std=c++26 -Wall -O \
 	$(x86_64-linux-elf-console) \
@@ -176,12 +269,19 @@ sanitize-x86_64-linux-elf-save-temps:$(x86_64-linux-elf-audioBeep) $(x86_64-linu
 	-lX11 -lodbc -lGL -save-temps
 
 #compile for Kernel Mach
-build-macos-machO:$(macos-mainFile)
-	swiftc -O -arch x86_64 -arch arm $(macos-mainFile) -o $(x86_64-mach-o) -framework Cocoa -framework AppKit
-debug-macos-machO:$(macos-mainFile)
-	swiftc -g  -arch x86_64 -arch arm $(macos-mainFile) -o $(x86_64-mach-o)-debug -framework Cocoa -framework AppKit
-sanitize-machO-machO:$(macos-mainFile)
-	swiftc -g -sanitize=address $(macos-mainFile) -o $(x86_64-mach-o)-sanitize -framework Cocoa -framework AppKit
+build-x86_64-macos-machO:$(macos-mainFile)
+	swiftc -O -target x86_64-apple-macosx10.15 $(macos-mainFile) -o $(x86_64-mach-o) -framework Cocoa -framework AppKit
+debug-x86_64-macos-machO:$(macos-mainFile)
+	swiftc -g -target x86_64-apple-macosx10.15 $(macos-mainFile) -o $(x86_64-mach-o)-debug -framework Cocoa -framework AppKit
+sanitize-x86_64-macos-machO:$(macos-mainFile)
+	swiftc -g -target x86_64-apple-macosx10.15 -sanitize=address $(macos-mainFile) -o $(x86_64-mach-o)-sanitize -framework Cocoa -framework AppKit
+build-arm64-macos-machO:$(macos-mainFile)
+        swiftc -O -target arm64-apple-macosx10.15 $(macos-mainFile) -o $(x86_64-mach-o) -framework Cocoa -framework AppKit
+debug-arm64-macos-machO:$(macos-mainFile)
+        swiftc -g -target arm64-apple-macosx10.15 $(macos-mainFile) -o $(x86_64-mach-o)-debug -framework Cocoa -framework AppKit
+sanitize-arm64-macos-machO:$(macos-mainFile)
+        swiftc -g -target arm64-apple-macosx10.15 -sanitize=address $(macos-mainFile) -o $(x86_64-mach-o)-sanitize -framework Cocoa -framework AppKit
+
 
 clean:
 	rm -r bin/lib/static/c/audio

@@ -78,7 +78,7 @@ int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
         return 1;
         break;
       case 'd':
-        gCtxtStruct->generalPurposeMask|=1<<generalPurposeMaskBits_debug;
+        gCtxtStruct->generalPurposeMask |= 1<<generalPurposeMaskBits_debug;
         break;
       case 'h':
         if(optarg){

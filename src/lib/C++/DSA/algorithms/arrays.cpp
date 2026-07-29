@@ -48,38 +48,38 @@ bool every(itemsDataType*array,bool(*everyFunction)(itemsDataType,sizeDataType,i
 template<typename itemsDataType,typename sizeDataType=unsigned long>
 bool some(itemsDataType*array,bool(*someFunction)(itemsDataType),sizeDataType size){
   bool someValue=0;
-  for(sizeDataType i=0;i<size;i++)someValue|=someFunction(array[i]);
+  for(sizeDataType i=0;i<size;i++)someValue |= someFunction(array[i]);
   return someValue;
 }
 template<typename itemsDataType,typename sizeDataType=unsigned long>
 bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType),sizeDataType size){
   bool someValue=0;
-  for(sizeDataType i=0;i<size;i++)someValue|=someFunction(array[i],i);
+  for(sizeDataType i=0;i<size;i++)someValue |= someFunction(array[i],i);
   return someValue;
 }
 template<typename itemsDataType,typename sizeDataType=unsigned long>
 bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType size){
   bool someValue=0;
-  for(sizeDataType i=0;i<size;i++)someValue|=someFunction(array[i],i,array);
+  for(sizeDataType i=0;i<size;i++)someValue |= someFunction(array[i],i,array);
   return someValue;
 }
 //overloading of 'every' function
 template<typename itemsDataType,typename sizeDataType=unsigned long>
 bool some(itemsDataType*array,bool(*someFunction)(itemsDataType),sizeDataType left,sizeDataType right){
   bool someValue=0;
-  for(;0<=left&&left<right;left++)someValue|=someFunction(array[left]);
+  for(;0<=left&&left<right;left++)someValue |= someFunction(array[left]);
   return someValue;
 }
 template<typename itemsDataType,typename sizeDataType=unsigned long>
 bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType),sizeDataType left,sizeDataType right){
   bool someValue=0;
-  for(;0<=left&&left<right;left++)someValue|=someFunction(array[left],left);
+  for(;0<=left&&left<right;left++)someValue |= someFunction(array[left],left);
   return someValue;
 }
 template<typename itemsDataType,typename sizeDataType=unsigned long>
 bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left,sizeDataType right){
   bool someValue=0;
-  for(;0<=left&&left<right;left++)someValue|=someFunction(array[left],left,array);
+  for(;0<=left&&left<right;left++)someValue |= someFunction(array[left],left,array);
   return someValue;
 }
 

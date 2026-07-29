@@ -1,11 +1,12 @@
+#ifndef bitManipulationHpp
+#define bitManipulationHpp
 /*
 *@description Header file where are defined the functions of the bit manipulation library
 *@author Regy Special
-*@date (First version [Linux/Parrot OS]) sab 7 mar 2026, 16:12:08 | 2026 March 7th Saturday, 16:12:08
+*@date (First version [Linux/Parrot OS]) 2026 March 7th Saturday, 16:12:08
 *@license GNU General Public License to stop private corporation to not share source code
 */
-#ifndef bitManipulationHpp
-#define bitManipulationHpp
+
 //set the bit on a specific position to 1 from right to left
 template<typename numberType>
 inline numberType setBit(numberType data,unsigned char bitPosition){
