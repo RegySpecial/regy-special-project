@@ -6,7 +6,61 @@
 */
 #if os(macOS)
 import Cocoa
-class Window:NSWindow{
+class mainWindow:NSWindow,commonWidgetInterface{
+  public var id:NSWindow!
+  public var argc:Int
+  public var argv:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
+  public var envp:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
+  init
+  (
+    _ argc:Int,
+    _ argv:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>,
+    _ envp:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>,
+    _ title:String
+  )
+  {
+    self.id=NSWindow(
+      contentRect:NSRect(x:0,y:0,width:1080,height:540),
+      styleMask:[.titled,.closable,.resizable,.miniaturizable],
+      backing:.buffered,
+      defer:true,
+      screen:NSScreen.main
+    )
+    self.title=title
+    self.id.setIsVisible(true)
+    self.id.title=self.title
+    let ButtonGrid:[[mainScreenButton]]=[
+      [mainScreenButton(self,"Play"),mainScreenButton(self,"Exit")],
+      [mainScreenButton(self,"Options"),mainScreenButton(self,"More information")]
+    ]
+    let GridLayout:NSGridView=NSGridView(views:ButtonGrid.map{
+      $0.map{
+        $0.id
+      }
+    })
+    GridLayout.frame=self.frame
+    self.backgroundColor=NSColor(red:0,green:0,blue:0,alpha:1)
+    self.id.contentView?.replaceSubview(self.form,with:GridLayout)
+    self.update()
+    if CommandLine.argc==1{
+      self.window.submitButton=NSButton(
+        title:"Invia",
+        target:self.window,
+        action:#selector(self.window.showIntro)
+      )
+      self.window.textBox.textColor=NSColor(red:0,green:1,blue:0,alpha:1)
+      self.window.textBox.backgroundColor=NSColor(red:0,green:0,blue:0,alpha:1)
+      self.window.form=NSStackView(views:[self.window.textBox,self.window.submitButton])
+      self.window.form.orientation=NSUserInterfaceLayoutOrientation.vertical
+      self.window.form.frame=NSRect(
+        x:0,
+        y:0,
+        width:self.window.frame.width,
+        height:self.window.frame.height
+      );
+      self.window.contentView?.addSubview(window.form)
+    }
+  }
   let text:NSTextView=NSTextView(frame:NSRect(x:0,y:0,width:100,height:100))
   var gameMode:UInt8=0
 

@@ -3,6 +3,6 @@ int main(int argc,char*argv[],char*envp[])
 {
   gameContextStructure structure;
   manageArguments(argc,argv,&structure);
-  printf("user name:%s errno:%d general purpose bit mask:%u",structure.userName,structure.errorNumber,structure.generalPurposeMask);
+  printf("user name:%s errno:%d general purpose bit mask:%u\n",structure.userName,structure.errorNumber,structure.generalPurposeMask);
   return 0;
 }

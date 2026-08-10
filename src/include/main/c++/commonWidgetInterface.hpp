@@ -30,6 +30,10 @@ class commonWidgetInterface{
     }border;
     struct{
       unsigned long color:24=0;
+      unsigned int x=0,
+                   y=0;
+      int width=0,
+          height=0;
     }background;
     struct{
       const char*value;
@@ -62,6 +66,5 @@ class commonWidgetInterface{
     virtual void onFocusIn(XFocusInEvent*event,void*extraArgs)=0;
     virtual void onFocusOut(XFocusOutEvent*event,void*extraArgs)=0;
     virtual void onAny(XAnyEvent*event,void*extraArgs)=0;
-    
 };
 #endif

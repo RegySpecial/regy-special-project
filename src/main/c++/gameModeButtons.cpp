@@ -7,14 +7,14 @@
 #include "../../include/main/c++/gameModeButtons.hpp"
 gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color){
   XSetWindowAttributes gameModeButtonAttributes{
-    .background_pixel=0,
-    .border_pixel=0x808080,
-    .event_mask=(this->eventMask = ButtonPressMask|ExposureMask),
-    .do_not_propagate_mask=(this->dontPropagateMask = ButtonPress)
+    .background_pixel = (this->background.color = 0),
+    .border_pixel = (this->border.color = 0x808080),
+    .event_mask = (this->eventMask = ButtonPressMask|ExposureMask),
+    .do_not_propagate_mask = (this->dontPropagateMask = ButtonPress)
   };
-  this->root=root;
-  this->title=title;
-  this->id=XCreateWindow(
+  this->root = root;
+  this->title = title;
+  this->id = XCreateWindow(
     this->root->root->display,
     this->root->id,
     this->x,
@@ -28,8 +28,10 @@ gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color)
     this->attributeMask,
     &gameModeButtonAttributes
   );
-  XGCValues gcValues={.foreground=(this->text.color=color)};
-  this->graphicId=XCreateGC(this->root->root->display,this->id,(this->graphicMask=GCForeground),&gcValues);
+  XGCValues gcValues = {
+    .foreground = (this->text.color = color)
+  };
+  this->graphicId=XCreateGC(this->root->root->display,this->id,(this->graphicMask = GCForeground),&gcValues);
 }
 gameModeButton::~gameModeButton(){
   XFreeGC(this->root->root->display,this->graphicId);

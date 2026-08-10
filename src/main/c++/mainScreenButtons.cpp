@@ -3,12 +3,12 @@
 mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
   XSetWindowAttributes mainScreenButtonsAttributes={
     .background_pixel=(this->background.color=255),//set window background color to blue on RGB format 00000000|00000000|11111111
-    .border_pixel=(this->border.color255<<16),//set window border color to red on RGB format 11111111|00000000|00000000
+    .border_pixel=(this->border.color=255<<16),//set window border color to red on RGB format 11111111|00000000|00000000
     .event_mask=(this->eventMask=ExposureMask|ButtonPressMask|EnterWindowMask|LeaveWindowMask),
     .do_not_propagate_mask=(this->dontPropagateMask=ButtonPressMask)
   };
   this->root=root;
-  this->title=text;
+  this->text.value=text;
   this->id=XCreateWindow(
     this->root->display,
     this->root->id,
@@ -45,27 +45,26 @@ void mainScreenButton::onButtonDown(XButtonPressedEvent*event,void*extraArgs){
   targetDialog->show(0);
 }
 void mainScreenButton::onPointerIn(XEnterWindowEvent*event,void*extraArgs){
-  this->background.color~=this->background.color;
-  this->text.color~=this->text.color;
-  this->border.color~=this->border.color;
+  this->background.color=~this->background.color;
+  this->text.color=~this->text.color;
+  this->border.color=~this->border.color;
   XSetWindowBackground(this->root->display,this->id,this->background.color);
   XSetWindowBorder(this->root->display,this->id,this->border.color);
   XClearWindow(this->root->display,this->id);
   XSetForeground(
     this->root->display,
-    this->id,
     this->graphicId,
     this->text.color
   );
 }
 void mainScreenButton::onPointerOut(XLeaveWindowEvent*event,void*extraArgs){
-  XEvent event;
+  XEvent eventOutput;
   XSendEvent(
     this->root->display,
     this->id,
     0,
-    EnterNotifyMask,
-    &event
+    EnterWindowMask,
+    &eventOutput
   );
 }
 void mainWindow::onClientMessage(XClientMessageEvent*event,void*extraArgs){

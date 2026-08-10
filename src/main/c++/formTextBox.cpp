@@ -73,14 +73,14 @@ void formTextBox::onKeyDown(XKeyPressedEvent*event,void*extraArgs){
       break;
     case 119://canc key case
       if(this->pointer<this->textSize){
-        for(unsigned char I=this->pointer;gameCtxtStruct->userName[I]!=0;I++)
+        for(unsigned char I=this->pointer;gameCtxtStruct->userName[I];I++)
           gameCtxtStruct->userName[I]=gameCtxtStruct->userName[I+1];
         this->textSize-=1;
       }else
         beep(1000,100);
       break;
     default:
-      if(this->textSize==40)
+      if(this->textSize==this->max)
         beep(1000,100);
       else{
         this->textSize+=1;

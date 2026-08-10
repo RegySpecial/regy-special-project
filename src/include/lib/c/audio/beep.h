@@ -10,6 +10,8 @@
 #include<windows.h>
 #elifdef __linux__
 #include <linux/kd.h>
+#elifdef __FreeBSD__
+#include <dev/speaker/speaker.h>
 #endif
 #include<fcntl.h>
 #include<sys/ioctl.h>

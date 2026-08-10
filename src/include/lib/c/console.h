@@ -43,7 +43,7 @@ extern "C"{
   }messageStructure;
   int customizedMessage(messageStructure*messageStructureReference);
   static inline int failureMessage(const char*messageString){
-    return fprintf(stderr,"\e[38;255;255;255m[\e[38;2;255;0;0mFailed\e[38;2;255;255;255m]%s\e[0m",messageString);
+    return fprintf(stderr,"\e[38;255;255;255m[\e[38;2;255;0;0mFailed\e[38;2;255;255;255m]%s\e[0m\n",messageString);
   }
   static inline int OKMessage(const char*messageString){
     return printf("\e[38;255;255;255m[\e[38;2;0;255;0mOK\e[38;2;255;255;255m]%s\e[0m\n",messageString);

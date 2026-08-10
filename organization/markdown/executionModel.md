@@ -10,9 +10,12 @@ emptyUserName[il nome utente è vuoto]
 userIdentifierIsEmpty{l'identificatore utente è vuoto}
 userNameCheckByTheDatabase{il nome utente è nella base di dati}
 userIdentifierCheckByTheDatabase{il nome utente è nella base di dati}
+showIntro[mostra la intro]
+
 gameArgumentsInput-->gameArgumentsInputSelection
 gameArgumentsInputSelection-->|no|flagSelection
 gameArgumentsInputSelection-->|sì|helpExecution
 flagSelection-->|--help|helpCase
 flagSelection-->|--user|userNameIsEmpty
+userNameIsEmpty-->showIntro
 ```

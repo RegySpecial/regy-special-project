@@ -13,6 +13,12 @@ dialog::dialog(mainWindow*root,unsigned char type){
   this->y=20;
   this->width=this->root->width-40;
   this->height=this->root->height-40;
+  XSizeHints dimensionConfiguration={
+    .x=this->x,
+    .y=this->y,
+    .max_width=this->width,
+    .max_height=this->height
+  };
   const char*titles[]={
     "layoutMode",
     "Play",
@@ -54,6 +60,7 @@ dialog::dialog(mainWindow*root,unsigned char type){
     0,
     this->root->argv,
     this->root->argc,
+    &dimensionConfiguration
   );
   XMapRaised(this->root->display,this->id);
   XGCValues gcValues={
