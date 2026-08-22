@@ -519,10 +519,10 @@ int main(int argc,char*argv[],char*envp[]){
     unsigned char size=0;
   }keyHandler;
   
-  manageArguments(argc,argv,&gameCtxtStruct);
+  gameContextStructure gameCtxtStruct = manageArguments(argc,argv);
 
   if(argc==1){
-    assert(system(strcat(argv[0]," --help"))==0);
+    assert(system(strcat(*argv," --help"))==0);
     //assert(system("ffplay -nodisp blob/audios/Sinister_Dark_Ambient_Background_Music_-_Dark_Rage_[_YouConvert.net_].mp3")==0);
       gameCtxtStruct.generalPurposeMask=setBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
   }

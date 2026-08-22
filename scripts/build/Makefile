@@ -8,19 +8,6 @@ MinGWcpp =     C:/MinGW/bin/g++.exe
 MinGWwindres = C:/MinGW/bin/windres.exe
 
 cConsoleLibrary = src/lib/c/console.c
-
-x86_64-linux-elf-console =   bin/lib/static/c/o/elf/linux/x86_64/console.o
-x86_64-windows-pe-console =  bin/lib/static/c/o/pe/windows/x86_64/console.o
-x86_64-ios-machO-console =   bin/lib/static/c/o/mach-o/ios/x86_64/console.o
-x86_64-macos-machO-console = bin/lib/static/c/o/mach-o/macos/x86_64/console.o
-
-build-x86_64-windows-pe-console:$(cConsoleLibrary)
-	$(MinGWc) -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-console)
-build-x86_64-linux-elf-console:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
-build-x86_64-macos-machO-console:$(cConsoleLibrary)
-	gcc -c -std=c2x -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
-
 cAudioBeepLibrary = src/lib/c/audio/beep.c
 manageArguments =   src/main/c/manageArguments.c
 
@@ -61,91 +48,28 @@ build-arm-freebsd-elf-image-a: $(goImageLibrary)
 	GOOS=freebsd GOARCH=arm go build  -buildmode=c-archive -o $(goImageLibraryArchive) $(goImageLibrary)
 	mv bin/lib/static/go/a/linux/elf/x86_64/CImage.h src/include/lib/go
 
-mainWindow =       src/main/c++/mainWindow.cpp
-
-apple-mainWindow = src/main/swift/mainWindow.swift
-
-x86_64-windows-pe-mainWindow =  bin/lib/static/c++/o/windows/pe/x86_64/mainWindow.o
-x86_64-linux-elf-mainWindow =   bin/lib/static/c++/o/linux/elf/x86_64/mainWindow.o
-x86_64-macos-machO-mainWindow = bin/lib/static/swift/o/macos/machO/x86_64/mainWindow.o
-
-build-x86_64-windows-pe-mainWindow:$(cConsoleLibrary)
-	$(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
-build-x86_64-elf-mainWindow:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
-build-x86_64-macos-machO-mainWindow:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
-
-mainScreenButtons =       src/main/c++/mainScreenButtons.cpp
-apple-mainScreenButtons = src/main/swift/mainScreenButtons.swift
-
-x86_64-windows-pe-mainScreenButtons =  bin/lib/static/c++/o/windows/pe/x86_64/mainScreenButtons.o
-x86_64-linux-elf-mainScreenButtons =   bin/lib/static/c++/o/linux/elf/x86_64/mainScreenButtons.o
-x86_64-macos-machO-mainScreenButtons = bin/lib/static/swift/o/macos/machO/x86_64/mainScreenButtons.o
-
-build-x86_64-windows-pe-mainScreenButtons:$(cConsoleLibrary)
-	$(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
-build-x86_64-elf-mainScreenButtons:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
-build-x86_64-macos-machO-mainScreenButtons:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
-
+mainWindow =        src/main/c++/mainWindow.cpp
+mainScreenButtons = src/main/c++/mainScreenButtons.cpp
 mainDialogs =       src/main/c++/mainDialogs.cpp
-apple-mainDialogs = src/main/swift/mainDialogs.swift
-
-x86_64-windows-pe-mainDialogs =  bin/lib/static/c++/o/windows/pe/x86_64/mainDialogs.o
-x86_64-linux-elf-mainDialogs =   bin/lib/static/c++/o/linux/elf/x86_64/mainDialogs.o
-x86_64-macos-machO-mainDialogs = bin/lib/static/swift/o/macos/machO/x86_64/mainDialogs.o
-
-build-x86_64-windows-pe-mainDialogs:$(cConsoleLibrary)
-	$(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
-build-x86_64-elf-mainDialogs:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
-build-x86_64-macos-machO-mainDialogs:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
-
-gameModeButtons =       src/main/c++/gameModeButtons.cpp
-apple-gameModeButtons = src/main/swift/gameModeButtons.swift
-
-x86_64-windows-pe-gameModeButtons =  bin/lib/static/c++/o/windows/pe/x86_64/gameModeButtons.o
-x86_64-linux-elf-gameModeButtons =   bin/lib/static/c++/o/linux/elf/x86_64/gameModeButtons.o
-x86_64-macos-machO-gameModeButtons = bin/lib/static/swift/o/macos/machO/x86_64/gameModeButtons.o
-
-build-x86_64-windows-pe-gameModeButtons:$(cConsoleLibrary)
-	$(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
-build-x86_64-elf-gameModeButtons:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
-build-x86_64-macos-machO-gameModeButtons:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
-
-form =       src/main/c++/form.cpp
-apple-form = src/main/swift/form.swift
-
-x86_64-windows-pe-form =  bin/lib/static/c++/o/windows/pe/x86_64/gameModeButtons.o
-x86_64-linux-elf-form =   bin/lib/static/c++/o/linux/elf/x86_64/gameModeButtons.o
-x86_64-macos-machO-form = bin/lib/static/swift/o/macos/machO/x86_64/gameModeButtons.o
-
-build-x86_64-windows-pe-form:$(cConsoleLibrary)
-	$(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
-build-x86_64-elf-form:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
-build-x86_64-macos-machO-form:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
-
+gameModeButtons =   src/main/c++/gameModeButtons.cpp
+form =              src/main/c++/form.cpp
 formTextBox =       src/main/c++/formTextBox.cpp
-apple-formTextBox = src/main/swift/formTextBox.swift
-                
-x86_64-windows-pe-formTextBox =  bin/lib/static/c++/o/windows/pe/x86_64/.o
-x86_64-linux-elf-formTextBox =   bin/lib/static/c++/o/linux/elf/x86_64/formTextBox.o
-x86_64-macos-machO-formTextBox = bin/lib/static/swift/o/macos/machO/x86_64/formTextBox.o
 
-build-x86_64-windows-pe-formTextBox:$(cConsoleLibrary)
-	$(MinGWc) -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-windows-pe-manageArguments)
-build-x86_64-elf-formTextBox:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-linux-elf-console)
-build-x86_64-macos-machO-formTextBox:$(cConsoleLibrary)
-	gcc -c -std=c23 -Wall -O $(cConsoleLibrary) -o $(x86_64-macos-machO-console)
+apple-mainWindow =        src/main/swift/mainWindow.swift
+apple-mainScreenButtons = src/main/swift/mainScreenButtons.swift
+apple-mainDialogs =       src/main/swift/mainDialogs.swift
+apple-gameModeButtons =   src/main/swift/gameModeButtons.swift
+apple-form =              src/main/swift/form.swift
+apple-formTextBox =       src/main/swift/formTextBox.swift
 
+build-x86_64-windows-pe-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
+	$(MinGWcpp) -std=c++26 -Wall -O $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox) -o $(x86_64-windows-pe-testManageArguments)
+build-x86_64-linux-elf-testManageArguments: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
+	g++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(x86_64-linux-elf-testManageArguments)
+build-x86_64-freebsd-elf-testManageArguments: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
+	c++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(x86_64-freebsd-elf-testManageArguments)
+build-x86_64-macos-machO-testManageArguments: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
+	g++ -std=c++26 -Wall -O $(testManageArguments) $(x86_64-macos-machO-manageArguments) -o $(x86_64-macos-machO-testManageArguments)
 
 main =       src/main/c++/main.cpp
 apple-main = src/main/swift/main.swift

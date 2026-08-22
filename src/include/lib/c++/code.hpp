@@ -27,7 +27,7 @@ void numberToBase(char*outputBuffer,numberDataType number,unsigned char base){
     }
 }
 /*1st overload of numberToBase*/
-template<typename numberDataType=unsigned long long,typename sizeDataType=unsigned long>
+template<typename numberDataType=unsigned long long,typename sizeDataType = unsigned long long>
 void numberToBase(char*outputBuffer,sizeDataType size,numberDataType number,unsigned char base){
   for (sizeDataType c = 0;c < size;outputBuffer[c++] = 0);
   if (2 <= base && base <= 36)

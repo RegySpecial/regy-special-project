@@ -9,6 +9,9 @@ mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
   this->argc=argc;
   this->argv=argv;
   this->envp=envp;
+  #if defined __WIN32 || defined __WIN64
+  #elifdef WaylandEnabled
+  #else
   this->display=XOpenDisplay(NULL);
   Screen*screen=XScreenOfDisplay(this->display,this->visualInfo.screen);
   XSetWindowAttributes mainWindowAttributes={
@@ -48,6 +51,7 @@ mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
     &mainWindowBounds
   );
   XMapRaised(this->display,this->id);
+  #endif
 }
 mainWindow::~mainWindow(){
   XFreeGC(this->display,this->graphicId);
@@ -67,7 +71,6 @@ void mainWindow::onResize(XResizeRequestEvent*event,void*extraArgs){
   for(unsigned long i=0;i<this->subWindows.size;i++)
     XResizeWindow(this->display,this->subWindows[i],event->width,event->height);
 }
-
 void mainWindow::onExpose(XExposeEvent*event,void*extraArgs){
   
 }

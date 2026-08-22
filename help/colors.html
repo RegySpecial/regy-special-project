@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Title</title>
+  </head>
+  <body>
+    <input type="range" id="hue" min="0" max="360" value="0" step="1">
+    <br>
+    <input type="range" id="saturation" min="0" max="1" value="0" step="0.01">
+    <br>
+    <input type="range" id="lightness" min="0" max="1" value="0" step="0.01">
+    <p>rgb(0,0,0)</p>
+    <script>
+      document.querySelectorAll("input").forEach(e=>{
+        e.oninput=function(){
+          var p=document.querySelector("p")
+          var hue=document.querySelector("#hue")
+          var saturation=document.querySelector("#saturation")
+          var lightness=document.querySelector("#lightness")
+          p.style.textContent=`rgb(${
+            lightness.valueAsNumber + saturation.valueAsNumber * Math.SQRT2 * Math.cos(hue.valueAsNumber)
+          },${
+            lightness.valueAsNumber + saturation.valueAsNumber * Math.SQRT2 * Math.cos(hue.valueAsNumber + 4 / 3 * Math.PI)
+          },${
+            lightness.valueAsNumber + saturation.valueAsNumber * Math.SQRT2 * Math.cos(hue.valueAsNumber + 2 / 3 * Math.PI)
+          });`
+          p.style.color=p.style.textContent
+          alert(p.style.textContent)
+        }
+      })
+    </script>
+  </body>
+</html>

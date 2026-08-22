@@ -11,7 +11,7 @@
 #include"../../../c/console.h"
 template<
   typename itemsDataType,
-  typename sizeDataType=unsigned long,
+  typename sizeDataType = unsigned long long,
   typename capacityDataType=unsigned long
 >
 class dynamicArray{
@@ -485,8 +485,6 @@ public:
     return mapDynamicArray;
   }
 
-  //reduce
-
   template<typename accumulationValueDataType>
   accumulationValueDataType reduce(itemsDataType(*reduceFunction)(itemsDataType),accumulationValueDataType accumulationValue){
     for (sizeDataType index = 0;index < this->size;index++)
@@ -594,28 +592,28 @@ public:
   }
 
   void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
-    for(sizeDataType index = 0;index < this->size;index++)
+    for (sizeDataType index = 0; index < this->size; index++)
       this->push(sourceDynamicArray->items[index]);
   }
   void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray,sizeDataType size){
-    for (sizeDataType index = 0;index < size && size <= this->size;index++)
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
       this->push(sourceDynamicArray->items[index]);
   }
   void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray,sizeDataType left,sizeDataType right){
-    for (;0 <= left && left < right && right <= this->size;left++)
+    for (; 0 <= left && left < right && right <= this->size; left++)
       this->push(sourceDynamicArray->items[left]);
   }
 
   void copy(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
-    for (sizeDataType index = 0; index < this->size;index++)
+    for (sizeDataType index = 0; index < this->size; index++)
       this->items[index] = sourceDynamicArray->items[index];
   }
   void copy(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray,sizeDataType size){
-    for (sizeDataType index = 0;index < size && size <= this->size;index++)
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
       this->items[index] = sourceDynamicArray->items[index];
   }
   void copy(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray,sizeDataType left,sizeDataType right){
-    for (;0 <= left && left < right && right <= this->size;left++)
+    for (; 0 <= left && left < right && right <= this->size; left++)
       this->items[left] = sourceDynamicArray->items[left];
   }
 

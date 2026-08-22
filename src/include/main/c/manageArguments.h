@@ -13,8 +13,13 @@
 #include <sys/wait.h>
 #include <assert.h>
 #include <errno.h>
+#include <regex.h>
 #include "../../lib/c/console.h"
 #include "generalPurposeMaskBits.h"
+#include "../../lib/c/colors.h"
+
+#define colorFunctionsRegularExpression "\\s*((hsl|rgb)\\s*\\((\\s*[0-9]{1,3}\\s*\\,){2}\\s*[0-9]{1,3}\\s*\\)|((hsl|rgb)a|cymk)\\s*\\((\\s*[0-9]{1,3}\\s*\\,){3}\\s*[0-9]{1,3}\\s*\\)|cmyka\\s*\\((\\s*[0-9]{1,3}\\s*\\,){4}\\s*[0-9]{1,3}\\s*\\))\\s*"
+
 #if defined __cplusplus || defined c_plusplus
 extern "C"{
 #endif
@@ -48,10 +53,10 @@ extern "C"{
     unsigned char generalPurposeMask,
                   errorNumber;
     unsigned long backgroundColor:24,
-                  *backgroundPixelmap       
+                  *backgroundPixelmap
   }gameContextStructure;
   
-  int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct);
+  gameContextStructure manageArguments(int argc,char*argv[]);
 #if defined __cplusplus || defined c_plusplus
 }
 #endif

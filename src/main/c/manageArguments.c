@@ -5,7 +5,13 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include "../../include/main/c/manageArguments.h"
-int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
+gameContextStructure manageArguments(int argc,char*argv[]){
+  gameContextStructure gCtxtStruct = {
+    .errorNumber = 0,
+    .backgroundColor = 0,
+    .userName = "",
+    .userId = ""
+  };
   int flag,flagArgs;
   const struct option options[]={
     {"help",optional_argument,NULL,'h'},
@@ -14,11 +20,6 @@ int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
     {"audio",required_argument,NULL,'a'},
     {"debug",no_argument,NULL,'d'},
     {NULL,0,NULL,0}
-  };
-  const char*newArgv[]={
-    "--help=user",
-    "--help=debug",
-    "--help=background"
   };
   char
     * const userSuboptions[]={
@@ -61,23 +62,17 @@ int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
           switch (flagArgs)
           {
             case userFlagSuboptions_name:
-              if (strlen(suboptionValue) > 40)
-              {
-                failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!");
-                return (gCtxtStruct->errorNumber = 1);
-              }
-              //connect to the database and check if name is redondant or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              return (gCtxtStruct->errorNumber = 0);
+              int print = strlen(suboptionValue) > 40
+                          ? failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!")
+                          : informationMessage("Ottienimento informazioni non disponibile al momento");
+              gCtxtStruct.errorNumber = strlen(suboptionValue) <= 40;
+              break;
             case userFlagSuboptions_identifier:
-              if (atoi(suboptionValue) < 0)
-              {
-                failureMessage("Identifier rejected: the user identifier must be positive!");
-                return (gCtxtStruct->errorNumber = 1);
-              }
-              //connect to the database and check if the user is identified or not
-              informationMessage("Ottienimento informazioni non disponibile al momento");
-              return (gCtxtStruct->errorNumber = 0);
+              int print = atoi(suboptionValue) < 0
+                          ? failureMessage("Identifier rejected: the user identifier must be positive!")
+                          : informationMessage("Ottienimento informazioni non disponibile al momento");
+              gCtxtStruct.errorNumber = atoi(suboptionValue) < 0;
+              break;
           }
         }
         break;
@@ -86,70 +81,102 @@ int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
         {
           switch (flagArgs)
           {
-            case 0://handle name suboption case
-              if(strlen(suboptionValue)>40){
+            case backgroundFlagSuboptions_color:
+              regex_t regularExpression;
+              regmatch_t occurrency;
+              assert(!regcomp(&regularExpression, colorFunctionsRegularExpression, REG_ICASE | REG_EXTENDED));
+              if (!regexec(&regularExpression, suboptionValue, 1, &occurrency, REG_ICASE | REG_EXTENDED))
+              {
+                unsigned char functionIndex = 0;
+                char colorFuntionString[5+1+4*(3+1)+1]={};
+                for (unsigned long suboptionValueIndex = 0; suboptionValueIndex < suboptionValue[suboptionValueIndex]; suboptionValueIndex++)
+                  for(unsigned char spaceIndex = 0; spaceIndex < sizeof "\n\t\v\f\r " / sizeof *"\n\t\v\f\r "; spaceIndex++)
+                    if (suboptionValue[suboptionValueIndex] != "\n\t\v\f\r "[spaceIndex])
+                    {
+                      colorFuntionString[functionIndex] = suboptionValue[suboptionValueIndex];
+                      functionIndex += 1;
+                    }
+              }
+              gCtxtStruct.errorNumber = 0;
+              regfree(&regularExpression);
+              break;
+            case backgroundFlagSuboptions_pixelmap://handle name suboption case
+              if (strlen(suboptionValue) > 40)
+              {
                 failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!");
-                return (gCtxtStruct->errorNumber = 1);
+                gCtxtStruct.errorNumber = 1;
               }
               //connect to the database and check if name is redondant or not
               informationMessage("Ottienimento informazioni non disponibile al momento");
-              return (gCtxtStruct->errorNumber = 0);
-            case 1://handle identifier suboption case
+              gCtxtStruct.errorNumber = 0;
+              break;
+            case backgroundFlagSuboptions_path://handle identifier suboption case
               if(atoi(suboptionValue)<0){
                 failureMessage("Identifier rejected: the user identifier must be positive!");
-                return (gCtxtStruct->errorNumber = 1);
+                gCtxtStruct.errorNumber = 1;
               }
               //connect to the database and check if the user is identified or not
               informationMessage("Ottienimento informazioni non disponibile al momento");
-              return (gCtxtStruct->errorNumber = 0);
+              gCtxtStruct.errorNumber = 0;
+              break;
           }
         }
         break;
       case 'd':
-        gCtxtStruct->generalPurposeMask |= 1 << generalPurposeMaskBits_debug;
-        return (gCtxtStruct->errorNumber = 0);
+        gCtxtStruct.generalPurposeMask |= 1 << generalPurposeMaskBits_debug;
+        gCtxtStruct.errorNumber = 0;
       case 'h':
-        //what if he use subopt
-        while ((flagArgs = getsubopt(&optarg,helpSuboptions,&suboptionValue)) != -1) {
-          switch (flagArgs) {
+
+        while ((flagArgs = getsubopt(&optarg,helpSuboptions,&suboptionValue)) != -1)
+        {
+          switch (flagArgs)
+          {
             case helpFlagSuboptions_user:
-              for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++)
-                if (!strncmp(suboptionValue,helpSuboptions[index],strlen(helpSuboptions[index]))) {
+              if (suboptionValue)
+                for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++)
+                  if (!strcmp(suboptionValue, helpSuboptions[index]))
+                  {
+                    char* const suboptionCopy = helpSuboptions[index];
+                    *suboptionCopy -= 'z' + 'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
+                    printf("Usage: %s -[u|-user=]%s=<user%s>\n",*argv,helpSuboptions[index],suboptionCopy);
+                    printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,userExplanation[index]);
+                  }
+              else
+              {
+                printf("Usage: %s [-u|--user=]name=<userName>,identifier=<userIdentifier>\n",*argv);
+                puts("Subflags:");
+                for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++){
                   char* const suboptionCopy = helpSuboptions[index];
-                  *suboptionCopy-='z'+'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
-                  printf("Usage: %s [-u|--user=]%s=<user%s>\n",argv[0],helpSuboptions[index],suboptionCopy);
-                  printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,userExplanation[index]);
-                  return (gCtxtStruct->errorNumber = 0);
+                              *suboptionCopy-='z'+'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
+                  printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,helpExplanation[index]);
                 }
+                puts("Description:");
+                puts("\tIt searches in the videogame database for an account named with <userName> and identified by <userIdentifier>.");
+                puts("\tif <userName> is empty, when the videogame boots, it will be display a form to input it; then the name must be not empty.");
+                puts("\tif there is an another name in the database that is equal to <userName>, the form will require instead that you input the identifier of that account (that is not redondant).");
+              }
               break;
             case helpFlagSuboptions_background:
-              for (unsigned char index = 0; index < sizeof backgroundSuboptions / sizeof *backgroundSuboptions; index++)
-                if (!strncmp(suboptionValue,backgroundSuboptions[index],strlen(backgroundSuboptions[index]))) {
-                  char* const suboptionCopy = backgroundSuboptions[index];
-                  *suboptionCopy-='z'+'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
-                  printf("Usage: %s [-u|--user=]%s=<user%s>\n",argv[0],backgroundSuboptions[index],suboptionCopy);
-                  printf("\t%s=<user%s> %s\n",backgroundSuboptions[index],suboptionCopy,backgroundExplanation[index]);
-                  return (gCtxtStruct->errorNumber = 0);
-                }
+              if (suboptionValue)
+                for (unsigned char index = 0; index < sizeof backgroundSuboptions / sizeof *backgroundSuboptions; index++)
+                  if (!strcmp(suboptionValue, backgroundSuboptions[index])) 
+                  {
+                    char* const suboptionCopy = backgroundSuboptions[index];
+                    *suboptionCopy -= 'z' + 'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
+                    printf("Usage: %s [-b|--background=]%s=<background%s>\n",*argv,backgroundSuboptions[index],suboptionCopy);
+                    printf("\t%s=<background%s> %s\n",backgroundSuboptions[index],suboptionCopy,backgroundExplanation[index]);
+                  }
+              break;
             default:
-              printf("Usage: %s [-u|--user=]name=<userName>,identifier=<userIdentifier>\n",argv[0]);
-              puts("Subflags:");
-              for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++){
-                char* const suboptionCopy = helpSuboptions[index];
-                            *suboptionCopy-='z'+'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
-                printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,helpExplanation[index]);
-              }
-              puts("Description:");
-              puts("\tIt searches in the videogame database for an account named with <userName> and identified by <userIdentifier>.");
-              puts("\tif <userName> is empty, when the videogame boots, it will be display a form to input it; then the name must be not empty.");
-              puts("\tif there is an another name in the database that is equal to <userName>, the form will require instead that you input the identifier of that account (that is not redondant).");
-              return (gCtxtStruct->errorNumber = 0);
+              if (!suboptionValue)
+                
+              
               break;
           }
         }
         if (optarg) {
-          if(!strncmp(optarg,"user",4)){
-            printf("Usage: %s [-u|--user=]name=<userName>,identifier=<userIdentifier>\n",argv[0]);
+          if(!strcmp(optarg,"user")){
+            printf("Usage: %s [-u|--user=]name=<userName>,identifier=<userIdentifier>\n",*argv);
             puts("Subflags:");
             puts("\tname=<userName> a string of max 40 characters that will be the user name at account login");
             puts("\tidentifier=<userIdentifier> a positive integer number that identifies the account login");
@@ -157,41 +184,49 @@ int manageArguments(int argc,char*argv[],gameContextStructure*gCtxtStruct){
             puts("\tIt searches in the videogame database for an account named with <userName> and identified by <userIdentifier>.");
             puts("\tif <userName> is empty, when the videogame boots, it will be display a form to input it; then the name must be not empty.");
             puts("\tif there is an another name in the database that is equal to <userName>, the form will require instead that you input the identifier of that account (that is not redondant).");
-            return (gCtxtStruct->errorNumber = 0);
-          }
-          if(!strncmp(optarg,"debug",5)){
-            printf("Usage: %s [-d|--debug]\n",argv[0]);
+          }else if(!strcmp(optarg,"debug")){
+            printf("Usage: %s [-d|--debug]\n",*argv);
             puts("Description:");
             puts("\tWhen the game boots, it is possible to see of the specific output messages on the terminal");
-            return (gCtxtStruct->errorNumber = 0);
-          }
-          if(!strncmp(optarg,"background",10)){
+          }else if(!strcmp(optarg,"background")){
             puts("Aiuto background");
-            return (gCtxtStruct->errorNumber = 0);
           }
         }
-        for(unsigned char i=0;i<sizeof newArgv/sizeof *newArgv;i++){
-          int processId=fork(),executionImage;
-          switch (processId) {
-            case -1:
-              failureMessage(strerror(errno));
-              return (gCtxtStruct->errorNumber=errno);
-              break;
-            case 0:
-              executionImage = execl(argv[0],argv[0],newArgv[i],0);
-              if (executionImage == -1) {
-                failureMessage(strerror(errno));
-                return (gCtxtStruct->errorNumber = errno);
-              }
-              break;
-           }
-        }
-        wait(NULL);
-        return (gCtxtStruct->errorNumber = 0);
+        gCtxtStruct.errorNumber = 0;
+        break;
       default:
-        failureMessage("Invalid flag");
-        return (gCtxtStruct->errorNumber = 1);
+        if (optarg)
+        {
+          failureMessage("Invalid flag");
+          gCtxtStruct.errorNumber = 1;
+        }
+        else
+        {
+          printf("Usage: %s [options]\nOptions:\n",*argv);
+          for (unsigned char i = 0;i < sizeof helpSuboptions / sizeof *helpSuboptions; i++)
+            printf("\t%s %s\n", helpSuboptions[i], helpExplanation[i]);
+          for (unsigned char i = 0;i < sizeof helpSuboptions / sizeof *helpSuboptions; i++)
+          {
+            int processId=fork(),executionImage;
+            char helpFlag[] = "--help=";
+            switch (processId)
+            {
+              case -1:
+                failureMessage(strerror(errno));
+                gCtxtStruct.errorNumber = errno;
+                break;
+              case 0:
+                executionImage = execl(*argv, *argv, strcat(helpFlag, helpSuboptions[i]), 0);
+                if (executionImage == -1) {
+                  failureMessage(strerror(errno));
+                  gCtxtStruct.errorNumber = errno;
+                }
+                break;
+            }
+          }
+        }
+        break;
     }
   }
-  return 0;
+  return gCtxtStruct;
 }
