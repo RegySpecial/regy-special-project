@@ -11,6 +11,34 @@ cConsoleLibrary = src/lib/c/console.c
 cAudioBeepLibrary = src/lib/c/audio/beep.c
 manageArguments =   src/main/c/manageArguments.c
 
+x86_64-ios-machO-cConsoleLibrary =    bin/lib/static/c/o/mach-o/ios/x86_64/console.o
+x86_64-macos-machO-cConsoleLibrary =  bin/lib/static/c/o/mach-o/macos/x86_64/console.o
+aarch64-ios-machO-cConsoleLibrary =   bin/lib/static/c/o/mach-o/ios/aarch64/console.o
+aarch64-macos-machO-cConsoleLibrary = bin/lib/static/c/o/mach-o/macos/aarch64/console.o
+
+build-x86_64-ios-machO-cConsoleLibrary: $(cConsoleLibrary)
+	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(x86_64-ios-machO-cConsoleLibrary)
+build-x86_64-macos-machO-cConsoleLibrary: $(cConsoleLibrary)
+	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(x86_64-macos-machO-cConsoleLibrary)
+build-aarch64-ios-machO-cConsoleLibrary: $(cConsoleLibrary)
+	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(x86_64-ios-machO-cConsoleLibrary)
+build-aarch64-macos-machO-cConsoleLibrary: $(cConsoleLibrary)
+	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(x86_64-macos-machO-cConsoleLibrary)
+
+x86_64-ios-machO-cAudioBeepLibrary =    bin/lib/static/c/o/mach-o/ios/x86_64/cAudioBeepLibrary.o
+x86_64-macos-machO-cAudioBeepLibrary =  bin/lib/static/c/o/mach-o/macos/x86_64/cAudioBeepLibrary.o
+aarch64-ios-machO-cAudioBeepLibrary =   bin/lib/static/c/o/mach-o/ios/aarch64/cAudioBeepLibrary.o
+aarch64-macos-machO-cAudioBeepLibrary = bin/lib/static/c/o/mach-o/macos/aarch64/cAudioBeepLibrary.o
+
+build-x86_64-ios-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
+	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(x86_64-ios-machO-cAudioBeepLibrary)
+build-x86_64-macos-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
+	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(x86_64-macos-machO-cAudioBeepLibrary)
+build-aarch64-ios-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
+	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(x86_64-ios-machO-cAudioBeepLibrary)
+build-aarch64-macos-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
+	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(x86_64-macos-machO-cAudioBeepLibrary)
+
 testManageArguments = test/testManageArguments.cpp
 
 x86_64-linux-elf-testManageArguments =     /home/regyspecial/Scrivania/testManageArguments

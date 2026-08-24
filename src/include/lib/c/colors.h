@@ -66,26 +66,43 @@ extern "C"{
   {
     rgb   RGB;
     rgba  RGBA;
-    hsl   HSL;
-    hsla  HSLA;
     cmyk  CMYK;
     cmyka CMYKA;
+    hsl   HSL;
+    hsla  HSLA;
   } colorFunction;
 
-  hsla  rgbaToHsla(rgba* rgbaStruct);
-  hsla  rgbToHsl(rgba* rgbaStruct);
-  cmyka rgbaToCmyka(rgba* rgbaStruct);
-  cmyka rgbToCmyk(rgba* rgbaStruct);
+  rgba  rgbToRgba(rgb rgbStruct);
+  cmyk  rgbToCmyk(rgb rgbStruct);
+  cmyka rgbToCmyka(rgb rgbStruct);
+  hsl   rgbToHsl(rgb rgbStruct);
+  hsla  rgbToHsla(rgb rgbStruct);
+  rgb   rgbaToRgb(rgba rgbaStruct);
+  cmyk  rgbaToCmyk(rgba rgbaStruct);
+  cmyka rgbaToCmyka(rgba rgbaStruct);
+  hsl   rgbaToHsl(rgba rgbaStruct);
+  hsla  rgbaToHsla(rgba rgbaStruct);
+  rgb   cmykToRgb(cmyk cmykStruct);
+  rgba  cmykToRgba(cmyk cmykStruct);
+  cmyka cmykToCmyka(cmyk cmykStruct);
+  hsl   cmykToHsl(cmyk cmykStruct);
+  hsla  cmykToHsla(cmyk cmykStruct);
+  rgb   cmykaToRgb(cmyka cmykaStruct);
+  rgba  cmykaToRgba(cmyka cmykaStruct);
+  cmyk  cmykaToCmyk(cmyka cmykaStruct);
+  hsl   cmykaToHsl(cmyka cmykaStruct);
+  hsla  cmykaToHsla(cmyka cmykaStruct);
+  rgb   hslToRgb(hsl hslStruct);
+  rgba  hslToRgba(hsl hslStruct);
+  cmyk  hslToCmyk(hsl hslStruct);
+  cmyka hslToCmyka(hsl hslStruct);
+  hsla  hslToHsla(hsl hslStruct);
+  rgb   hslaToRgb(hsla hslaStruct);
+  rgba  hslaToRgba(hsla hslaStruct);
+  cmyk  hslaToCmyk(hsla hslaStruct);
+  cmyka hslaToCmyka(hsla hslaStruct);
+  hsl   hslaToHsl(hsla hslaStruct);
 
-  rgba cmykaToRgba(cmyka* cmykaStruct);
-  rgba cmykToRgb(cmyka* cmykaStruct);
-  hsla cmykaToHsla(cmyka* cmykaStruct);
-  hsla cmykToHsl(cmyka* cmykaStruct);
-
-  rgba  hslaToRgba(hsla* hslaStruct);
-  rgba  hslToRgb(hsla* hslaStruct);
-  cmyka hslaToCmyka(hsla* hslaStruct);
-  cmyka hslToCmyk(hsla* hslaStruct);
 #if defined __cplusplus || defined c_plusplus
 }
 #endif

@@ -96,6 +96,24 @@ gameContextStructure manageArguments(int argc,char*argv[]){
                       colorFuntionString[functionIndex] = suboptionValue[suboptionValueIndex];
                       functionIndex += 1;
                     }
+                if (!strcmp(colorFuntionString,"hsl"))
+                {
+                  hsl HSL={};
+                  for (char* paramGet = strtok(colorFuntionString + 4, ","), index = 0; paramGet; paramGet = strtok(NULL, ","), index++)
+                    ((unsigned char*) &HSL)[index] = atoi(paramGet);
+                  
+                  rgb trueColor = hslToRgb(HSL);
+                  gCtxtStruct.backgroundColor = trueColor.red << 16 | trueColor.green << 8 | trueColor.blue;
+                }
+                else if (!strcmp(colorFuntionString,"hsla"))
+                {
+                  hsla HSLA={};
+                  for (char* paramGet = strtok(colorFuntionString + 5, ","), index = 0; paramGet; paramGet = strtok(NULL, ","), index++)
+                    ((unsigned char*) &HSLA)[index] = atoi(paramGet);
+                  
+                  rgba trueColor = hslaToRgba(HSLA);
+                  gCtxtStruct.backgroundColor = trueColor.red << 16 | trueColor.green << 8 | trueColor.blue;
+                }
               }
               gCtxtStruct.errorNumber = 0;
               regfree(&regularExpression);
