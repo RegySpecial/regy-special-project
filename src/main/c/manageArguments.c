@@ -12,15 +12,18 @@ gameContextStructure manageArguments(int argc,char*argv[]){
     .userName = "",
     .userId = ""
   };
+
   int flag,flagArgs;
+  
   const struct option options[]={
     {"help",optional_argument,NULL,'h'},
     {"user",required_argument,NULL,'u'},
     {"background",required_argument,NULL,'b'},
     {"audio",required_argument,NULL,'a'},
     {"debug",no_argument,NULL,'d'},
-    {NULL,0,NULL,0}
+    {NULL,no_argument,NULL,0}
   };
+  
   char
     * const userSuboptions[]={
       "name",
@@ -37,6 +40,7 @@ gameContextStructure manageArguments(int argc,char*argv[]){
       "background"
     },
     *suboptionValue;
+  
   const char
     *userExplanation[]={
       "a string of max 40 characters that will be the user name at account login",
@@ -52,7 +56,8 @@ gameContextStructure manageArguments(int argc,char*argv[]){
       "display debug informations",
       "set the background of the videogame main screen in the following order (<backgroundColor>,<backgroundPixelmap>,<backgroundPath>)"
     };
-  while ((flag = getopt_long(argc,argv,"h::u:b:a:d",options,NULL)) != -1)
+  
+  while ((flag = getopt_long(argc, argv, "h::u:b:a:d", options, NULL)) != -1)
   {
     switch (flag)
     {
@@ -62,15 +67,15 @@ gameContextStructure manageArguments(int argc,char*argv[]){
           switch (flagArgs)
           {
             case userFlagSuboptions_name:
-              int print = strlen(suboptionValue) > 40
-                          ? failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!")
-                          : informationMessage("Ottienimento informazioni non disponibile al momento");
+              strlen(suboptionValue) > 40
+              ? failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!")
+              : informationMessage("Ottienimento informazioni non disponibile al momento");
               gCtxtStruct.errorNumber = strlen(suboptionValue) <= 40;
               break;
             case userFlagSuboptions_identifier:
-              int print = atoi(suboptionValue) < 0
-                          ? failureMessage("Identifier rejected: the user identifier must be positive!")
-                          : informationMessage("Ottienimento informazioni non disponibile al momento");
+              atoi(suboptionValue) < 0
+              ? failureMessage("Identifier rejected: the user identifier must be a positive number!")
+              : informationMessage("Ottienimento informazioni non disponibile al momento");
               gCtxtStruct.errorNumber = atoi(suboptionValue) < 0;
               break;
           }
@@ -84,8 +89,10 @@ gameContextStructure manageArguments(int argc,char*argv[]){
             case backgroundFlagSuboptions_color:
               regex_t regularExpression;
               regmatch_t occurrency;
-              assert(!regcomp(&regularExpression, colorFunctionsRegularExpression, REG_ICASE | REG_EXTENDED));
-              if (!regexec(&regularExpression, suboptionValue, 1, &occurrency, REG_ICASE | REG_EXTENDED))
+              int regularExpressionCompilation,
+                  regularExpressionExecution;
+              assert(!(regularExpressionCompilation = regcomp(&regularExpression, colorFunctionsRegularExpression, REG_ICASE | REG_EXTENDED)));
+              if (!(regularExpressionExecution = regexec(&regularExpression, suboptionValue, 1, &occurrency, REG_ICASE | REG_EXTENDED)))
               {
                 unsigned char functionIndex = 0;
                 char colorFuntionString[5+1+4*(3+1)+1]={};
@@ -114,26 +121,52 @@ gameContextStructure manageArguments(int argc,char*argv[]){
                   rgba trueColor = hslaToRgba(HSLA);
                   gCtxtStruct.backgroundColor = trueColor.red << 16 | trueColor.green << 8 | trueColor.blue;
                 }
+                else if (!strcmp(colorFuntionString,"rgb"))
+                {
+                  rgb RGB={};
+                  for (char* paramGet = strtok(colorFuntionString + 4, ","), index = 0; paramGet; paramGet = strtok(NULL, ","), index++)
+                    ((unsigned char*) &RGB)[index] = atoi(paramGet);
+                  gCtxtStruct.backgroundColor = RGB.red << 16 | RGB.green << 8 | RGB.blue;
+                }
+                else if (!strcmp(colorFuntionString,"rgba"))
+                {
+                  rgba RGBA={};
+                  for (char* paramGet = strtok(colorFuntionString + 5, ","), index = 0; paramGet; paramGet = strtok(NULL, ","), index++)
+                    ((unsigned char*) &RGBA)[index] = atoi(paramGet);
+                  gCtxtStruct.backgroundColor = RGBA.red << 16 | RGBA.green << 8 | RGBA.blue;
+                }
+                else if (!strcmp(colorFuntionString,"cmyk"))
+                {
+                  cmyk CMYK={};
+                  for (char* paramGet = strtok(colorFuntionString + 5, ","), index = 0; paramGet; paramGet = strtok(NULL, ","), index++)
+                    ((unsigned char*) &CMYK)[index] = atoi(paramGet);
+                  
+                  rgb trueColor = cmykToRgb(CMYK);
+                  gCtxtStruct.backgroundColor = trueColor.red << 16 | trueColor.green << 8 | trueColor.blue;
+                }
+                else if (!strcmp(colorFuntionString,"cmyka"))
+                {
+                  cmyka CMYKA={};
+                  for (char* paramGet = strtok(colorFuntionString + 5, ","), index = 0; paramGet; paramGet = strtok(NULL, ","), index++)
+                    ((unsigned char*) &CMYKA)[index] = atoi(paramGet);
+                  
+                  rgba trueColor = cmykaToRgba(CMYKA);
+                  gCtxtStruct.backgroundColor = trueColor.red << 16 | trueColor.green << 8 | trueColor.blue;
+                }
+                else
+                {
+                  failureMessage("Invalid color function or color code");
+                  gCtxtStruct.errorNumber = 1;
+                }
               }
-              gCtxtStruct.errorNumber = 0;
+              gCtxtStruct.errorNumber = regularExpressionExecution;
               regfree(&regularExpression);
               break;
-            case backgroundFlagSuboptions_pixelmap://handle name suboption case
-              if (strlen(suboptionValue) > 40)
-              {
-                failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!");
-                gCtxtStruct.errorNumber = 1;
-              }
-              //connect to the database and check if name is redondant or not
+            case backgroundFlagSuboptions_pixelmap:
               informationMessage("Ottienimento informazioni non disponibile al momento");
               gCtxtStruct.errorNumber = 0;
               break;
-            case backgroundFlagSuboptions_path://handle identifier suboption case
-              if(atoi(suboptionValue)<0){
-                failureMessage("Identifier rejected: the user identifier must be positive!");
-                gCtxtStruct.errorNumber = 1;
-              }
-              //connect to the database and check if the user is identified or not
+            case backgroundFlagSuboptions_path:
               informationMessage("Ottienimento informazioni non disponibile al momento");
               gCtxtStruct.errorNumber = 0;
               break;
@@ -144,7 +177,6 @@ gameContextStructure manageArguments(int argc,char*argv[]){
         gCtxtStruct.generalPurposeMask |= 1 << generalPurposeMaskBits_debug;
         gCtxtStruct.errorNumber = 0;
       case 'h':
-
         while ((flagArgs = getsubopt(&optarg,helpSuboptions,&suboptionValue)) != -1)
         {
           switch (flagArgs)
@@ -184,11 +216,55 @@ gameContextStructure manageArguments(int argc,char*argv[]){
                     printf("Usage: %s [-b|--background=]%s=<background%s>\n",*argv,backgroundSuboptions[index],suboptionCopy);
                     printf("\t%s=<background%s> %s\n",backgroundSuboptions[index],suboptionCopy,backgroundExplanation[index]);
                   }
+                  else
+                  {
+                    printf("Usage: %s [-b|--background=]name=<userName>,identifier=<userIdentifier>\n",*argv);
+                    puts("Subflags:");
+                    for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++){
+                      char* const suboptionCopy = backgroundSuboptions[index];
+                                  *suboptionCopy-='z'+'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
+                      printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,helpExplanation[index]);
+                    }
+                    puts("Description:");
+                    puts("\tIt searches in the videogame database for an account named with <userName> and identified by <userIdentifier>.");
+                    puts("\tif <userName> is empty, when the videogame boots, it will be display a form to input it; then the name must be not empty.");
+                    puts("\tif there is an another name in the database that is equal to <userName>, the form will require instead that you input the identifier of that account (that is not redondant).");
+                  }
               break;
             default:
               if (!suboptionValue)
-                
-              
+                printf("Usage: %s [options]\nOptions:\n",*argv);
+                for (unsigned char i = 0;i < sizeof helpSuboptions / sizeof *helpSuboptions; i++)
+                  printf("\t%s %s\n", helpSuboptions[i], helpExplanation[i]);
+                for (unsigned char i = 0;i < sizeof helpSuboptions / sizeof *helpSuboptions; i++)
+                {
+                  int processId = fork(),
+                      executionImage = 0,
+                      waitId;
+                  char helpFlag[] = "--help=";
+                  switch (processId)
+                  {
+                    case -1:
+                      failureMessage(strerror(errno));
+                      gCtxtStruct.errorNumber = errno;
+                      break;
+                    case 0:
+                      executionImage = execl(*argv, *argv, strcat(helpFlag, helpSuboptions[i]), 0);
+                      if (executionImage == -1) {
+                        failureMessage(strerror(errno));
+                        gCtxtStruct.errorNumber = errno;
+                      }
+                      break;
+                    default:
+                      waitId = waitpid(processId, NULL, 0);
+                      if (waitId == -1) {
+                        failureMessage(strerror(errno));
+                        gCtxtStruct.errorNumber = errno;
+                      }
+                      break;
+                  }
+                  wait(NULL);
+                }
               break;
           }
         }
