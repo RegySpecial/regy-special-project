@@ -9,9 +9,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.id.layout);
-        LinearLayout layout=getContentViewById(R.id.layout);
-        final Button PlayButton=getContentViewById(R.id.Play);
+        //getContentViewById(R.id.layout)
+        LinearLayout layout = new LinearLayout(this);
+        //getContentViewById(R.id.Play)
+        final Button PlayButton = new Button(this);
         PlayButton.setWidth(layout.getWidth()/2);
         PlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,5 +31,6 @@ public class MainActivity extends Activity {
                 }
             }
         });
+        setContentView(layout);
     }
 }
