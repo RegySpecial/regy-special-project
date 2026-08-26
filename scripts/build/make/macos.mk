@@ -2,69 +2,61 @@
 #@author Regy Special
 #@date 2026 January 16th Friday, 21:11:03
 #@license GNU General Public License to stop private corporation to not share source code
-
-MinGWc =       C:/MinGW/bin/gcc.exe
-MinGWcpp =     C:/MinGW/bin/g++.exe
-MinGWwindres = C:/MinGW/bin/windres.exe
-
 cConsoleLibrary = src/lib/c/console.c
 
-x86_64-ios-machO-cConsoleLibrary =    bin/lib/static/c/o/mach-o/ios/x86_64/console.o
-x86_64-macos-machO-cConsoleLibrary =  bin/lib/static/c/o/mach-o/macos/x86_64/console.o
-aarch64-ios-machO-cConsoleLibrary =   bin/lib/static/c/o/mach-o/ios/aarch64/console.o
-aarch64-macos-machO-cConsoleLibrary = bin/lib/static/c/o/mach-o/macos/aarch64/console.o
+amd64-ios-machO-cConsoleLibrary =    bin/lib/static/c/o/mach-o/ios/amd64/console.o
+amd64-macos-machO-cConsoleLibrary =  bin/lib/static/c/o/mach-o/macos/amd64/console.o
+arm64-ios-machO-cConsoleLibrary =   bin/lib/static/c/o/mach-o/ios/arm64/console.o
+arm64-macos-machO-cConsoleLibrary = bin/lib/static/c/o/mach-o/macos/arm64/console.o
 
-build-x86_64-ios-machO-cConsoleLibrary: $(cConsoleLibrary)
-	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(x86_64-ios-machO-cConsoleLibrary)
-build-x86_64-macos-machO-cConsoleLibrary: $(cConsoleLibrary)
-	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(x86_64-macos-machO-cConsoleLibrary)
-build-aarch64-ios-machO-cConsoleLibrary: $(cConsoleLibrary)
-	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(x86_64-ios-machO-cConsoleLibrary)
-build-aarch64-macos-machO-cConsoleLibrary: $(cConsoleLibrary)
-	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(x86_64-macos-machO-cConsoleLibrary)
+build-amd64-ios-machO-cConsoleLibrary: $(cConsoleLibrary)
+	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(amd64-ios-machO-cConsoleLibrary)
+build-amd64-macos-machO-cConsoleLibrary: $(cConsoleLibrary)
+	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(amd64-macos-machO-cConsoleLibrary)
+build-arm64-ios-machO-cConsoleLibrary: $(cConsoleLibrary)
+	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(amd64-ios-machO-cConsoleLibrary)
+build-arm64-macos-machO-cConsoleLibrary: $(cConsoleLibrary)
+	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(amd64-macos-machO-cConsoleLibrary)
 
 cAudioBeepLibrary = src/lib/c/audio/beep.c
 
-x86_64-ios-machO-cAudioBeepLibrary =    bin/lib/static/c/o/mach-o/ios/x86_64/audioBeepLibrary.o
-x86_64-macos-machO-cAudioBeepLibrary =  bin/lib/static/c/o/mach-o/macos/x86_64/audioBeepLibrary.o
-aarch64-ios-machO-cAudioBeepLibrary =   bin/lib/static/c/o/mach-o/ios/aarch64/audioBeepLibrary.o
-aarch64-macos-machO-cAudioBeepLibrary = bin/lib/static/c/o/mach-o/macos/aarch64/audioBeepLibrary.o
+amd64-ios-machO-cAudioBeepLibrary =    bin/lib/static/c/o/mach-o/ios/amd64/audioBeepLibrary.o
+amd64-macos-machO-cAudioBeepLibrary =  bin/lib/static/c/o/mach-o/macos/amd64/audioBeepLibrary.o
+arm64-ios-machO-cAudioBeepLibrary =   bin/lib/static/c/o/mach-o/ios/arm64/audioBeepLibrary.o
+arm64-macos-machO-cAudioBeepLibrary = bin/lib/static/c/o/mach-o/macos/arm64/audioBeepLibrary.o
 
-build-x86_64-ios-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
-	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(x86_64-ios-machO-cAudioBeepLibrary)
-build-x86_64-macos-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
-	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(x86_64-macos-machO-cAudioBeepLibrary)
-build-aarch64-ios-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
-	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(x86_64-ios-machO-cAudioBeepLibrary)
-build-aarch64-macos-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
-	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(x86_64-macos-machO-cAudioBeepLibrary)
+build-amd64-ios-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
+	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(amd64-ios-machO-cAudioBeepLibrary)
+build-amd64-macos-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
+	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(amd64-macos-machO-cAudioBeepLibrary)
+build-arm64-ios-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
+	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(amd64-ios-machO-cAudioBeepLibrary)
+build-arm64-macos-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
+	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(amd64-macos-machO-cAudioBeepLibrary)
 
 cManageArguments =   src/main/c/manageArguments.c
 
-x86_64-ios-machO-cManageArguments =    bin/lib/static/c/o/mach-o/ios/x86_64/manageArguments.o
-x86_64-macos-machO-cManageArguments =  bin/lib/static/c/o/mach-o/macos/x86_64/manageArguments.o
-aarch64-ios-machO-cManageArguments =   bin/lib/static/c/o/mach-o/ios/aarch64/manageArguments.o
-aarch64-macos-machO-cManageArguments = bin/lib/static/c/o/mach-o/macos/aarch64/manageArguments.o
+amd64-ios-machO-cManageArguments =    bin/lib/static/c/o/mach-o/ios/amd64/manageArguments.o
+amd64-macos-machO-cManageArguments =  bin/lib/static/c/o/mach-o/macos/amd64/manageArguments.o
+arm64-ios-machO-cManageArguments =   bin/lib/static/c/o/mach-o/ios/arm64/manageArguments.o
+arm64-macos-machO-cManageArguments = bin/lib/static/c/o/mach-o/macos/arm64/manageArguments.o
 
-build-x86_64-ios-machO-cManageArguments: $(cManageArguments)
-	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(x86_64-ios-machO-cManageArguments)
-build-x86_64-macos-machO-cManageArguments: $(cManageArguments)
-	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(x86_64-macos-machO-cManageArguments)
-build-aarch64-ios-machO-cManageArguments: $(cManageArguments)
-	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(x86_64-ios-machO-cManageArguments)
-build-aarch64-macos-machO-cAudioBeepLibrary: $(cManageArguments)
-	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(x86_64-macos-machO-cManageArguments)
+build-amd64-ios-machO-cManageArguments: $(cManageArguments)
+	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(amd64-ios-machO-cManageArguments)
+build-amd64-macos-machO-cManageArguments: $(cManageArguments)
+	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(amd64-macos-machO-cManageArguments)
+build-arm64-ios-machO-cManageArguments: $(cManageArguments)
+	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(amd64-ios-machO-cManageArguments)
+build-arm64-macos-machO-cAudioBeepLibrary: $(cManageArguments)
+	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(amd64-macos-machO-cManageArguments)
 
 testManageArguments = test/testManageArguments.cpp
 
-x86_64-freebsd-elf-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
-x86_64-ios-machO-testManageArguments =   /home/regyspecial/Scrivania/testManageArguments
-x86_64-macos-machO-testManageArguments = /Users/*/Desktop/testManageArguments
+amd64-ios-machO-testManageArguments =   /home/regyspecial/Scrivania/testManageArguments
+amd64-macos-machO-testManageArguments = /Users/*/Desktop/testManageArguments
 
-build-x86_64-freebsd-elf-testManageArguments: $(manageArguments) $(cConsoleLibrary) $(testManageArguments)
-	c++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(x86_64-freebsd-elf-testManageArguments)
-build-x86_64-macos-machO-testManageArguments: $(testManageArguments) $(x86_64-macos-machO-manageArguments)
-	g++ -std=c++26 -Wall -O $(testManageArguments) $(x86_64-macos-machO-manageArguments) -o $(x86_64-macos-machO-testManageArguments)
+build-amd64-macos-machO-testManageArguments: $(testManageArguments) $(amd64-macos-machO-manageArguments)
+	g++ -std=c++26 -Wall -O $(testManageArguments) $(amd64-macos-machO-manageArguments) -o $(amd64-macos-machO-testManageArguments)
 
 goImageLibrary = src/lib/go/CImage.go
 
@@ -116,30 +108,6 @@ build-amd64-dragonfly-elf-a-goImageLibrary: $(goImageLibrary)
 	GOOS=dragonfly GOARCH=amd64 go build -buildmode=c-archive -o $(goImageLibrary) $(amd64-dragonfly-elf-a-goImageLibrary)
 	mv bin/lib/static/a/elf/dragonfly/amd64/Cimage.h src/include/lib/go
 
-386-freebsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/freebsd/386/CImage.a
-
-build-386-freebsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=freebsd GOARCH=386 go build -buildmode=c-archive -o $(goImageLibrary) $(386-freebsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/freebsd/386/Cimage.h src/include/lib/go
-
-amd64-freebsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/freebsd/amd64/CImage.a
-
-build-amd64-freebsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=freebsd GOARCH=amd64 go build -buildmode=c-archive -o $(goImageLibrary) $(amd64-freebsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/freebsd/amd64/Cimage.h src/include/lib/go
-
-arm-freebsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/freebsd/arm/CImage.a
-
-build-arm-freebsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=freebsd GOARCH=arm go build -buildmode=c-archive -o $(goImageLibrary) $(arm-freebsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/freebsd/arm/Cimage.h src/include/lib/go
-
-arm64-freebsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/freebsd/arm64/CImage.a
-
-build-arm64-freebsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=freebsd GOARCH=arm64 go build -buildmode=c-archive -o $(goImageLibrary) $(arm64-freebsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/freebsd/arm64/Cimage.h src/include/lib/go
-
 amd64-illumos-elf-a-goImageLibrary = bin/lib/static/a/go/elf/illumos/amd64/CImage.a
 
 build-amd64-illumos-elf-a-goImageLibrary: $(goImageLibrary)
@@ -163,66 +131,6 @@ wasm-js-wasm-a-goImageLibrary = bin/lib/static/a/go/wasm/js/wasm/CImage.a
 build-wasm-js-wasm-a-goImageLibrary: $(goImageLibrary)
 	GOOS=js GOARCH=wasm go build -buildmode=c-archive -o $(goImageLibrary) $(wasm-js-wasm-a-goImageLibrary)
 	mv bin/lib/static/a/wasm/js/wasm/Cimage.h src/include/lib/go
-
-386-netbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/netbsd/386/CImage.a
-
-build-386-netbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=netbsd GOARCH=386 go build -buildmode=c-archive -o $(goImageLibrary) $(386-netbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/netbsd/386/Cimage.h src/include/lib/go
-
-amd64-netbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/netbsd/amd64/CImage.a
-
-build-amd64-netbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=netbsd GOARCH=amd64 go build -buildmode=c-archive -o $(goImageLibrary) $(amd64-netbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/netbsd/amd64/Cimage.h src/include/lib/go
-
-arm-netbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/netbsd/arm/CImage.a
-
-build-arm-netbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=netbsd GOARCH=arm go build -buildmode=c-archive -o $(goImageLibrary) $(arm-netbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/netbsd/arm/Cimage.h src/include/lib/go
-
-arm64-netbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/netbsd/arm64/CImage.a
-
-build-arm64-netbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=netbsd GOARCH=arm64 go build -buildmode=c-archive -o $(goImageLibrary) $(arm64-netbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/netbsd/arm64/Cimage.h src/include/lib/go
-
-386-openbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/openbsd/386/CImage.a
-
-build-386-openbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=openbsd GOARCH=386 go build -buildmode=c-archive -o $(goImageLibrary) $(386-openbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/openbsd/386/Cimage.h src/include/lib/go
-
-amd64-openbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/openbsd/amd64/CImage.a
-
-build-amd64-openbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=openbsd GOARCH=amd64 go build -buildmode=c-archive -o $(goImageLibrary) $(amd64-openbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/openbsd/amd64/Cimage.h src/include/lib/go
-
-arm-openbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/openbsd/arm/CImage.a
-
-build-arm-openbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=openbsd GOARCH=arm go build -buildmode=c-archive -o $(goImageLibrary) $(arm-openbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/openbsd/arm/Cimage.h src/include/lib/go
-
-arm64-openbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/openbsd/arm64/CImage.a
-
-build-arm64-openbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=openbsd GOARCH=arm64 go build -buildmode=c-archive -o $(goImageLibrary) $(arm64-openbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/openbsd/arm64/Cimage.h src/include/lib/go
-
-ppc64-openbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/openbsd/ppc64/CImage.a
-
-build-ppc64-openbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=openbsd GOARCH=ppc64 go build -buildmode=c-archive -o $(goImageLibrary) $(ppc64-openbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/openbsd/ppc64/Cimage.h src/include/lib/go
-
-riscv64-openbsd-elf-a-goImageLibrary = bin/lib/static/a/go/elf/openbsd/riscv64/CImage.a
-
-build-riscv64-openbsd-elf-a-goImageLibrary: $(goImageLibrary)
-	GOOS=openbsd GOARCH=riscv64 go build -buildmode=c-archive -o $(goImageLibrary) $(riscv64-openbsd-elf-a-goImageLibrary)
-	mv bin/lib/static/a/elf/openbsd/riscv64/Cimage.h src/include/lib/go
 
 386-plan9-elf-a-goImageLibrary = bin/lib/static/a/go/elf/plan9/386/CImage.a
 
@@ -279,18 +187,15 @@ apple-gameModeButtons =   src/main/swift/gameModeButtons.swift
 apple-form =              src/main/swift/form.swift
 apple-formTextBox =       src/main/swift/formTextBox.swift
 
-build-x86_64-freebsd-elf-testManageArguments: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
-	c++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(x86_64-freebsd-elf-testManageArguments)
-build-x86_64-macos-machO-testManageArguments: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
-	g++ -std=c++26 -Wall -O $(testManageArguments) $(x86_64-macos-machO-manageArguments) -o $(x86_64-macos-machO-testManageArguments)
+build-amd64-macos-machO-testManageArguments: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
+	g++ -std=c++26 -Wall -O $(testManageArguments) $(amd64-macos-machO-manageArguments) -o $(amd64-macos-machO-testManageArguments)
 
 apple-main = src/main/swift/main.swift
 
 #object files
-macos-machO = bin/exec/macos/mach-o/x86_64/RegySpecial
-ios-machO =   bin/exec/ios/mach-o/x86_64/RegySpecial
+macos-machO = bin/exec/macos/mach-o/amd64/RegySpecial
+ios-machO =   bin/exec/ios/mach-o/amd64/RegySpecial
 
-arm-windows-pe =  bin/exec/pe/windows/arm/RegySpecial.exe
 arm-macos-machO = bin/exec/mach-o/macos/arm/RegySpecial
 arm-ios-machO =   bin/exec/mach-o/macos/arm/RegySpecial
 
@@ -298,18 +203,18 @@ build-docker-image:
 	docker build scripts/build -t docker-armory
 
 #compile for Kernel Mach
-build-x86_64-macos-machO:$(macos-mainFile)
-	swiftc -O -target x86_64-apple-macosx10.15 $(macos-mainFile) -o $(x86_64-mach-o) -framework Cocoa -framework AppKit
-debug-x86_64-macos-machO:$(macos-mainFile)
-	swiftc -g -target x86_64-apple-macosx10.15 $(macos-mainFile) -o $(x86_64-mach-o)-debug -framework Cocoa -framework AppKit
-sanitize-x86_64-macos-machO:$(macos-mainFile)
-	swiftc -g -target x86_64-apple-macosx10.15 -sanitize=address $(macos-mainFile) -o $(x86_64-mach-o)-sanitize -framework Cocoa -framework AppKit
+build-amd64-macos-machO:$(macos-mainFile)
+	swiftc -O -target amd64-apple-macosx10.15 $(macos-mainFile) -o $(amd64-mach-o) -framework Cocoa -framework AppKit
+debug-amd64-macos-machO:$(macos-mainFile)
+	swiftc -g -target amd64-apple-macosx10.15 $(macos-mainFile) -o $(amd64-mach-o)-debug -framework Cocoa -framework AppKit
+sanitize-amd64-macos-machO:$(macos-mainFile)
+	swiftc -g -target amd64-apple-macosx10.15 -sanitize=address $(macos-mainFile) -o $(amd64-mach-o)-sanitize -framework Cocoa -framework AppKit
 build-arm64-macos-machO:$(macos-mainFile)
-	swiftc -O -target arm64-apple-macosx10.15 $(macos-mainFile) -o $(x86_64-mach-o) -framework Cocoa -framework AppKit
+	swiftc -O -target arm64-apple-macosx10.15 $(macos-mainFile) -o $(amd64-mach-o) -framework Cocoa -framework AppKit
 debug-arm64-macos-machO:$(macos-mainFile)
-	swiftc -g -target arm64-apple-macosx10.15 $(macos-mainFile) -o $(x86_64-mach-o)-debug -framework Cocoa -framework AppKit
+	swiftc -g -target arm64-apple-macosx10.15 $(macos-mainFile) -o $(amd64-mach-o)-debug -framework Cocoa -framework AppKit
 sanitize-arm64-macos-machO:$(macos-mainFile)
-	swiftc -g -target arm64-apple-macosx10.15 -sanitize=address $(macos-mainFile) -o $(x86_64-mach-o)-sanitize -framework Cocoa -framework AppKit
+	swiftc -g -target arm64-apple-macosx10.15 -sanitize=address $(macos-mainFile) -o $(amd64-mach-o)-sanitize -framework Cocoa -framework AppKit
 
 
 clean:
@@ -317,50 +222,50 @@ clean:
 	rm -r bin/main/c/manageArguments.o
 
 all:
-	build-x86_64-elf-console \
+	build-amd64-elf-console \
 	build-macos-machO-console \
-	build-x86_64-elf-audioBeep \
-	build-x86_64-macos-machO-audioBeep \
-	build-x86_64-elf-manageArguments \
-	build-x86_64-macos-machO-manageArguments \
-	build-x86_64-linux-elf-testManageArguments \
+	build-amd64-elf-audioBeep \
+	build-amd64-macos-machO-audioBeep \
+	build-amd64-elf-manageArguments \
+	build-amd64-macos-machO-manageArguments \
+	build-amd64-linux-elf-testManageArguments \
 	build-image-a \
 	build-docker-image \
 	build-windows-res \
-	build-x86_64-pe \
-	debug-x86_64-pe \
-	sanitize-x86_64-pe \
-	build-x86_64-linux-elf \
-	debug-x86_64-linux-elf \
-	sanitize-x86_64-linux-elf \
-	build-x86_64-elf-save-temps \
-	debug-x86_64-elf-save-temps \
-	sanitize-x86_64-elf-save-temps \
+	build-amd64-pe \
+	debug-amd64-pe \
+	sanitize-amd64-pe \
+	build-amd64-linux-elf \
+	debug-amd64-linux-elf \
+	sanitize-amd64-linux-elf \
+	build-amd64-elf-save-temps \
+	debug-amd64-elf-save-temps \
+	sanitize-amd64-elf-save-temps \
 	build-macOS-mach-o \
 	debug-macos-machO \
 	sanitize-mach-o \
 	clean
 
 .PHONY:
-	build-x86_64-elf-console \
+	build-amd64-elf-console \
 	build-macos-machO-console \
-	build-x86_64-elf-audioBeep \
-	build-x86_64-macos-machO-audioBeep \
-	build-x86_64-elf-manageArguments \
-	build-x86_64-macos-machO-manageArguments \
-	build-x86_64-linux-elf-testManageArguments \
+	build-amd64-elf-audioBeep \
+	build-amd64-macos-machO-audioBeep \
+	build-amd64-elf-manageArguments \
+	build-amd64-macos-machO-manageArguments \
+	build-amd64-linux-elf-testManageArguments \
 	build-image-a \
 	build-docker-image \
 	build-windows-res \
-	build-x86_64-pe \
-	debug-x86_64-pe \
-	sanitize-x86_64-pe \
-	build-x86_64-linux-elf \
-	debug-x86_64-linux-elf \
-	sanitize-x86_64-linux-elf \
-	build-x86_64-elf-save-temps \
-	debug-x86_64-elf-save-temps \
-	sanitize-x86_64-elf-save-temps \
+	build-amd64-pe \
+	debug-amd64-pe \
+	sanitize-amd64-pe \
+	build-amd64-linux-elf \
+	debug-amd64-linux-elf \
+	sanitize-amd64-linux-elf \
+	build-amd64-elf-save-temps \
+	debug-amd64-elf-save-temps \
+	sanitize-amd64-elf-save-temps \
 	build-macOS-mach-o \
 	debug-macos-machO \
 	sanitize-mach-o \

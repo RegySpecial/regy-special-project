@@ -4,10 +4,10 @@ cManageArguments =  src/main/c/manageArguments.c
 
 testManageArguments = test/testManageArguments.cpp
 
-x86_64-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
+amd64-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
 
-build-x86_64-testManageArguments: $(manageArguments) $(cConsoleLibrary) $(testManageArguments)
-	g++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(x86_64-testManageArguments)
+build-amd64-testManageArguments: $(manageArguments) $(cConsoleLibrary) $(testManageArguments)
+	g++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
 386-a-goImageLibrary = bin/lib/static/a/go/elf/linux/386/CImage.a
 
@@ -94,71 +94,71 @@ gameModeButtons =   src/main/c++/gameModeButtons.cpp
 form =              src/main/c++/form.cpp
 formTextBox =       src/main/c++/formTextBox.cpp
 
-build-x86_64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
-	g++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(x86_64-testManageArguments)
+build-amd64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
+	g++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
 main = src/main/c++/main.cpp
 
-x86_64-regyspecial =  bin/exec/elf/linux/x86_64/RegySpecial
+amd64-regyspecial =  bin/exec/elf/linux/amd64/RegySpecial
 arm-regyspecial =  bin/exec/elf/linux/arm/RegySpecial
 riscv-regyspecial =  bin/exec/elf/linux/riscv/RegySpecial
 
-build-x86_64-linux-elf:$(x86_64-audioBeep) $(x86_64-console) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
+build-amd64-linux-elf:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
 	g++ -std=c++26 -Wall -O \
-	$(x86_64-console) \
+	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
 	$(goImageLibraryArchive) \
 	$(beepLibrary) \
-	-o $(x86_64-elf) \
+	-o $(amd64-elf) \
 	-lX11 -lodbc -lGL
 
-debug-x86_64-linux-elf:$(x86_64-audioBeep) $(x86_64-console) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
+debug-amd64-linux-elf:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
 	g++ -std=c++26 -Wall -g \
-	$(x86_64-console) \
+	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
 	$(goImageLibraryArchive) \
 	$(beepLibrary) \
-	-o $(x86_64-elf) \
+	-o $(amd64-elf) \
 	-lX11 -lodbc -lGL
 
-sanitize-x86_64-linux-elf:$(x86_64-audioBeep) $(x86_64-console) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
+sanitize-amd64-linux-elf:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
 	g++ -std=c++26 -Wall -g -fsanitize=address \
-	$(x86_64-console) \
+	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
 	$(goImageLibraryArchive) \
 	$(beepLibrary) \
-	-o $(x86_64-elf) \
+	-o $(amd64-elf) \
 	-lX11 -lodbc -lGL
 
-build-x86_64-save-temps: 
+build-amd64-save-temps: 
 	g++ -std=c++26 -Wall -O \
-	$(x86_64-console) \
+	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
 	$(goImageLibraryArchive) \
 	$(beepLibrary) \
-	-o $(x86_64-elf) \
+	-o $(amd64-elf) \
 	-lX11 -lodbc -lGL -save-temps
 
-debug-x86_64-save-temps:$(x86_64-audioBeep) $(x86_64-console) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
+debug-amd64-save-temps:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
 	g++ -std=c++26 -Wall -g \
-	$(x86_64-console) \
+	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
 	$(goImageLibraryArchive) \
 	$(beepLibrary) \
-	-o $(x86_64-elf) \
+	-o $(amd64-elf) \
 	-lX11 -lodbc -lGL -save-temps
 
-sanitize-x86_64-save-temps:$(x86_64-audioBeep) $(x86_64-console) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
+sanitize-amd64-save-temps:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
 	g++ -std=c++26 -Wall -g \
-	$(x86_64-console) \
+	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
 	$(goImageLibraryArchive) \
 	$(beepLibrary) \
-	-o $(x86_64-elf) \
+	-o $(amd64-elf) \
 	-lX11 -lodbc -lGL -save-temps

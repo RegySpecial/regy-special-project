@@ -23,30 +23,54 @@
 #if defined __cplusplus || defined c_plusplus
 extern "C"{
 #endif
-  typedef enum{
+  typedef enum
+  {
     flagSuboptionsIndex_user,
     flagSuboptionsIndex_background,
     flagSuboptionsIndex_help
-  }flagSuboptionsIndex;
+  } flagSuboptionsIndex;
   
-  typedef enum{
+  typedef enum
+  {
     userFlagSuboptions_name,
     userFlagSuboptions_identifier
-  }userFlagSuboptions;
+  } userFlagSuboptions;
 
-  typedef enum{
+  typedef enum
+  {
     helpFlagSuboptions_user,
     helpFlagSuboptions_background,
     helpFlagSuboptions_audio
-  }helpFlagSuboptions;
+  } helpFlagSuboptions;
 
-  typedef enum{
+  typedef enum
+  {
     backgroundFlagSuboptions_color,
     backgroundFlagSuboptions_pixelmap,
     backgroundFlagSuboptions_path
-  }backgroundFlagSuboptions;
+  } backgroundFlagSuboptions;
 
-  typedef struct{
+  typedef enum
+  {
+    exitStatus_success,
+    exitStatus_userNameTooBig,
+    exitStatus_userIdentifierSigned,
+    exitStatus_userIdentifierFloatingPoint,
+    exitStatus_userIdentifierNotANumber,
+    exitStatus_userNotFound,
+    exitStatus_invalidColorFunction,
+    exitStatus_invalidColorNumber,
+    exitStatus_pixelmapTooBig,
+    exitStatus_backgroundFileNotFound,
+    exitStatus_backgroundFileNotAllowed,
+    exitStatus_audioFileNotFound,
+    exitStatus_audioFileNotAllowed,
+    exitStatus_invalidHelp,
+    exitStatus_extraArgumentsNotAllowed
+  } exitStatus;
+
+  typedef struct
+  {
     char userName[41],
          userId[10],
          *backgroundPath;
@@ -54,7 +78,7 @@ extern "C"{
                   errorNumber;
     unsigned long backgroundColor:24,
                   *backgroundPixelmap
-  }gameContextStructure;
+  } gameContextStructure;
   
   gameContextStructure manageArguments(int argc,char*argv[]);
 #if defined __cplusplus || defined c_plusplus

@@ -4,7 +4,7 @@ import android.support.v7.app.*;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import java.sql.*;
+import android.database.sqlite.*;
 public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,9 @@ public class MainActivity extends Activity {
         PlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupWindow PlayDialog=new PopupWindow();
+                File databaseFile = new File("bin/db/database.db");
+                PopupWindow PlayDialog=new PopupWindow(this);
+                SQLiteDatabase database = SQLiteDatabase.openDatabase(databaseFile);
                 try {
                     Class.forName("com.sqlite.jdbc.Driver");
                     java.sql.Connection SQLiteConnection=DriverManager.getConnection("jdbc:sqlite://file://");
