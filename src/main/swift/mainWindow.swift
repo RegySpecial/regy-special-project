@@ -6,7 +6,7 @@
 */
 #if os(macOS)
 import Cocoa
-class mainWindow:NSWindow,commonWidgetInterface{
+public class mainWindow:commonWidgetInterface{
   public var id:NSWindow!
   public var argc:Int
   public var argv:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
@@ -19,16 +19,16 @@ class mainWindow:NSWindow,commonWidgetInterface{
     _ title:String
   )
   {
-    self.id=NSWindow(
+    self.id = NSWindow(
       contentRect:NSRect(x:0,y:0,width:1080,height:540),
       styleMask:[.titled,.closable,.resizable,.miniaturizable],
       backing:.buffered,
       defer:true,
       screen:NSScreen.main
     )
-    self.title=title
+    self.title = title
     self.id.setIsVisible(true)
-    self.id.title=self.title
+    self.id.title = self.title
     let ButtonGrid:[[mainScreenButton]]=[
       [mainScreenButton(self,"Play"),mainScreenButton(self,"Exit")],
       [mainScreenButton(self,"Options"),mainScreenButton(self,"More information")]
@@ -38,8 +38,8 @@ class mainWindow:NSWindow,commonWidgetInterface{
         $0.id
       }
     })
-    GridLayout.frame=self.frame
-    self.backgroundColor=NSColor(red:0,green:0,blue:0,alpha:1)
+    GridLayout.frame=self.id.frame
+    self.id.backgroundColor=NSColor(red:0,green:0,blue:0,alpha:1)
     self.id.contentView?.replaceSubview(self.form,with:GridLayout)
     self.update()
     if CommandLine.argc==1{
@@ -75,7 +75,8 @@ class mainWindow:NSWindow,commonWidgetInterface{
     appShare.terminate(appShare)
   }
   @objc func playDialog(){
-    let PlayDialog:NSWindow=NSWindow(
+    let PlayDialog:NSWindow=NSWindow
+    (
       contentRect:NSRect(x:20,y:20,width:self.frame.width-40,height:self.frame.height-40),
       styleMask:[.titled,.closable,.resizable,.miniaturizable],
       backing:.buffered,
@@ -147,9 +148,9 @@ class mainWindow:NSWindow,commonWidgetInterface{
       }
     })
     GridLayout.frame=self.frame
-    self.backgroundColor=NSColor(red:0,green:0,blue:0,alpha:1)
-    self.contentView?.replaceSubview(self.form,with:GridLayout)
-    self.update()
+    self.id.backgroundColor=NSColor(red:0,green:0,blue:0,alpha:1)
+    self.id.contentView?.replaceSubview(self.form,with:GridLayout)
+    self.id.update()
   }
 }
 #endif

@@ -1,4 +1,4 @@
-class mainScreenButton:commonWidgetInterface {
+public class mainScreenButton:commonWidgetInterface {
   public var id:NSButton!
   public var root:mainWindow
   @objc public func onButtonDown(){

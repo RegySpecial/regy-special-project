@@ -5,7 +5,7 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #if os(macOS)
-class ApplicationDelegate:NSObject,NSApplicationDelegate{
+public class ApplicationDelegate:NSObject,NSApplicationDelegate{
   let window:Window=Window(
     contentRect:NSRect(x:0,y:0,width:1080,height:540),
     styleMask:[.titled,.closable,.resizable,.miniaturizable],
