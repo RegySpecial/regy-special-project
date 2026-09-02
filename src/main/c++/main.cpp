@@ -518,8 +518,8 @@ int main(int argc,char*argv[],char*envp[]){
     unsigned char pointer=0;
     unsigned char size=0;
   }keyHandler;
-  
-  gameContextStructure gameCtxtStruct = manageArguments(argc,argv);
+
+  gameContextStructure gameCtxtStruct = manageCommandLineArguments(argc, argv);
 
   if(argc==1){
     assert(system(strcat(*argv," --help"))==0);

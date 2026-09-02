@@ -14,6 +14,8 @@
 #include <assert.h>
 #include <errno.h>
 #include <regex.h>
+#include <ctype.h>
+#include "../../lib/c/audio/beep.h"
 #include "../../lib/c/console.h"
 #include "generalPurposeMaskBits.h"
 #include "../../lib/c/colors.h"
@@ -25,37 +27,56 @@ extern "C"{
 #endif
   typedef enum
   {
-    flagSuboptionsIndex_user,
-    flagSuboptionsIndex_background,
-    flagSuboptionsIndex_help
-  } flagSuboptionsIndex;
+    argumentOptionFlag_help,
+    argumentOptionFlag_user,
+    argumentOptionFlag_background,
+    argumentOptionFlag_audio,
+    argumentOptionFlag_debug,
+    argumentOptionFlag_0
+  } argumentOptionFlag;
+
+  typedef enum
+  {
+    argumentOptionFlagSuboptionsIndex_user,
+    argumentOptionFlagSuboptionsIndex_background,
+    argumentOptionFlagSuboptionsIndex_help
+  } argumentOptionFlagSuboptionsIndex;
   
   typedef enum
   {
-    userFlagSuboptions_name,
-    userFlagSuboptions_identifier
-  } userFlagSuboptions;
+    argumentOptionUserFlagSuboptions_name,
+    argumentOptionUserFlagSuboptions_identifier
+  } argumentOptionUserFlagSuboptions;
 
   typedef enum
   {
-    helpFlagSuboptions_user,
-    helpFlagSuboptions_background,
-    helpFlagSuboptions_audio
-  } helpFlagSuboptions;
+    argumentOptionHelpFlagSuboptions_user,
+    argumentOptionHelpFlagSuboptions_background,
+    argumentOptionHelpFlagSuboptions_audio
+  } argumentOptionHelpFlagSuboptions;
 
   typedef enum
   {
-    backgroundFlagSuboptions_color,
-    backgroundFlagSuboptions_pixelmap,
-    backgroundFlagSuboptions_path
-  } backgroundFlagSuboptions;
+    argumentOptionBackgroundFlagSuboptions_color,
+    argumentOptionBackgroundFlagSuboptions_pixelmap,
+    argumentOptionBackgroundFlagSuboptions_path
+  } argumentOptionBackgroundFlagSuboptions;
+
+  typedef enum
+  {
+    argumentOptionAudioFlagSuboptions_path,
+    argumentOptionAudioFlagSuboptions_beepmap,
+    argumentOptionAudioFlagSuboptions_volume
+  } argumentOptionAudioFlagSuboptions;
 
   typedef enum
   {
     exitStatus_success,
     exitStatus_userNameTooBig,
+    exitStatus_userNameInvalidCode,
     exitStatus_userIdentifierSigned,
-    exitStatus_userIdentifierFloatingPoint,
+    exitStatus_userIdentifierUnsignedFloatingPoint,
+    exitStatus_userIdentifierSignedFloatingPoint,
     exitStatus_userIdentifierNotANumber,
     exitStatus_userNotFound,
     exitStatus_invalidColorFunction,
@@ -66,7 +87,10 @@ extern "C"{
     exitStatus_audioFileNotFound,
     exitStatus_audioFileNotAllowed,
     exitStatus_invalidHelp,
-    exitStatus_extraArgumentsNotAllowed
+    exitStatus_extraArgumentsNotAllowed,
+    exitStatus_regularExpressionCompilationFailure,
+    exitStatus_forkFailure,
+    exitStatus_execFailure
   } exitStatus;
 
   typedef struct
@@ -75,12 +99,14 @@ extern "C"{
          userId[10],
          *backgroundPath;
     unsigned char generalPurposeMask,
-                  errorNumber;
+                  exitStatus;
     unsigned long backgroundColor:24,
-                  *backgroundPixelmap
+                  *backgroundPixelmap;
   } gameContextStructure;
-  
-  gameContextStructure manageArguments(int argc,char*argv[]);
+  gameContextStructure manageHelpFlag(int argc, char *argv[]);
+  gameContextStructure manageUserFlag(int argc, char *argv[]);
+  gameContextStructure manageUserFlag(int argc, char *argv[]);
+  gameContextStructure manageCommandLineArguments(int argc, char *argv[]);
 #if defined __cplusplus || defined c_plusplus
 }
 #endif

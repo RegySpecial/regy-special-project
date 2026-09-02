@@ -45,9 +45,8 @@ if CommandLine.argc==1{
   let helpProcess:Process=try Process.run(programLocation,arguments:["help"])
 }else{
 
-  var gameCtxtStruct:UnsafeMutablePointer<gameContextStructure>
   //manageArguments C function from src/main/c/manageArguments.c
-  let argumentsManagementStatus:Int=manageArguments(CommandLine.argc,CommandLine.unsafeArgv,gameCtxtStruct)
+  var gameCtxtStruct:gameContextStructure = manageCommandLineArguments(CommandLine.argc,CommandLine.unsafeArgv)
   let appShare=NSApplication.shared
   let appDelegate=ApplicationDelegate()
   appShare.delegate=appDelegate
