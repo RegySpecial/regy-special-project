@@ -6,7 +6,7 @@ rgba  rgbToRgba(rgb rgbStruct)
     rgbStruct.red,
     rgbStruct.green,
     rgbStruct.blue,
-    -1
+    255
   };
   return rgbaStruct;
 }
@@ -16,7 +16,7 @@ cmyk  rgbToCmyk(rgb rgbStruct)
   unsigned char max = 0; 
   for (unsigned char i = 0; i < 2; i++)
   {
-    unsigned char color[3]=(unsigned char*) &rgbStruct;
+    unsigned char *color=(unsigned char*) &rgbStruct;
     if (color[i] > color[0])
       max = color[i];
   }
@@ -33,7 +33,7 @@ cmyka rgbToCmyka(rgb rgbStruct){
     cmykStruct.magenta,
     cmykStruct.yellow,
     cmykStruct.black,
-    -1
+    255
   };
   return cmykaStruct;
 }
@@ -66,7 +66,7 @@ hsla  rgbToHsla(rgb rgbStruct)
     hslStruct.hue,
     hslStruct.saturation,
     hslStruct.lightness,
-    -1
+    255
   };
   return hslaStruct;
 }
@@ -85,7 +85,7 @@ cmyk  rgbaToCmyk(rgba rgbaStruct)
   unsigned char max = 0; 
   for (unsigned char i = 0; i < 2; i++)
   {
-    unsigned char color[3]=(unsigned char*) &rgbaStruct;
+    unsigned char *color = (unsigned char*) &rgbaStruct;
     if (color[i] > color[0])
       max = color[i];
   }
@@ -101,7 +101,7 @@ cmyka rgbaToCmyka(rgba rgbaStruct)
   unsigned char max = 0; 
   for (unsigned char i = 0; i < 2; i++)
   {
-    unsigned char color[3]=(unsigned char*) &rgbaStruct;
+    unsigned char *color=(unsigned char*) &rgbaStruct;
     if (color[i] > color[0])
       max = color[i];
   }
@@ -174,7 +174,7 @@ cmyka cmykToCmyka(cmyk cmykStruct)
     cmykStruct.cyan,
     cmykStruct.magenta,
     cmykStruct.yellow,
-    -1
+    255
   };
   return cmykaStruct;
 }

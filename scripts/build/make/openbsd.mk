@@ -6,8 +6,8 @@ testManageArguments = test/testManageArguments.cpp
 
 amd64-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
 
-build-amd64-testManageArguments: $(manageArguments) $(cConsoleLibrary) $(testManageArguments)
-	c++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+build-amd64-testManageArguments: $(cManageArguments) $(cConsoleLibrary) $(testManageArguments)
+	c++ -std=c++26 -Wall -O $(cManageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
 goImageLibrary = src/lib/go/CImage.go
 
@@ -55,7 +55,7 @@ form =              src/main/c++/form.cpp
 formTextBox =       src/main/c++/formTextBox.cpp
 
 build-amd64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
-	c++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+	c++ -std=c++26 -Wall -O $(cManageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
 main = src/main/c++/main.cpp
 

@@ -1,13 +1,14 @@
 cConsoleLibrary =   src/lib/c/console.c
 cAudioBeepLibrary = src/lib/c/audio/beep.c
+cColorsLibrary =    src/lib/c/colors.c
 cManageArguments =  src/main/c/manageArguments.c
 
 testManageArguments = test/testManageArguments.cpp
 
 amd64-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
 
-build-amd64-testManageArguments: $(manageArguments) $(cConsoleLibrary) $(testManageArguments)
-	g++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+build-amd64-testManageArguments: $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments)
+	g++ -std=c++26 -Wall -O $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
 386-a-goImageLibrary = bin/lib/static/a/go/elf/linux/386/CImage.a
 
@@ -95,7 +96,7 @@ form =              src/main/c++/form.cpp
 formTextBox =       src/main/c++/formTextBox.cpp
 
 build-amd64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
-	g++ -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+	g++ -std=c++26 -Wall -O $(cManageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
 main = src/main/c++/main.cpp
 

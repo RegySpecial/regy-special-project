@@ -10,8 +10,8 @@ testManageArguments = test/testManageArguments.cpp
 
 amd64-testManageArguments =    C:/Users/*/Desktop/testManageArguments.exe
 
-build-amd64-testManageArguments: $(manageArguments) $(cConsoleLibrary) $(testManageArguments)
-	$(MinGWcpp) -std=c++26 -Wall -O $(manageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+build-amd64-testManageArguments: $(cManageArguments) $(cConsoleLibrary) $(testManageArguments)
+	$(MinGWcpp) -std=c++26 -Wall -O $(cManageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
 mainWindow =        src/main/c++/mainWindow.cpp
 mainScreenButtons = src/main/c++/mainScreenButtons.cpp
