@@ -13,19 +13,23 @@ dialog::dialog(mainWindow*root,unsigned char type){
   this->y=20;
   this->width=this->root->width-40;
   this->height=this->root->height-40;
+
   XSizeHints dimensionConfiguration={
     .x=this->x,
     .y=this->y,
     .max_width=this->width,
     .max_height=this->height
   };
-  const char*titles[]={
-    "layoutMode",
-    "Play",
-    "Exit",
-    "Options",
-    "More information"
-  };
+
+  const char
+    *titles[]={
+      "layoutMode",
+      "Play",
+      "Exit",
+      "Options",
+      "More information"
+    };
+  
   unsigned long dialogColors[]={
     255,
     255<<8,
@@ -101,7 +105,9 @@ void dialog::onExpose(XExposeEvent*event,void*extraArgs){
         "2.I rompicapi richiedono competenze specifiche (livello scuola superiore/università)",
         "3.Nessuna azione disponibili all'interno della mappa"
       }
-    };
+    },
+    *moreInformationTextes[3]={cpu,os,byteOrder},
+    *optionsTextes[3]={"Volume:","Musica:","Suoni:"};
   switch(this->type){
     case dialogType_layoutMode:
       XDrawString(
@@ -138,7 +144,6 @@ void dialog::onExpose(XExposeEvent*event,void*extraArgs){
       );
       break;
     case dialogType_options:
-      const char*optionsTextes[3]={"Volume:","Musica:","Suoni:"};
       for(unsigned char optionIndex=0;optionIndex<3;optionIndex++)
         XDrawString(
           this->root->display,
@@ -160,8 +165,7 @@ void dialog::onExpose(XExposeEvent*event,void*extraArgs){
         "Hardware Information:",
         sizeof "Hardware Information:"-1
       );
-      const char*moreInformationTextes[3]={cpu,os,byteOrder};
-      for(unsigned int moreInformationIndex=0;moreInformationIndex<3;moreInformationIndex++)
+      for(unsigned char moreInformationIndex=0;moreInformationIndex<3;moreInformationIndex++)
         XDrawString(
           this->root->display,
           this->id,

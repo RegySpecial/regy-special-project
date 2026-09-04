@@ -34,6 +34,22 @@ build-arm64-ios-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
 build-arm64-macos-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
 	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(amd64-macos-machO-cAudioBeepLibrary)
 
+cColorsLibrary =    src/lib/c/colors.c
+
+amd64-ios-machO-cColorsLibrary =    bin/lib/static/c/o/mach-o/ios/amd64/colors.o
+amd64-macos-machO-cColorsLibrary =  bin/lib/static/c/o/mach-o/macos/amd64/colors.o
+arm64-ios-machO-cColorsLibrary =   bin/lib/static/c/o/mach-o/ios/arm64/colors.o
+arm64-macos-machO-cColorsLibrary = bin/lib/static/c/o/mach-o/macos/arm64/colors.o
+
+build-amd64-ios-machO-cManageArguments: $(cColorsLibrary)
+	gcc -std=c23 -Wall -O -c $(cColorsLibrary) -o $(amd64-ios-machO-cColorsLibrary)
+build-amd64-macos-machO-cManageArguments: $(cColorsLibrary)
+	gcc -std=c23 -Wall -O -c $(cColorsLibrary) -o $(amd64-macos-machO-cColorsLibrary)
+build-arm64-ios-machO-cManageArguments: $(cColorsLibrary)
+	gcc -std=c23 -Wall -O -c $(cColorsLibrary) -o $(amd64-ios-machO-cColorsLibrary)
+build-arm64-macos-machO-cAudioBeepLibrary: $(cManageArguments)
+	gcc -std=c23 -Wall -O -c $(cColorsLibrary) -o $(amd64-macos-machO-cColorsLibrary)
+
 cManageArguments =   src/main/c/manageArguments.c
 
 amd64-ios-machO-cManageArguments =    bin/lib/static/c/o/mach-o/ios/amd64/manageArguments.o
@@ -55,8 +71,8 @@ testManageArguments = test/testManageArguments.cpp
 amd64-ios-machO-testManageArguments =   /home/regyspecial/Scrivania/testManageArguments
 amd64-macos-machO-testManageArguments = /Users/*/Desktop/testManageArguments
 
-build-amd64-macos-machO-testManageArguments: $(testManageArguments) $(amd64-macos-machO-manageArguments)
-	g++ -std=c++26 -Wall -O $(testManageArguments) $(amd64-macos-machO-manageArguments) -o $(amd64-macos-machO-testManageArguments)
+build-amd64-macos-machO-testManageArguments: $(testManageArguments) $(amd64-macos-machO-cManageArguments) $(amd64-macos-machO-cColorsLibrary) $(amd64-macos-machO-cAudioBeepLibrary)
+	g++ -std=c++26 -Wall -O $(testManageArguments) $(amd64-macos-machO-cManageArguments) $(amd64-macos-machO-cColorsLibrary) $(amd64-macos-machO-cAudioBeepLibrary) -o $(amd64-macos-machO-testManageArguments)
 
 goImageLibrary = src/lib/go/CImage.go
 

@@ -394,7 +394,7 @@ public:
     return xsomeCondition;
   }
   bool xsome(bool(*xsomeFunction)(itemsDataType,sizeDataType),sizeDataType left,sizeDataType right){
-    bool someCondition=0;
+    bool xsomeCondition=0;
     for (;0 <= left && left < right && right <= this->size;left++)
       xsomeCondition ^= xsomeFunction(this->items[left],left);
     return xsomeCondition;
@@ -407,13 +407,13 @@ public:
     return xsomeCondition;
   }
   bool xsome(bool(*xsomeFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*),sizeDataType size){
-    bool someCondition=0;
+    bool xsomeCondition=0;
     for (sizeDataType index = 0;index < size && size <= this->size;index++)
       xsomeCondition ^= xsomeFunction(this->items[index],index,this);
     return xsomeCondition;
   }
   bool xsome(bool(*xsomeFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*),sizeDataType left,sizeDataType right){
-    bool someCondition=0;
+    bool xsomeCondition=0;
     for (;0 <= left && left < right && right <= this->size;left++)
       xsomeCondition ^= xsomeFunction(this->items[left],left,this);
     return xsomeCondition;
