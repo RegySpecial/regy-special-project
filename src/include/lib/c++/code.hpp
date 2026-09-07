@@ -49,4 +49,12 @@ numberDataType grayCode(numberDataType number){
   Gn1 ^= number & 1;
   return (resultingCode |= Gn1);
 }
+
+template<typename numberDataType=unsigned long long>
+numberDataType hammingDistance(numberDataType firstNumber, numberDataType secondNumber){
+  numberDataType result = 0;
+  for (unsigned long bit = 0; bit < sizeof firstNumber; bit++)
+    result += (firstNumber >> bit & 1) ^ (secondNumber >> bit & 1);
+  return result;
+}
 #endif

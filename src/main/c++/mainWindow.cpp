@@ -5,13 +5,33 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include "../../include/main/c++/mainWindow.hpp"
+#if defined __WIN32 || defined __WIN64
+mainWindow::mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int cmdshow)
+{
+  WNDCLASSA windowClass = {
+    .style=CS_HREDRAW|CS_VREDRAW|CS_OWNDC,
+    .lpfnWndProc = WindowProc,
+    .hInstance=hInst,
+    .hIcon=(HICON)LoadImageA(
+      windowClass.hInstance,
+      "F:/Regy Special/Regy Special Project/blob/images/RegySpecial.ico",
+      IMAGE_ICON,
+      0,
+      0,
+      LR_LOADFROMFILE
+    ),
+    .hCursor=LoadCursor(windowClass.hInstance,IDC_ARROW),
+    .hbrBackground=CreateSolidBrush(0),
+    .lpszMenuName="RegySpecial",
+    .lpszClassName="RegySpecial"
+  };
+  assert(RegisterClassA(&windowClass));
+}
+#else
 mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
   this->argc=argc;
   this->argv=argv;
   this->envp=envp;
-  #if defined __WIN32 || defined __WIN64
-  #elifdef WaylandEnabled
-  #else
   this->display=XOpenDisplay(NULL);
   Screen*screen=XScreenOfDisplay(this->display,this->visualInfo.screen);
   XSetWindowAttributes mainWindowAttributes={
@@ -51,8 +71,8 @@ mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
     &mainWindowBounds
   );
   XMapRaised(this->display,this->id);
-  #endif
 }
+#endif
 mainWindow::~mainWindow(){
   XFreeGC(this->display,this->graphicId);
   XDestroySubwindows(this->display,this->id);
