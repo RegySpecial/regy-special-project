@@ -36,3 +36,22 @@ gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color)
 gameModeButton::~gameModeButton(){
   XFreeGC(this->root->root->display,this->graphicId);
 }
+
+int gameModeButton::show(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_NORMAL);
+#else
+  usleep(microseconds);
+  return XMapRaised(this->root->root->display,this->id);
+#endif
+}
+int gameModeButton::hide(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_HIDE);
+#else
+  usleep(microseconds);
+  return XUnmapWindow(this->root->root->display,this->id);
+#endif
+}

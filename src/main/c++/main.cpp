@@ -73,7 +73,6 @@ typedef enum OptionsDialogElementId{
   OptionsDialog_ConfirmButton,
   OptionsDialog_DoNotConfirmButton
 }OptionsDialogElementId;
-
 void PrintSQLDiagnosticError(void* SQLHandle,SQLSMALLINT type,const char* text){
   SQLCHAR state[6],message[256];
   SQLINTEGER nativeError;

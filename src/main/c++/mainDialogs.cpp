@@ -73,126 +73,148 @@ dialog::dialog(mainWindow*root,unsigned char type){
   this->graphicId=XCreateGC(this->root->display,this->id,(this->graphicMask=GCForeground),&gcValues);
   XMapRaised(this->root->display,this->id);
   XMapSubwindows(this->root->display,this->id);
+
+  this->onClientMessage = [](XClientMessageEvent*event,void*extraArgs){
+    dialog *self = (dialog*) extraArgs;
+    if((Atom)event->data.l == XInternAtom(self->root->display, "WM_DELETE_WINDOW", 0))
+      XUnmapWindow(self->root->display,self->id);
+  };
+
+  this->onExpose = [](XExposeEvent*event,void*extraArgs){
+    dialog *self = (dialog*) extraArgs;
+    const char
+      *modeInformation[4][3]={
+        {
+          "1.I pulsanti di suggerimento e per saltare i rompicapi si ricaricano più velocemente (30 secondi)",
+          "2.I rompicapi non richiedono competenze particolari",
+          "3.Le azioni disponibili sono presenti all'interno della mappa"
+        },
+        {
+          "1.I pulsanti di suggerimento e per saltare i rompicapi si ricaricano più lentamente (2 minuti)",
+          "2.I rompicapi richiedono competenze leggermente più avanzate",
+          "3.Le azioni disponibili sono presenti all'interno della mappa"
+        },
+        {
+          "1.I pulsanti di suggerimento e per saltare i rompicapi si ricaricano ancora più lentamente (5 minuti)",
+          "2.I rompicapi richiedono competenze più avanzate (livello scuola superiore)",
+          "3.Nessuna azione disponibili all'interno della mappa"
+        },
+        {
+          "1.Nessun suggerimento o possibilità di saltare un rompicapo",
+          "2.I rompicapi richiedono competenze specifiche (livello scuola superiore/università)",
+          "3.Nessuna azione disponibili all'interno della mappa"
+        }
+      },
+      *moreInformationTextes[3]={cpu,os,byteOrder},
+      *optionsTextes[3]={"Volume:","Musica:","Suoni:"};
+    switch(self->type){
+      case dialogType_layoutMode:
+        XDrawString(
+          self->root->display,
+          self->id,
+          self->graphicId,
+          20,
+          20,
+          "Dialogo aperto, scegliere la modalità",
+          sizeof "Dialogo aperto, scegliere la modalità"-1
+        );
+        break;
+      case dialogType_play:
+        for(unsigned char gameModeInformationPoint=0;gameModeInformationPoint<3;gameModeInformationPoint++)
+          XDrawString(
+            self->root->display,
+            self->id,
+            self->graphicId,
+            20,
+            self->root->height/10+40+20*gameModeInformationPoint,
+            modeInformation[0][gameModeInformationPoint],
+            strlen(modeInformation[0][gameModeInformationPoint])
+          );
+        break;
+      case dialogType_exit:
+        XDrawString(
+          self->root->display,
+          self->id,
+          self->graphicId,
+          20,
+          20,
+          "Sei sicuro di voler uscire?",
+          sizeof "Sei sicuro di voler uscire?"-1
+        );
+        break;
+      case dialogType_options:
+        for(unsigned char optionIndex=0;optionIndex<3;optionIndex++)
+          XDrawString(
+            self->root->display,
+            self->id,
+            self->graphicId,
+            20,
+            20+20*(optionIndex+1),
+            optionsTextes[optionIndex],
+            strlen(optionsTextes[optionIndex])
+          );
+        break;
+      case dialogType_moreInformation:
+        XDrawString(
+          self->root->display,
+          self->id,
+          self->graphicId,
+          20,
+          20,
+          "Hardware Information:",
+          sizeof "Hardware Information:"-1
+        );
+        for(unsigned char moreInformationIndex=0;moreInformationIndex<3;moreInformationIndex++)
+          XDrawString(
+            self->root->display,
+            self->id,
+            self->graphicId,
+            40,
+            20+20*(moreInformationIndex+1),
+            moreInformationTextes[moreInformationIndex],
+            strlen(moreInformationTextes[moreInformationIndex])
+          );
+        XDrawString(
+          self->root->display,
+          self->id,
+          self->graphicId,
+          20,
+          20+20*(3+1),
+          "Software Information:",
+          sizeof "Software Information:"-1
+        );
+        XDrawString(
+          self->root->display,
+          self->id,
+          self->graphicId,
+          40,
+          20+20*(4+1),
+          compiler,
+          sizeof compiler-1
+        );
+        break;
+    }
+  };
 }
 dialog::~dialog(){
   XFreeGC(this->root->display,this->graphicId);
   XDestroySubwindows(this->root->display,this->id);
 }
-void dialog::onClientMessage(XClientMessageEvent*event,void*extraArgs){
-  if((Atom)event->data.l == XInternAtom(this->root->display, "WM_DELETE_WINDOW", 0))
-    XUnmapWindow(this->root->display,this->id);
+int dialog::show(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_NORMAL);
+#else
+  usleep(microseconds);
+  return XMapRaised(this->root->display,this->id);
+#endif
 }
-void dialog::onExpose(XExposeEvent*event,void*extraArgs){
-  const char
-    *modeInformation[4][3]={
-      {
-        "1.I pulsanti di suggerimento e per saltare i rompicapi si ricaricano più velocemente (30 secondi)",
-        "2.I rompicapi non richiedono competenze particolari",
-        "3.Le azioni disponibili sono presenti all'interno della mappa"
-      },
-      {
-        "1.I pulsanti di suggerimento e per saltare i rompicapi si ricaricano più lentamente (2 minuti)",
-        "2.I rompicapi richiedono competenze leggermente più avanzate",
-        "3.Le azioni disponibili sono presenti all'interno della mappa"
-      },
-      {
-        "1.I pulsanti di suggerimento e per saltare i rompicapi si ricaricano ancora più lentamente (5 minuti)",
-        "2.I rompicapi richiedono competenze più avanzate (livello scuola superiore)",
-        "3.Nessuna azione disponibili all'interno della mappa"
-      },
-      {
-        "1.Nessun suggerimento o possibilità di saltare un rompicapo",
-        "2.I rompicapi richiedono competenze specifiche (livello scuola superiore/università)",
-        "3.Nessuna azione disponibili all'interno della mappa"
-      }
-    },
-    *moreInformationTextes[3]={cpu,os,byteOrder},
-    *optionsTextes[3]={"Volume:","Musica:","Suoni:"};
-  switch(this->type){
-    case dialogType_layoutMode:
-      XDrawString(
-        this->root->display,
-        this->id,
-        this->graphicId,
-        20,
-        20,
-        "Dialogo aperto, scegliere la modalità",
-        sizeof "Dialogo aperto, scegliere la modalità"-1
-      );
-      break;
-    case dialogType_play:
-      for(unsigned char gameModeInformationPoint=0;gameModeInformationPoint<3;gameModeInformationPoint++)
-        XDrawString(
-          this->root->display,
-          this->id,
-          this->graphicId,
-          20,
-          this->root->height/10+40+20*gameModeInformationPoint,
-          modeInformation[0][gameModeInformationPoint],
-          strlen(modeInformation[0][gameModeInformationPoint])
-        );
-      break;
-    case dialogType_exit:
-      XDrawString(
-        this->root->display,
-        this->id,
-        this->graphicId,
-        20,
-        20,
-        "Sei sicuro di voler uscire?",
-        sizeof "Sei sicuro di voler uscire?"-1
-      );
-      break;
-    case dialogType_options:
-      for(unsigned char optionIndex=0;optionIndex<3;optionIndex++)
-        XDrawString(
-          this->root->display,
-          this->id,
-          this->graphicId,
-          20,
-          20+20*(optionIndex+1),
-          optionsTextes[optionIndex],
-          strlen(optionsTextes[optionIndex])
-        );
-      break;
-    case dialogType_moreInformation:
-      XDrawString(
-        this->root->display,
-        this->id,
-        this->graphicId,
-        20,
-        20,
-        "Hardware Information:",
-        sizeof "Hardware Information:"-1
-      );
-      for(unsigned char moreInformationIndex=0;moreInformationIndex<3;moreInformationIndex++)
-        XDrawString(
-          this->root->display,
-          this->id,
-          this->graphicId,
-          40,
-          20+20*(moreInformationIndex+1),
-          moreInformationTextes[moreInformationIndex],
-          strlen(moreInformationTextes[moreInformationIndex])
-        );
-      XDrawString(
-        this->root->display,
-        this->id,
-        this->graphicId,
-        20,
-        20+20*(3+1),
-        "Software Information:",
-        sizeof "Software Information:"-1
-      );
-      XDrawString(
-        this->root->display,
-        this->id,
-        this->graphicId,
-        40,
-        20+20*(4+1),
-        compiler,
-        sizeof compiler-1
-      );
-      break;
-  }
+int dialog::hide(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_HIDE);
+#else
+  usleep(microseconds);
+  return XUnmapWindow(this->root->display,this->id);
+#endif
 }

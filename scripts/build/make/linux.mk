@@ -98,7 +98,7 @@ form =              src/main/c++/form.cpp
 formTextBox =       src/main/c++/formTextBox.cpp
 
 
-build-amd64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox) $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(cAudioBeepLibrary)
+build-amd64-testVideoGame: $(testVideoGame) $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox) $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(cAudioBeepLibrary)
 	g++ \
 	-std=c++26 \
 	-Wall \

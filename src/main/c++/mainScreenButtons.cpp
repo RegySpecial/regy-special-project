@@ -30,66 +30,84 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
     .font=XLoadFont(this->root->display,(this->text.font.family="-urw-century schoolbook l-regular-r-normal--0-0-0-0-p-0-iso8859-15"))
   };
   this->graphicId=XCreateGC(this->root->display,this->id,(this->graphicMask=GCForeground|GCBackground|GCFont),&gcValues);
-}
-int mainScreenButton::show(unsigned int microseconds){
-  usleep(microseconds);
-  return XMapRaised(this->root->display,this->id);
-}
-int mainScreenButton::hide(unsigned int microseconds){
-  usleep(microseconds);
-  return XUnmapWindow(this->root->display,this->id);
-}
-void mainScreenButton::onButtonDown(XButtonPressedEvent*event,void*extraArgs){
-  beep(1000,100);
-  dialog*targetDialog=(dialog*)extraArgs;
-  targetDialog->show(0);
-}
-void mainScreenButton::onPointerIn(XEnterWindowEvent*event,void*extraArgs){
-  this->background.color=~this->background.color;
-  this->text.color=~this->text.color;
-  this->border.color=~this->border.color;
-  XSetWindowBackground(this->root->display,this->id,this->background.color);
-  XSetWindowBorder(this->root->display,this->id,this->border.color);
-  XClearWindow(this->root->display,this->id);
-  XSetForeground(
-    this->root->display,
-    this->graphicId,
-    this->text.color
-  );
-}
-void mainScreenButton::onPointerOut(XLeaveWindowEvent*event,void*extraArgs){
-  XEvent eventOutput;
-  XSendEvent(
-    this->root->display,
-    this->id,
-    0,
-    EnterWindowMask,
-    &eventOutput
-  );
-}
-void mainWindow::onClientMessage(XClientMessageEvent*event,void*extraArgs){
-  mainScreenButton*exitButton=(mainScreenButton*)extraArgs;
-  XEvent eventOutput;
-  if((Atom)event->data.l == XInternAtom(this->display, "WM_DELETE_WINDOW", 0))
+
+  this->onButtonDown = [](XButtonPressedEvent*event,void*extraArgs){
+    beep(1000,100);
+    dialog*targetDialog=(dialog*)extraArgs;
+    targetDialog->show(0);
+  };
+
+  this->onPointerIn = [](XEnterWindowEvent*event,void*extraArgs){
+    mainScreenButton *self = (mainScreenButton*) extraArgs;
+    self->background.color=~self->background.color;
+    self->text.color=~self->text.color;
+    self->border.color=~self->border.color;
+    XSetWindowBackground(self->root->display,self->id,self->background.color);
+    XSetWindowBorder(self->root->display,self->id,self->border.color);
+    XClearWindow(self->root->display,self->id);
+    XSetForeground(
+      self->root->display,
+      self->graphicId,
+      self->text.color
+    );
+  };
+
+  this->onPointerOut = [](XLeaveWindowEvent*event,void*extraArgs){
+    mainScreenButton *self = (mainScreenButton*)extraArgs;
+    XEvent eventOutput;
     XSendEvent(
-      this->display,
-      exitButton->id,
+      self->root->display,
+      self->id,
       0,
-      ButtonPressMask,
+      EnterWindowMask,
       &eventOutput
     );
-}
-void mainScreenButton::onExpose(XExposeEvent*event,void*extraArgs){
-  XDrawString(
-    this->root->display,
-    this->id,
-    this->graphicId,
-    (this->text.x=20),
-    (this->text.y=20),
-    this->text.value,
-    strlen(this->text.value)
-  );
+  };
+
+  root->onClientMessage = [](XClientMessageEvent*event,void*extraArgs){
+    mainScreenButton*exitButton = (mainScreenButton*)extraArgs;
+    XEvent eventOutput;
+    if((Atom)event->data.l == XInternAtom(exitButton->root->display, "WM_DELETE_WINDOW", 0))
+      XSendEvent(
+        exitButton->root->display,
+        exitButton->id,
+        0,
+        ButtonPressMask,
+        &eventOutput
+      );
+  };
+
+  this->onExpose = [](XExposeEvent*event,void*extraArgs){
+    mainScreenButton *self = (mainScreenButton*) extraArgs;
+    XDrawString(
+      self->root->display,
+      self->id,
+      self->graphicId,
+      (self->text.x=20),
+      (self->text.y=20),
+      self->text.value,
+      strlen(self->text.value)
+    );
+  };
 }
 mainScreenButton::~mainScreenButton(){
   XFreeGC(this->root->display,this->graphicId);
+}
+int mainScreenButton::show(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_NORMAL);
+#else
+  usleep(microseconds);
+  return XMapRaised(this->root->display,this->id);
+#endif
+}
+int mainScreenButton::hide(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_HIDE);
+#else
+  usleep(microseconds);
+  return XUnmapWindow(this->root->display,this->id);
+#endif
 }

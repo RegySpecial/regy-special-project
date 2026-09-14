@@ -17,6 +17,7 @@
 #include "../../lib/c++/bitManipulation.hpp"
 #define window Window
 #endif
+
 class commonWidgetInterface{
   public:
     unsigned int x = 0,
@@ -56,20 +57,22 @@ class commonWidgetInterface{
          eventMask =         ExposureMask | ResizeRedirectMask | StructureNotifyMask,
          dontPropagateMask = 0,
          graphicMask =       0;
+
     virtual int show(unsigned int microseconds) = 0;
     virtual int hide(unsigned int microseconds) = 0;
-    virtual void onClientMessage(XClientMessageEvent*event,void*extraArgs) = 0;
-    virtual void onResize(XResizeRequestEvent*event,void*extraArgs) =        0;
-    virtual void onButtonUp(XButtonReleasedEvent*event,void*extraArgs) =     0;
-    virtual void onButtonDown(XButtonPressedEvent*event,void*extraArgs) =    0;
-    virtual void onKeyUp(XKeyReleasedEvent*event,void*extraArgs) =           0;
-    virtual void onKeyDown(XKeyPressedEvent*event,void*extraArgs) =          0;
-    virtual void onExpose(XExposeEvent*event,void*extraArgs) =               0;
-    virtual void onPointerIn(XEnterWindowEvent*event,void*extraArgs) =       0;
-    virtual void onPointerOut(XLeaveWindowEvent*event,void*extraArgs) =      0;
-    virtual void onPointerMove(XMotionEvent*event,void*extraArgs) =          0;
-    virtual void onFocusIn(XFocusInEvent*event,void*extraArgs) =             0;
-    virtual void onFocusOut(XFocusOutEvent*event,void*extraArgs) =           0;
-    virtual void onAny(XAnyEvent*event,void*extraArgs) =                     0;
+
+    void (*onClientMessage)(XClientMessageEvent*event,void*extraArgs);
+    void (*onResize)(XResizeRequestEvent*event,void*extraArgs);
+    void (*onButtonUp)(XButtonReleasedEvent*event,void*extraArgs);
+    void (*onButtonDown)(XButtonPressedEvent*event,void*extraArgs);
+    void (*onKeyUp)(XKeyReleasedEvent*event,void*extraArgs);
+    void (*onKeyDown)(XKeyPressedEvent*event,void*extraArgs);
+    void (*onExpose)(XExposeEvent*event,void*extraArgs);
+    void (*onPointerIn)(XEnterWindowEvent*event,void*extraArgs);
+    void (*onPointerOut)(XLeaveWindowEvent*event,void*extraArgs);
+    void (*onPointerMove)(XMotionEvent*event,void*extraArgs);
+    void (*onFocusIn)(XFocusInEvent*event,void*extraArgs);
+    void (*onFocusOut)(XFocusOutEvent*event,void*extraArgs);
+    void (*onAny)(XAnyEvent*event,void*extraArgs);
 };
 #endif

@@ -70,27 +70,41 @@ mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
     this->argc,
     &mainWindowBounds
   );
-  XMapRaised(this->display,this->id);
+  XMapRaised(this->display, this->id);
+  this->onResize = [](XResizeRequestEvent*event,void*extraArgs){
+    mainWindow *self = (mainWindow*) extraArgs;
+    for(unsigned long i=0;i<self->subWindows.size;i++)
+      XResizeWindow(self->display,self->subWindows[i],event->width,event->height);
+  };
 }
 #endif
 mainWindow::~mainWindow(){
+#if defined __WIN32 || defined __WIN64
+  assert(DestroyWindow(this->id));
+#elifdef WaylandEnabled
+
+#else
   XFreeGC(this->display,this->graphicId);
   XDestroySubwindows(this->display,this->id);
   XDestroyWindow(this->display,this->id);
   XCloseDisplay(this->display);
+#endif
 }
 int mainWindow::show(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_NORMAL);
+#else
   usleep(microseconds);
   return XMapRaised(this->display,this->id);
+#endif
 }
 int mainWindow::hide(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_HIDE);
+#else
   usleep(microseconds);
   return XUnmapWindow(this->display,this->id);
-}
-void mainWindow::onResize(XResizeRequestEvent*event,void*extraArgs){
-  for(unsigned long i=0;i<this->subWindows.size;i++)
-    XResizeWindow(this->display,this->subWindows[i],event->width,event->height);
-}
-void mainWindow::onExpose(XExposeEvent*event,void*extraArgs){
-  
+#endif
 }

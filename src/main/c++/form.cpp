@@ -33,3 +33,21 @@ form::form(mainWindow*root){
 form::~form(){
   XDestroySubwindows(this->root->display,this->id);
 }
+int form::show(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_NORMAL);
+#else
+  usleep(microseconds);
+  return XMapRaised(this->root->display,this->id);
+#endif
+}
+int form::hide(unsigned int microseconds){
+#if defined __WIN32 || defined __WIN64
+  Sleep(microseconds);
+  return ShowWinodw(this->id, SW_HIDE);
+#else
+  usleep(microseconds);
+  return XUnmapWindow(this->root->display,this->id);
+#endif
+}
