@@ -1,19 +1,26 @@
 #include "../../include/main/c++/form.hpp"
 
 form::form(mainWindow*root){
-  this->root=root;
-  this->x=this->root->width*20/100,//20% of screen.width
-  this->y=this->root->height*20/100,//20% of screen.width
-  this->width=this->root->width-2*this->root->width*20/100,//screen.width-2*form.x
-  this->height=this->root->height-2*this->root->height*20/100,//screen.width-2*form.x
-  this->border={
+  this->root = root;
+
+  Screen *screen = XDefaultScreenOfDisplay(this->root->display);
+
+  this->x = this->root->width * 20 / 100,//20% of screen.width
+  this->y = this->root->height * 20 / 100,//20% of screen.width
+  this->width = this->root->width - 2 * this->root->width * 20 / 100,//screen.width-2*form.x
+  this->height = this->root->height - 2 * this->root->height * 20 / 100,//screen.width-2*form.x
+  this->border = {
     2,//width
     0//color
   };
+  this->background.color = 0xffffff;
+  this->eventMask = ExposureMask;
+  this->attributeMask = CWBorderPixel | CWBackPixel | CWEventMask;
+
   XSetWindowAttributes formAttributes{
-    .background_pixel=(this->background.color=0xffffff),
-    .border_pixel=this->border.color,
-    .event_mask=(this->eventMask=ExposureMask)
+    .background_pixel = this->background.color,
+    .border_pixel = this->border.color,
+    .event_mask = this->eventMask
   };
   this->id=XCreateWindow(
     this->root->display,
@@ -23,15 +30,18 @@ form::form(mainWindow*root){
     this->width,//screen.width-2*form.x
     this->height,//screen.width-2*form.x
     this->border.width,
-    this->root->visualInfo.depth,//depth
-    this->root->visualInfo.c_class,//window class
-    this->root->visualInfo.visual,//visual
-    (this->attributeMask=CWBorderPixel|CWBackPixel|CWEventMask),
+    screen->root_depth,//depth
+    InputOutput,//window class
+    screen->root_visual,//visual
+    this->attributeMask,
     &formAttributes
   );
+
+  this->root->subWindows.push(this->id);
 }
 form::~form(){
-  XDestroySubwindows(this->root->display,this->id);
+  this->root->subWindows.remove(this->id);
+  XDestroySubwindows(this->root->display, this->id);
 }
 int form::show(unsigned int microseconds){
 #if defined __WIN32 || defined __WIN64

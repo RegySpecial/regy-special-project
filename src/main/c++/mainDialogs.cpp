@@ -209,6 +209,7 @@ dialog::dialog(mainWindow*root,unsigned char type){
 }
 
 dialog::~dialog(){
+  this->root->subWindows.remove(this->id);
   XFreeGC(this->root->display,this->graphicId);
   XDestroySubwindows(this->root->display,this->id);
 }

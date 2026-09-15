@@ -68,7 +68,7 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
     );
   };
 
-  root->onClientMessage = [](XClientMessageEvent*event,void*extraArgs){
+  this->root->onClientMessage = [](XClientMessageEvent*event,void*extraArgs){
     mainScreenButton*exitButton = (mainScreenButton*)extraArgs;
     XEvent eventOutput;
     if((Atom)event->data.l == XInternAtom(exitButton->root->display, "WM_DELETE_WINDOW", 0))
@@ -93,8 +93,11 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
       strlen(self->text.value)
     );
   };
+
+  this->root->subWindows.push(this->id);
 }
 mainScreenButton::~mainScreenButton(){
+  this->root->subWindows.remove(this->id);
   XFreeGC(this->root->display,this->graphicId);
 }
 int mainScreenButton::show(unsigned int microseconds){

@@ -6,14 +6,24 @@
 */
 #include "../../include/main/c++/gameModeButtons.hpp"
 gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color){
-  XSetWindowAttributes gameModeButtonAttributes{
-    .background_pixel = (this->background.color = 0),
-    .border_pixel = (this->border.color = 0x808080),
-    .event_mask = (this->eventMask = ButtonPressMask|ExposureMask),
-    .do_not_propagate_mask = (this->dontPropagateMask = ButtonPress)
-  };
   this->root = root;
   this->title = title;
+  this->text.color = color;
+
+  Screen *screen = XDefaultScreenOfDisplay(this->root->root->display);
+
+  this->background.color = 0;
+  this->border.color = this->text.color;
+  this->eventMask = ButtonPressMask | ExposureMask;
+  this->dontPropagateMask = ButtonPress;
+  this->graphicMask = GCForeground;
+
+  XSetWindowAttributes gameModeButtonAttributes{
+    .background_pixel = this->background.color,
+    .border_pixel = this->border.color,
+    .event_mask = this->eventMask,
+    .do_not_propagate_mask = this->dontPropagateMask
+  };
   this->id = XCreateWindow(
     this->root->root->display,
     this->root->id,
@@ -22,18 +32,20 @@ gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color)
     this->width,
     this->height,
     this->border.width,
-    this->root->root->visualInfo.depth,
-    this->root->root->visualInfo.c_class,
-    this->root->root->visualInfo.visual,
+    screen->root_depth,
+    InputOutput,
+    screen->root_visual,
     this->attributeMask,
     &gameModeButtonAttributes
   );
   XGCValues gcValues = {
-    .foreground = (this->text.color = color)
+    .foreground = this->text.color
   };
-  this->graphicId=XCreateGC(this->root->root->display,this->id,(this->graphicMask = GCForeground),&gcValues);
+  this->graphicId=XCreateGC(this->root->root->display,this->id,this->graphicMask,&gcValues);
+  this->root->subWindows.push(this->id);
 }
 gameModeButton::~gameModeButton(){
+  this->root->subWindows.remove(this->id);
   XFreeGC(this->root->root->display,this->graphicId);
 }
 

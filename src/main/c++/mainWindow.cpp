@@ -6,13 +6,26 @@
 */
 #include "../../include/main/c++/mainWindow.hpp"
 #if defined __WIN32 || defined __WIN64
-mainWindow::mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int cmdshow)
+mainWindow::mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int cmdshow, const char *title)
 {
+  this->hInst = hInst;
+  this->hPrevInst = hPrevInst;
+  this->cmdLine = cmdLine;
+  this->cmdShow = cmdShow;
+
+  this->x = 0;
+  this->y = 0;
+  this->width = GetSystemMetrics(SM_CXSCREEN);
+  this->height = GetSystemMetrics(SM_CYSCREEN);
+  this->title = title;
+  this->background.color = 0;
+
   WNDCLASSA windowClass = {
-    .style=CS_HREDRAW|CS_VREDRAW|CS_OWNDC,
+    .style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC,
     .lpfnWndProc = WindowProc,
-    .hInstance=hInst,
-    .hIcon=(HICON)LoadImageA(
+    .hInstance = this->hInst,
+    .hIcon = (HICON) LoadImageA
+    (
       windowClass.hInstance,
       "F:/Regy Special/Regy Special Project/blob/images/RegySpecial.ico",
       IMAGE_ICON,
@@ -20,12 +33,30 @@ mainWindow::mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int 
       0,
       LR_LOADFROMFILE
     ),
-    .hCursor=LoadCursor(windowClass.hInstance,IDC_ARROW),
-    .hbrBackground=CreateSolidBrush(0),
-    .lpszMenuName="RegySpecial",
-    .lpszClassName="RegySpecial"
+    .hCursor = LoadCursor(windowClass.hInstance,IDC_ARROW),
+    .hbrBackground = 0,
+    .lpszMenuName = this->title,
+    .lpszClassName = this->title
   };
+
   assert(RegisterClassA(&windowClass));
+
+  this->id = CreateWindowA
+  (
+    windowClass.lpszClassName,//window class name
+    this->title,//window title
+    WS_POPUP | WS_VISIBLE,//window style
+    this->x,//window x
+    this->y,//window y
+    this->width,//window width
+    this->height,//window height
+    NULL,//window parent
+    (HMENU)MainWindow_MainWindow,//window menu
+    windowClass.hInstance,//window instance
+    NULL//window extra info(lparam)
+  );
+
+  HANDLE_WM_PAINT(MainWindow,0,0,PaintTheIntro);
 }
 #else
 mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
@@ -121,6 +152,7 @@ mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
 #endif
 mainWindow::~mainWindow(){
 #if defined __WIN32 || defined __WIN64
+  assert(UnregisterClassA(&windowClass));
   assert(DestroyWindow(this->id));
 #elifdef WaylandEnabled
   wl_display_disconnect(this->display);

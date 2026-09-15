@@ -24,7 +24,7 @@ public:
   HINSTANCE hInst, hInstPrev;
   char* cmdline;
   int cmdshow;
-  mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int cmdshow);
+  mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int cmdshow,const char *title);
   #else
   int argc;
   char**argv,

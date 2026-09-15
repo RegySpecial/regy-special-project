@@ -130,7 +130,6 @@ public:
       this->items[index] = items[index];
   }
 
-  //void(*forEachFunction)(itemsDataType)
   void forEach(void(*forEachFunction)(itemsDataType)){
     for (sizeDataType index = 0;index < this->size;index++)
       forEachFunction(this->items[index]);
@@ -144,7 +143,6 @@ public:
       forEachFunction(this->items[left]);
   }
 
-  //void(*forEachFunction)(itemsDataType,sizeDataType)
   void forEach(void(*forEachFunction)(itemsDataType,sizeDataType)){
     for (sizeDataType index = 0;index < this->size;index++)
       forEachFunction(this->items[index],index);
@@ -158,7 +156,6 @@ public:
       forEachFunction(this->items[left],left);
   }
 
-  //void(*forEachFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*)
   void forEach(void(*forEachFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType,sizeDataType,capacityDataType>*)){
     for (sizeDataType index = 0;index < this->size;index++)
       forEachFunction(this->items[index],index,this);
