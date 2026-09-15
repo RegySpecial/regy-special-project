@@ -4,7 +4,6 @@ cColorsLibrary =    src/lib/c/colors.c
 cManageArguments =  src/main/c/manageArguments.c
 
 testManageArguments = test/testManageArguments.cpp
-testVideoGame =       test/testVideoGame.cpp
 
 amd64-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
 amd64-testVideoGame =       /home/regyspecial/Scrivania/testVideoGame
@@ -96,13 +95,14 @@ mainDialogs =       src/main/c++/mainDialogs.cpp
 gameModeButtons =   src/main/c++/gameModeButtons.cpp
 form =              src/main/c++/form.cpp
 formTextBox =       src/main/c++/formTextBox.cpp
+testVideoGame =     test/testVideoGame.cpp
 
-
-build-amd64-testVideoGame: $(testVideoGame) $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox) $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(cAudioBeepLibrary)
+build-amd64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox) $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(cAudioBeepLibrary) $(testVideoGame)
 	g++ \
 	-std=c++26 \
 	-Wall \
-	-O \
+	-g \
+	-fsanitize=address \
 	$(mainWindow) \
 	$(mainScreenButtons) \
 	$(mainDialogs) \
@@ -113,7 +113,7 @@ build-amd64-testVideoGame: $(testVideoGame) $(mainWindow) $(mainScreenButtons) $
 	$(cColorsLibrary) \
 	$(cConsoleLibrary) \
 	$(cAudioBeepLibrary) \
-	$(testvideoGame) \
+	$(testVideoGame) \
 	-o \
 	$(amd64-testVideoGame) \
 	-lX11

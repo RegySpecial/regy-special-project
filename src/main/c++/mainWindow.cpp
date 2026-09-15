@@ -29,48 +29,89 @@ mainWindow::mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int 
 }
 #else
 mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
-  this->argc=argc;
-  this->argv=argv;
-  this->envp=envp;
-  this->display=XOpenDisplay(NULL);
-  Screen*screen=XScreenOfDisplay(this->display,this->visualInfo.screen);
+  this->argc = argc;
+  this->argv = argv;
+  this->envp = envp;
+
+  this->display = 
+    #ifdef WaylandEnabled
+    wl_display_connnect
+    #else
+    XOpenDisplay
+    #endif
+    (0);
+
+  if (!this->display)
+  {
+    failureMessage
+    (
+      "Cannot establish a connection with the "
+      #ifdef WaylandEnabled
+      "Wayland"
+      #else
+      "X"
+      #endif
+      " Graphic Server"
+    );
+    abort();
+  }
+
+  this->title = title;
+
+  Screen*screen = XDefaultScreenOfDisplay(this->display);
+
+  this->x = 0;
+  this->y = 0;
+  this->width = screen->width;
+  this->height = screen->height;
+
+  this->background.color = 0;
+  this->border.color = 0xffffff;
+  this->eventMask = ExposureMask | ResizeRedirectMask;
+  this->attributeMask = CWBorderWidth | CWBackPixel | CWBorderPixel | CWEventMask;
+
   XSetWindowAttributes mainWindowAttributes={
-    .background_pixel=(this->background.color=0),
-    .border_pixel=(this->background.color=0xffffff),
-    .event_mask=(this->eventMask=ExposureMask|ResizeRedirectMask)
+    .background_pixel = this->background.color,
+    .border_pixel = this->border.color,
+    .event_mask = this->eventMask
   };
+
   XSizeHints
-    mainWindowBounds={
-      .x=(this->x=0),
-      .y=(this->y=0),
-      .max_width=(this->width=screen->width),
-      .max_height=(this->height=screen->height)
+    mainWindowBounds = {
+      .x = this->x,
+      .y = this->y,
+      .max_width = this->width,
+      .max_height = this->height
     };
+  
   this->id=XCreateWindow(
     this->display,
-    XRootWindow(this->display,this->visualInfo.screen),
+    screen->root,
     this->x,
     this->y,
     this->width,
     this->height,
     this->border.width,
-    this->visualInfo.depth,
-    this->visualInfo.c_class,
-    this->visualInfo.visual,
-    (this->attributeMask=CWBorderWidth|CWBackPixel|CWBorderPixel|CWEventMask),
+    screen->root_depth,
+    InputOutput,
+    screen->root_visual,
+    this->attributeMask,
     &mainWindowAttributes
   );
+
   XSetStandardProperties(
     this->display,
     this->id,
-    (this->title=title),
+    this->title,
     NULL,
     0,
     this->argv,
     this->argc,
     &mainWindowBounds
   );
+
   XMapRaised(this->display, this->id);
+
   this->onResize = [](XResizeRequestEvent*event,void*extraArgs){
     mainWindow *self = (mainWindow*) extraArgs;
     for(unsigned long i=0;i<self->subWindows.size;i++)
@@ -82,7 +123,7 @@ mainWindow::~mainWindow(){
 #if defined __WIN32 || defined __WIN64
   assert(DestroyWindow(this->id));
 #elifdef WaylandEnabled
-
+  wl_display_disconnect(this->display);
 #else
   XFreeGC(this->display,this->graphicId);
   XDestroySubwindows(this->display,this->id);

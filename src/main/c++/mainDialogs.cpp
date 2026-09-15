@@ -7,18 +7,21 @@
 #include "../../include/main/c++/mainDialogs.hpp"
 
 dialog::dialog(mainWindow*root,unsigned char type){
-  this->root=root;
-  this->type=type;
-  this->x=20;
-  this->y=20;
-  this->width=this->root->width-40;
-  this->height=this->root->height-40;
+  this->root = root;
+  this->type = type;
+
+  Screen* screen = XDefaultScreenOfDisplay(this->root->display);
+
+  this->x = 20;
+  this->y = 20;
+  this->width = this->root->width - 40;
+  this->height = this->root->height - 40;
 
   XSizeHints dimensionConfiguration={
-    .x=this->x,
-    .y=this->y,
-    .max_width=this->width,
-    .max_height=this->height
+    .x = this->x,
+    .y = this->y,
+    .max_width = this->width,
+    .max_height = this->height
   };
 
   const char
@@ -37,6 +40,7 @@ dialog::dialog(mainWindow*root,unsigned char type){
     0xffff,
     0xffffff
   };
+
   XSetWindowAttributes dialogAttributes={
     .background_pixel=this->background.color,
     .border_pixel=this->border.color,
@@ -50,12 +54,13 @@ dialog::dialog(mainWindow*root,unsigned char type){
     this->width,
     this->height,
     this->border.width,
-    this->root->visualInfo.depth,
-    this->root->visualInfo.c_class,
-    this->root->visualInfo.visual,
+    screen->root_depth,
+    InputOutput,
+    screen->root_visual,
     this->attributeMask,
     &dialogAttributes
   );
+
   XSetStandardProperties(
     this->root->display,
     this->id,
@@ -66,18 +71,22 @@ dialog::dialog(mainWindow*root,unsigned char type){
     this->root->argc,
     &dimensionConfiguration
   );
+
   XMapRaised(this->root->display,this->id);
+
   XGCValues gcValues={
     .foreground=(this->text.color=dialogColors[this->type])
   };
-  this->graphicId=XCreateGC(this->root->display,this->id,(this->graphicMask=GCForeground),&gcValues);
+
+  this->graphicId = XCreateGC(this->root->display,this->id,(this->graphicMask=GCForeground),&gcValues);
+
   XMapRaised(this->root->display,this->id);
   XMapSubwindows(this->root->display,this->id);
 
   this->onClientMessage = [](XClientMessageEvent*event,void*extraArgs){
     dialog *self = (dialog*) extraArgs;
     if((Atom)event->data.l == XInternAtom(self->root->display, "WM_DELETE_WINDOW", 0))
-      XUnmapWindow(self->root->display,self->id);
+      XUnmapWindow(self->root->display, self->id);
   };
 
   this->onExpose = [](XExposeEvent*event,void*extraArgs){
@@ -195,11 +204,15 @@ dialog::dialog(mainWindow*root,unsigned char type){
         break;
     }
   };
+
+  this->root->subWindows.push(this->id);
 }
+
 dialog::~dialog(){
   XFreeGC(this->root->display,this->graphicId);
   XDestroySubwindows(this->root->display,this->id);
 }
+
 int dialog::show(unsigned int microseconds){
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
@@ -209,6 +222,7 @@ int dialog::show(unsigned int microseconds){
   return XMapRaised(this->root->display,this->id);
 #endif
 }
+
 int dialog::hide(unsigned int microseconds){
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);

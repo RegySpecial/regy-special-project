@@ -2,7 +2,7 @@
 #define mainWindowHpp
 #if !(defined __WIN32 && defined __WIN64)
 #ifdef WaylandEnabled
-#define graphicDisplay wayland_display
+#define graphicDisplay struct wl_display
 #else
 #define graphicDisplay Display
 #endif
@@ -30,7 +30,6 @@ public:
   char**argv,
       **envp;
   graphicDisplay *display;
-  XVisualInfo visualInfo={.c_class=InputOutput};    
   mainWindow(int argc,char*argv[],char*envp[],const char*title);
   #endif
   ~mainWindow();

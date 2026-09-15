@@ -1,14 +1,18 @@
 #include "../../include/main/c++/mainScreenButtons.hpp"
 
 mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
+  this->root = root;
+  this->text.value = text;
+
+  Screen*screen = XDefaultScreenOfDisplay(this->root->display);
+
   XSetWindowAttributes mainScreenButtonsAttributes={
     .background_pixel=(this->background.color=255),//set window background color to blue on RGB format 00000000|00000000|11111111
     .border_pixel=(this->border.color=255<<16),//set window border color to red on RGB format 11111111|00000000|00000000
     .event_mask=(this->eventMask=ExposureMask|ButtonPressMask|EnterWindowMask|LeaveWindowMask),
     .do_not_propagate_mask=(this->dontPropagateMask=ButtonPressMask)
   };
-  this->root=root;
-  this->text.value=text;
+  
   this->id=XCreateWindow(
     this->root->display,
     this->root->id,
@@ -17,9 +21,9 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
     this->width,
     this->height,
     1,
-    this->root->visualInfo.depth,
-    this->root->visualInfo.c_class,
-    this->root->visualInfo.visual,
+    screen->root_depth,
+    InputOutput,
+    screen->root_visual,
     this->attributeMask,
     &mainScreenButtonsAttributes
   );

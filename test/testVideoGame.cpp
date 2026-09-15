@@ -2,7 +2,7 @@
 #include "../src/include/main/c++/mainScreenButtons.hpp"
 int main(int argc, char* argv[], char* envp[])
 {
-    mainWindow window(argc, argv, envp, "Vaffanculo");
-    mainScreenButton coso(&window, "coso");
-    window.show(0);
+    mainWindow main_window(argc, argv, envp, "Vaffanculo");
+    mainScreenButton coso(&main_window, "coso");
+    main_window.show(0);
 }

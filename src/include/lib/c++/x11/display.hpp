@@ -1,11 +1,11 @@
 #ifndef displayHpp
 #define displayHpp
-#include<X11/Xlib.h>
-#include<X11/Xutil.h>
-#include<assert.h>
-#include<errno.h>
-#include<unistd.h>
-#include"../../lib/c++/DSA/dataStructures/dynamicArrays.hpp"
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <assert.h>
+#include <errno.h>
+#include <unistd.h>
+#include "../DSA/dataStructures/dynamicArrays.hpp"
 namespace x11{
   class display{
     public:
