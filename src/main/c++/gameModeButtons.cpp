@@ -5,12 +5,11 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include "../../include/main/c++/gameModeButtons.hpp"
-gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color){
+gameModeButton::gameModeButton(dialog *root, const char *title, unsigned long color)
+{
   this->root = root;
   this->title = title;
   this->text.color = color;
-
-  Screen *screen = XDefaultScreenOfDisplay(this->root->root->display);
 
   this->background.color = 0;
   this->border.color = this->text.color;
@@ -24,7 +23,8 @@ gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color)
     .event_mask = this->eventMask,
     .do_not_propagate_mask = this->dontPropagateMask
   };
-  this->id = XCreateWindow(
+  this->id = XCreateWindow
+  (
     this->root->root->display,
     this->root->id,
     this->x,
@@ -32,38 +32,41 @@ gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color)
     this->width,
     this->height,
     this->border.width,
-    screen->root_depth,
+    this->root->root->screen->root_depth,
     InputOutput,
-    screen->root_visual,
+    this->root->root->screen->root_visual,
     this->attributeMask,
     &gameModeButtonAttributes
   );
   XGCValues gcValues = {
     .foreground = this->text.color
   };
-  this->graphicId=XCreateGC(this->root->root->display,this->id,this->graphicMask,&gcValues);
+  this->graphicId = XCreateGC(this->root->root->display, this->id, this->graphicMask, &gcValues);
   this->root->subWindows.push(this->id);
 }
 gameModeButton::~gameModeButton(){
   this->root->subWindows.remove(this->id);
-  XFreeGC(this->root->root->display,this->graphicId);
+  XFreeGC(this->root->root->display, this->graphicId);
 }
 
-int gameModeButton::show(unsigned int microseconds){
+int gameModeButton::show(unsigned int microseconds)
+{
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_NORMAL);
 #else
   usleep(microseconds);
-  return XMapRaised(this->root->root->display,this->id);
+  return XMapRaised(this->root->root->display, this->id);
 #endif
 }
-int gameModeButton::hide(unsigned int microseconds){
+
+int gameModeButton::hide(unsigned int microseconds)
+{
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_HIDE);
 #else
   usleep(microseconds);
-  return XUnmapWindow(this->root->root->display,this->id);
+  return XUnmapWindow(this->root->root->display, this->id);
 #endif
 }

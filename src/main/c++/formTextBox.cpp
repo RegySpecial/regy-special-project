@@ -1,6 +1,7 @@
 #include "../../include/main/c++/formTextBox.hpp"
 
-formTextBox::formTextBox(form*root){
+formTextBox::formTextBox(form *root)
+{
 
   this->root = root;
 
@@ -51,7 +52,7 @@ formTextBox::formTextBox(form*root){
     &gcValues
   );
 
-  this->onKeyDown = [](XKeyPressedEvent*event,void*extraArgs){
+  this->onKeyDown = [](XKeyPressedEvent *event, void *extraArgs){
     struct messageStructure
     {
       gameContextStructure *gameCtxtStruct;
@@ -136,26 +137,30 @@ formTextBox::formTextBox(form*root){
   this->root->root->subWindows.push(this->id);
 }
 
-formTextBox::~formTextBox(){
+formTextBox::~formTextBox()
+{
   this->root->root->subWindows.remove(this->id);
   XFreeGC(this->root->root->display,this->graphicId);
 }
 
-int formTextBox::show(unsigned int microseconds){
+int formTextBox::show(unsigned int microseconds)
+{
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_NORMAL);
 #else
   usleep(microseconds);
-  return XMapRaised(this->root->root->display,this->id);
+  return XMapRaised(this->root->root->display, this->id);
 #endif
 }
-int formTextBox::hide(unsigned int microseconds){
+
+int formTextBox::hide(unsigned int microseconds)
+{
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_HIDE);
 #else
   usleep(microseconds);
-  return XUnmapWindow(this->root->root->display,this->id);
+  return XUnmapWindow(this->root->root->display, this->id);
 #endif
 }

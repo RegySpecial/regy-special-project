@@ -12,13 +12,14 @@
 #include "../c/info/user/cpu.h"
 #include "../c/info/user/os.h"
 #include "../c/info/vendor/compiler.h"
-class dialog:public commonWidgetInterface{
-public:
-  mainWindow*root;
-  unsigned char type;
-  dialog(mainWindow*root,unsigned char type);
-  ~dialog();
-  int show(unsigned int microseconds) override;
-  int hide(unsigned int microseconds) override;
+class dialog : public commonWidgetInterface
+{
+  public:
+    mainWindow *root;
+    unsigned char type;
+    dialog(mainWindow *root, unsigned char type);
+    ~dialog();
+    int show(unsigned int microseconds) override;
+    int hide(unsigned int microseconds) override;
 };
 #endif

@@ -37,7 +37,7 @@ formTextBox::~formTextBox(){
   XFreeGC(self.root.root.display,self.graphicId);
 }
 
-void formTextBox::onKeyDown(XKeyPressedEvent*event,void*extraArgs){
+void formTextBox::onKeyDown(XKeyPressedEvent *event, void *extraArgs){
   gameContextStructure*gameCtxtStruct=(gameContextStructure*)extraArgs;
   char trueKey=(char)XkbKeycodeToKeysym(
     self.root.root.display,//X display

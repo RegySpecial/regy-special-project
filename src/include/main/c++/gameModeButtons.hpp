@@ -5,10 +5,11 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include "mainDialogs.hpp"
-class gameModeButton:public commonWidgetInterface{
+class gameModeButton : public commonWidgetInterface
+{
   public:
-    dialog*root;
-    gameModeButton(dialog*root,const char*text,unsigned long color);
+    dialog *root;
+    gameModeButton(dialog *root, const char *text, unsigned long color);
     ~gameModeButton();
     int show(unsigned int microseconds);
     int hide(unsigned int microseconds);

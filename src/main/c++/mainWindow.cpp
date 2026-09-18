@@ -59,7 +59,8 @@ mainWindow::mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int 
   HANDLE_WM_PAINT(MainWindow,0,0,PaintTheIntro);
 }
 #else
-mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
+mainWindow::mainWindow(int argc, char *argv[], char *envp[],const char *title)
+{
   this->argc = argc;
   this->argv = argv;
   this->envp = envp;
@@ -89,19 +90,19 @@ mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
 
   this->title = title;
 
-  Screen*screen = XDefaultScreenOfDisplay(this->display);
+  this->screen = XDefaultScreenOfDisplay(this->display);
 
   this->x = 0;
   this->y = 0;
-  this->width = screen->width;
-  this->height = screen->height;
+  this->width = this->screen->width;
+  this->height = this->screen->height;
 
   this->background.color = 0;
   this->border.color = 0xffffff;
   this->eventMask = ExposureMask | ResizeRedirectMask;
   this->attributeMask = CWBorderWidth | CWBackPixel | CWBorderPixel | CWEventMask;
 
-  XSetWindowAttributes mainWindowAttributes={
+  XSetWindowAttributes mainWindowAttributes = {
     .background_pixel = this->background.color,
     .border_pixel = this->border.color,
     .event_mask = this->eventMask
@@ -117,15 +118,15 @@ mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
   
   this->id=XCreateWindow(
     this->display,
-    screen->root,
+    this->screen->root,
     this->x,
     this->y,
     this->width,
     this->height,
     this->border.width,
-    screen->root_depth,
+    this->screen->root_depth,
     InputOutput,
-    screen->root_visual,
+    this->screen->root_visual,
     this->attributeMask,
     &mainWindowAttributes
   );
@@ -143,41 +144,45 @@ mainWindow::mainWindow(int argc,char*argv[],char*envp[],const char*title){
 
   XMapRaised(this->display, this->id);
 
-  this->onResize = [](XResizeRequestEvent*event,void*extraArgs){
+  this->onResize = [](XResizeRequestEvent *event, void *extraArgs){
     mainWindow *self = (mainWindow*) extraArgs;
     for(unsigned long i=0;i<self->subWindows.size;i++)
       XResizeWindow(self->display,self->subWindows[i],event->width,event->height);
   };
 }
 #endif
-mainWindow::~mainWindow(){
+mainWindow::~mainWindow()
+{
 #if defined __WIN32 || defined __WIN64
   assert(UnregisterClassA(&windowClass));
   assert(DestroyWindow(this->id));
 #elifdef WaylandEnabled
   wl_display_disconnect(this->display);
 #else
-  XFreeGC(this->display,this->graphicId);
   XDestroySubwindows(this->display,this->id);
   XDestroyWindow(this->display,this->id);
   XCloseDisplay(this->display);
 #endif
 }
-int mainWindow::show(unsigned int microseconds){
+
+int mainWindow::show(unsigned int microseconds)
+{
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_NORMAL);
 #else
   usleep(microseconds);
-  return XMapRaised(this->display,this->id);
+  return XMapRaised(this->display, this->id);
 #endif
 }
-int mainWindow::hide(unsigned int microseconds){
+
+int mainWindow::hide(unsigned int microseconds)
+{
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_HIDE);
 #else
   usleep(microseconds);
-  return XUnmapWindow(this->display,this->id);
+  return XUnmapWindow(this->display, this->id);
 #endif
 }

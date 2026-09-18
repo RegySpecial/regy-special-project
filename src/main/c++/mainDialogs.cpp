@@ -6,26 +6,9 @@
 */
 #include "../../include/main/c++/mainDialogs.hpp"
 
-dialog::dialog(mainWindow*root,unsigned char type){
-  this->root = root;
-  this->type = type;
-
-  Screen* screen = XDefaultScreenOfDisplay(this->root->display);
-
-  this->x = 20;
-  this->y = 20;
-  this->width = this->root->width - 40;
-  this->height = this->root->height - 40;
-
-  XSizeHints dimensionConfiguration={
-    .x = this->x,
-    .y = this->y,
-    .max_width = this->width,
-    .max_height = this->height
-  };
-
+dialog::dialog(mainWindow *root, unsigned char type){
   const char
-    *titles[]={
+    *titles[] = {
       "layoutMode",
       "Play",
       "Exit",
@@ -33,20 +16,43 @@ dialog::dialog(mainWindow*root,unsigned char type){
       "More information"
     };
   
-  unsigned long dialogColors[]={
-    255,
-    255<<8,
-    255<<16,
-    0xffff,
-    0xffffff
+  unsigned long
+    dialogColors[] = {
+      255,
+      255<<8,
+      255<<16,
+      0xffff,
+      0xffffff
+    };
+
+  this->root = root;
+  this->type = type;
+
+  this->x = 20;
+  this->y = 20;
+  this->width = this->root->width - 40;
+  this->height = this->root->height - 40;
+
+  this->title = titles[this->type];
+  this->text.color = dialogColors[this->type];
+
+  this->graphicMask = GCForeground;
+
+  XSizeHints dimensionConfiguration = {
+    .x = this->x,
+    .y = this->y,
+    .max_width = this->width,
+    .max_height = this->height
   };
 
-  XSetWindowAttributes dialogAttributes={
-    .background_pixel=this->background.color,
-    .border_pixel=this->border.color,
-    .event_mask=this->eventMask
+  XSetWindowAttributes dialogAttributes = {
+    .background_pixel = this->background.color,
+    .border_pixel = this->border.color,
+    .event_mask = this->eventMask
   };
-  this->id=XCreateWindow(
+
+  this->id = XCreateWindow
+  (
     this->root->display,
     this->root->id,
     this->x,
@@ -54,17 +60,18 @@ dialog::dialog(mainWindow*root,unsigned char type){
     this->width,
     this->height,
     this->border.width,
-    screen->root_depth,
+    this->root->screen->root_depth,
     InputOutput,
-    screen->root_visual,
+    this->root->screen->root_visual,
     this->attributeMask,
     &dialogAttributes
   );
 
-  XSetStandardProperties(
+  XSetStandardProperties
+  (
     this->root->display,
     this->id,
-    (this->title=titles[this->type]),
+    this->title,
     NULL,
     0,
     this->root->argv,
@@ -74,22 +81,22 @@ dialog::dialog(mainWindow*root,unsigned char type){
 
   XMapRaised(this->root->display,this->id);
 
-  XGCValues gcValues={
-    .foreground=(this->text.color=dialogColors[this->type])
+  XGCValues gcValues = {
+    .foreground = this->text.color
   };
 
-  this->graphicId = XCreateGC(this->root->display,this->id,(this->graphicMask=GCForeground),&gcValues);
+  this->graphicId = XCreateGC(this->root->display,this->id,this->graphicMask,&gcValues);
 
   XMapRaised(this->root->display,this->id);
   XMapSubwindows(this->root->display,this->id);
 
-  this->onClientMessage = [](XClientMessageEvent*event,void*extraArgs){
+  this->onClientMessage = [](XClientMessageEvent *event, void *extraArgs){
     dialog *self = (dialog*) extraArgs;
     if((Atom)event->data.l == XInternAtom(self->root->display, "WM_DELETE_WINDOW", 0))
       XUnmapWindow(self->root->display, self->id);
   };
 
-  this->onExpose = [](XExposeEvent*event,void*extraArgs){
+  this->onExpose = [](XExposeEvent *event, void *extraArgs){
     dialog *self = (dialog*) extraArgs;
     const char
       *modeInformation[4][3]={
@@ -114,11 +121,12 @@ dialog::dialog(mainWindow*root,unsigned char type){
           "3.Nessuna azione disponibili all'interno della mappa"
         }
       },
-      *moreInformationTextes[3]={cpu,os,byteOrder},
-      *optionsTextes[3]={"Volume:","Musica:","Suoni:"};
+      *moreInformationTextes[3] = {cpu, os, byteOrder},
+      *optionsTextes[3] = {"Volume:", "Musica:", "Suoni:"};
     switch(self->type){
       case dialogType_layoutMode:
-        XDrawString(
+        XDrawString
+        (
           self->root->display,
           self->id,
           self->graphicId,
@@ -129,8 +137,9 @@ dialog::dialog(mainWindow*root,unsigned char type){
         );
         break;
       case dialogType_play:
-        for(unsigned char gameModeInformationPoint=0;gameModeInformationPoint<3;gameModeInformationPoint++)
-          XDrawString(
+        for (unsigned char gameModeInformationPoint = 0; gameModeInformationPoint < 3; gameModeInformationPoint++)
+          XDrawString
+          (
             self->root->display,
             self->id,
             self->graphicId,
@@ -141,7 +150,8 @@ dialog::dialog(mainWindow*root,unsigned char type){
           );
         break;
       case dialogType_exit:
-        XDrawString(
+        XDrawString
+        (
           self->root->display,
           self->id,
           self->graphicId,
@@ -152,8 +162,9 @@ dialog::dialog(mainWindow*root,unsigned char type){
         );
         break;
       case dialogType_options:
-        for(unsigned char optionIndex=0;optionIndex<3;optionIndex++)
-          XDrawString(
+        for (unsigned char optionIndex = 0; optionIndex < 3; optionIndex++)
+          XDrawString
+          (
             self->root->display,
             self->id,
             self->graphicId,
@@ -164,7 +175,8 @@ dialog::dialog(mainWindow*root,unsigned char type){
           );
         break;
       case dialogType_moreInformation:
-        XDrawString(
+        XDrawString
+        (
           self->root->display,
           self->id,
           self->graphicId,
@@ -174,7 +186,8 @@ dialog::dialog(mainWindow*root,unsigned char type){
           sizeof "Hardware Information:"-1
         );
         for(unsigned char moreInformationIndex=0;moreInformationIndex<3;moreInformationIndex++)
-          XDrawString(
+          XDrawString
+          (
             self->root->display,
             self->id,
             self->graphicId,
@@ -183,7 +196,8 @@ dialog::dialog(mainWindow*root,unsigned char type){
             moreInformationTextes[moreInformationIndex],
             strlen(moreInformationTextes[moreInformationIndex])
           );
-        XDrawString(
+        XDrawString
+        (
           self->root->display,
           self->id,
           self->graphicId,
@@ -192,12 +206,13 @@ dialog::dialog(mainWindow*root,unsigned char type){
           "Software Information:",
           sizeof "Software Information:"-1
         );
-        XDrawString(
+        XDrawString
+        (
           self->root->display,
           self->id,
           self->graphicId,
           40,
-          20+20*(4+1),
+          20 + 20 * (4 + 1),
           compiler,
           sizeof compiler-1
         );
@@ -210,26 +225,28 @@ dialog::dialog(mainWindow*root,unsigned char type){
 
 dialog::~dialog(){
   this->root->subWindows.remove(this->id);
-  XFreeGC(this->root->display,this->graphicId);
-  XDestroySubwindows(this->root->display,this->id);
+  XFreeGC(this->root->display, this->graphicId);
+  XDestroySubwindows(this->root->display, this->id);
 }
 
-int dialog::show(unsigned int microseconds){
+int dialog::show(unsigned int microseconds)
+{
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_NORMAL);
 #else
   usleep(microseconds);
-  return XMapRaised(this->root->display,this->id);
+  return XMapRaised(this->root->display, this->id);
 #endif
 }
 
-int dialog::hide(unsigned int microseconds){
+int dialog::hide(unsigned int microseconds)
+{
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_HIDE);
 #else
   usleep(microseconds);
-  return XUnmapWindow(this->root->display,this->id);
+  return XUnmapWindow(this->root->display, this->id);
 #endif
 }
