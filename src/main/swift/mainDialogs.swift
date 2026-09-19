@@ -1,4 +1,5 @@
-public class dialog: commonWidgetInterface {
+public class dialog: commonWidgetInterface
+{
   var id:(NSPanel?,NSWindow?)
   init(_ root:mainWindow,_ type:UInt8){
     self.root = root
@@ -14,14 +15,14 @@ public class dialog: commonWidgetInterface {
       "Options",
       "More information"
     };
-    let dialogColors:[UInt32]={
+    let dialogColors:[UInt32] = {
       255,
       255<<8,
       255<<16,
       0xffff,
       0xffffff
     };
-    self.background = backgroundStruct()
+    self.background = backgroundStruct(0)
     self.border = borderStruct(1, 0xffffff)
     self.id.0 = NSPanel() ?? nil
     self.id.1 = NSWindow
@@ -34,12 +35,5 @@ public class dialog: commonWidgetInterface {
     self.title = self.root.title
     self.id?.0.setIsVisible(true)
     self.id?.1.setIsVisible(true)
-    XMapRaised(self.root.display,self.id);
-    XGCValues gcValues={
-      .foreground=(self.text.color=dialogColors[self.type])
-    };
-    self.graphicId=XCreateGC(self.root.display,self.id,(self.graphicMask=GCForeground),&gcValues);
-    XMapRaised(self.root.display,self.id);
-    XMapSubwindows(self.root.display,self.id);
   }
 }

@@ -48,8 +48,6 @@ class commonWidgetInterface
       const char *value;
       unsigned int x = 0,
                    y = 0;
-      int width =  0,
-          height = 0;
       unsigned long color : 24 = 0;
       struct
       {

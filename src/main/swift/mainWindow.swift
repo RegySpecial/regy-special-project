@@ -6,11 +6,13 @@
 */
 #if os(macOS)
 import Cocoa
-public class mainWindow:commonWidgetInterface{
+public class mainWindow : commonWidgetInterface
+{
   public var id:NSWindow!
   public var argc:Int
   public var argv:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
   public var envp:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
+  public var application: ApplicationDelegate
   init
   (
     _ argc:Int,
@@ -19,8 +21,20 @@ public class mainWindow:commonWidgetInterface{
     _ title:String
   )
   {
-    self.id = NSWindow(
-      contentRect:NSRect(x:0,y:0,width:1080,height:540),
+    self.x = 0
+    self.y = 0
+    self.width = NSScreen.main?.frame.width
+    self.height = NSScreen.main?.frame.height
+    self.id = NSWindow
+    (
+      contentRect:
+        NSRect
+        (
+          x:self.x,
+          y:self.y,
+          width:self.width,
+          height:self.height
+        ),
       styleMask:[.titled,.closable,.resizable,.miniaturizable],
       backing:.buffered,
       defer:true,
@@ -33,23 +47,27 @@ public class mainWindow:commonWidgetInterface{
       [mainScreenButton(self,"Play"),mainScreenButton(self,"Exit")],
       [mainScreenButton(self,"Options"),mainScreenButton(self,"More information")]
     ]
-    let GridLayout:NSGridView=NSGridView(views:ButtonGrid.map{
+
+    let GridLayout:NSGridView = NSGridView(views: ButtonGrid.map{
       $0.map{
         $0.id
       }
     })
-    GridLayout.frame=self.id.frame
-    self.id.backgroundColor=NSColor(red:0,green:0,blue:0,alpha:1)
+
+    GridLayout.frame = self.id.frame
+    self.id.backgroundColor = NSColor(red:0,green:0,blue:0,alpha:1)
     self.id.contentView?.replaceSubview(self.form,with:GridLayout)
     self.update()
-    if CommandLine.argc==1{
-      self.window.submitButton=NSButton(
+    if CommandLine.argc==1
+    {
+      self.window.submitButton = NSButton
+      (
         title:"Invia",
         target:self.window,
         action:#selector(self.window.showIntro)
       )
-      self.window.textBox.textColor=NSColor(red:0,green:1,blue:0,alpha:1)
-      self.window.textBox.backgroundColor=NSColor(red:0,green:0,blue:0,alpha:1)
+      self.window.textBox.textColor = NSColor(red:0,green:1,blue:0,alpha:1)
+      self.window.textBox.backgroundColor = NSColor(red:0,green:0,blue:0,alpha:1)
       self.window.form=NSStackView(views:[self.window.textBox,self.window.submitButton])
       self.window.form.orientation=NSUserInterfaceLayoutOrientation.vertical
       self.window.form.frame=NSRect(
@@ -84,7 +102,8 @@ public class mainWindow:commonWidgetInterface{
     )
     PlayDialog.title="Gioca"
     text.string="Difficoltà gioco"
-    let simpleModeButton:NSButton=NSButton(
+    let simpleModeButton:NSButton = NSButton
+    (
       title:"Semplice",
       target:self,
       action:#selector(self.handleGameMode)
@@ -99,7 +118,8 @@ public class mainWindow:commonWidgetInterface{
       target:self,
       action:#selector(self.handleGameMode)
     )
-    let extremeModeButton:NSButton=NSButton(
+    let extremeModeButton:NSButton=NSButton
+    (
       title:"Estrema",
       target:self,
       action:#selector(self.handleGameMode)
@@ -148,7 +168,7 @@ public class mainWindow:commonWidgetInterface{
       }
     })
     GridLayout.frame=self.frame
-    self.id.backgroundColor=NSColor(red:0,green:0,blue:0,alpha:1)
+    self.id.backgroundColor = NSColor(red:0,green:0,blue:0,alpha:1)
     self.id.contentView?.replaceSubview(self.form,with:GridLayout)
     self.id.update()
   }

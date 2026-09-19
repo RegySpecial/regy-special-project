@@ -4,6 +4,17 @@
 *@date (First version [Linux]) 2026 July 20th Sunday, 15:46:00
 *@license GNU General Public License to stop private corporation to not share source code
 */
+
+public class gameModeButton : commonWidgetInterface
+{
+  public var root:dialog!
+  init(_ root:dialog!, _ text:String, _ color:NSColor)
+  {
+    
+  }
+  int show(unsigned int microseconds);
+  int hide(unsigned int microseconds);
+}
 #include "../../include/main/c++/gameModeButtons.hpp"
 gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color){
   XSetWindowAttributes gameModeButtonAttributes{

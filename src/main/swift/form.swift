@@ -8,7 +8,7 @@ public class form:commonWidgetInterface{
     self.width=self.root.width-2*self.root.width*20/100,//screen.width-2*form.x
     self.height=self.root.height-2*self.root.height*20/100,//screen.width-2*form.x
     self.border = borderStruct(2,0)
-    self.background.color = backgroundStruct()
+    self.background.color = backgroundStruct(0xffffff, 0, 0, 0, 0)
   }
 }
 #include "../../include/main/c++/form.hpp"
