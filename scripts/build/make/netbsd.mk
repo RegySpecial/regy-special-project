@@ -2,7 +2,7 @@ cConsoleLibrary =   src/lib/c/console.c
 cAudioBeepLibrary = src/lib/c/audio/beep.c
 cManageArguments =  src/main/c/manageArguments.c
 
-testManageArguments = test/testManageArguments.cpp
+testManageArguments = test/manageArguments.cpp
 
 amd64-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
 

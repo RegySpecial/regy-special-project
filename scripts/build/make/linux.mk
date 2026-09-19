@@ -3,7 +3,7 @@ cAudioBeepLibrary = src/lib/c/audio/beep.c
 cColorsLibrary =    src/lib/c/colors.c
 cManageArguments =  src/main/c/manageArguments.c
 
-testManageArguments = test/testManageArguments.cpp
+testManageArguments = test/manageArguments.cpp
 
 amd64-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
 amd64-testVideoGame =       /home/regyspecial/Scrivania/testVideoGame
@@ -95,7 +95,7 @@ mainDialogs =       src/main/c++/mainDialogs.cpp
 gameModeButtons =   src/main/c++/gameModeButtons.cpp
 form =              src/main/c++/form.cpp
 formTextBox =       src/main/c++/formTextBox.cpp
-testVideoGame =     test/testVideoGame.cpp
+testVideoGame =     test/videoGame.cpp
 
 build-amd64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox) $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(cAudioBeepLibrary) $(testVideoGame)
 	g++ \
