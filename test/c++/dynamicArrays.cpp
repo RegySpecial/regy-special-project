@@ -1,8 +1,9 @@
-#include "../src/include/lib/c++/DSA/dataStructures/dynamicArrays.hpp"
-#include "../src/include/lib/c/console.h"
+#include "../../src/include/lib/c++/DSA/dataStructures/dynamicArrays.hpp"
 #include <string.h>
+
 int main()
 {
+
   dynamicArray<int> dynamic_array(40);
 
   int scanfExit;
@@ -19,11 +20,14 @@ int main()
 		  mask |= !!strcasecmp(commandInput, commandList[commandIndex]);
 		if (!mask)
 		  failureMessage("INVALID COMMAND!");
+    else if (!strcasecmp(commandInput, "push"))
+      dynamic_array.push(0);
 		
     printf("%s %i\n", commandInput, scanfExit);
-  } while (strncasecmp(commandInput, "exit", 4));
+  }
+  while (strncasecmp(commandInput, "exit", 4));
 
   printf("%s %i\n", commandInput, scanfExit);
 
-	return 0;
+  return 0;
 }

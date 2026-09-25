@@ -66,7 +66,7 @@ build-arm64-ios-machO-cManageArguments: $(cManageArguments)
 build-arm64-macos-machO-cAudioBeepLibrary: $(cManageArguments)
 	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(amd64-macos-machO-cManageArguments)
 
-testManageArguments = test/manageArguments.cpp
+testManageArguments = test/c++/manageArguments.cpp
 
 amd64-ios-machO-testManageArguments =   /home/regyspecial/Scrivania/testManageArguments
 amd64-macos-machO-testManageArguments = /Users/*/Desktop/testManageArguments

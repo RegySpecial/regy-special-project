@@ -10,7 +10,7 @@
 #include<stdlib.h>
 #include"../../../c/console.h"
 template<
-  typename itemsDataType = void,
+  typename itemsDataType,
   typename sizeDataType = unsigned long long,
   typename capacityDataType = unsigned long long
 >

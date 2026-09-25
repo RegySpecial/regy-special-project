@@ -6,21 +6,33 @@
 */
 #if os(macOS)
 import Cocoa
+
 public class mainWindow : commonWidgetInterface
 {
-  public var id:NSWindow!
-  public var argc:Int
-  public var argv:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
-  public var envp:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
-  public var application: ApplicationDelegate
+  public var id: NSWindow!
+  public var argc: Int
+  public var argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
+  public var envp: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
+  public var application: NSApplication!
   init
   (
-    _ argc:Int,
-    _ argv:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>,
-    _ envp:UnsafeMutablePointer<UnsafeMutablePointer<Int8>>,
-    _ title:String
+    _ argc: Int,
+    _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>,
+    _ envp: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>,
+    _ title: String
   )
   {
+    self.application = NSApplication.shared
+    let appDelegate = applicationDelegate()
+    self.application.delegate = appDelegate
+    self.applciation.setActivationPolicy(.regular)
+    slef.application.applicationIconImage = NSImage(contentsOfFile: "bin/blob/image/icons/RegySpecial.ico")
+    if self.application.applicationIconImage == nil
+    {
+      print("Application image is \(a.applicationIconImage): Not Found!")
+      self.application.terminate(nil)
+    }
+
     self.x = 0
     self.y = 0
     self.width = NSScreen.main?.frame.width
@@ -55,7 +67,7 @@ public class mainWindow : commonWidgetInterface
     })
 
     GridLayout.frame = self.id.frame
-    self.id.backgroundColor = NSColor(red:0,green:0,blue:0,alpha:1)
+    self.id.backgroundColor = NSColor(srgbRed:0,green:0,blue:0,alpha:1)
     self.id.contentView?.replaceSubview(self.form,with:GridLayout)
     self.update()
     if CommandLine.argc==1
@@ -66,8 +78,8 @@ public class mainWindow : commonWidgetInterface
         target:self.window,
         action:#selector(self.window.showIntro)
       )
-      self.window.textBox.textColor = NSColor(red:0,green:1,blue:0,alpha:1)
-      self.window.textBox.backgroundColor = NSColor(red:0,green:0,blue:0,alpha:1)
+      self.window.textBox.textColor = NSColor(srgbRed:0,green:1,blue:0,alpha:1)
+      self.window.textBox.backgroundColor = NSColor(srgbRed:0,green:0,blue:0,alpha:1)
       self.window.form=NSStackView(views:[self.window.textBox,self.window.submitButton])
       self.window.form.orientation=NSUserInterfaceLayoutOrientation.vertical
       self.window.form.frame=NSRect(
@@ -78,6 +90,8 @@ public class mainWindow : commonWidgetInterface
       );
       self.window.contentView?.addSubview(window.form)
     }
+    
+    self.application.run()
   }
   let text:NSTextView=NSTextView(frame:NSRect(x:0,y:0,width:100,height:100))
   var gameMode:UInt8=0
@@ -163,12 +177,12 @@ public class mainWindow : commonWidgetInterface
           target:self, 
           action:dict[$0]!
         )
-        Button.contentTintColor=NSColor(red:0,green:0,blue:1,alpha:0)
+        Button.contentTintColor=NSColor(srgbRed:0,green:0,blue:1,alpha:0)
         return Button
       }
     })
     GridLayout.frame=self.frame
-    self.id.backgroundColor = NSColor(red:0,green:0,blue:0,alpha:1)
+    self.id.backgroundColor = NSColor(srgbRed:0,green:0,blue:0,alpha:1)
     self.id.contentView?.replaceSubview(self.form,with:GridLayout)
     self.id.update()
   }

@@ -24,8 +24,8 @@ public class ApplicationDelegate : NSObject,
         target:self.window,
         action:#selector(self.window.showIntro)
       )
-      self.window.textBox.textColor = NSColor(red:0,green:1,blue:0,alpha:1)
-      self.window.textBox.backgroundColor = NSColor(red:0,green:0,blue:0,alpha:1)
+      self.window.textBox.textColor = NSColor(srgbRed:0,green:1,blue:0,alpha:1)
+      self.window.textBox.backgroundColor = NSColor(srgbRed:0,green:0,blue:0,alpha:1)
       self.window.form=NSStackView(views:[self.window.textBox,self.window.submitButton])
       self.window.form.orientation=NSUserInterfaceLayoutOrientation.vertical
       self.window.form.frame=NSRect(

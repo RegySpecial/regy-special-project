@@ -2,9 +2,9 @@ import AppKit
 
 public struct borderStruct
 {
-  public var width:UInt32 = 1
-  public var color:UInt64 = 0xffffff
-  public init(_ width:UInt32 = 1, _ color:UInt64 = 0xffffff)
+  public var width: CGFloat = 1
+  public var color: NSColor = NSColor(srgbRed: 1, green: 1, blue: 1, alpha: 1)
+  public init(_ width: CGFloat = 1, _ color: NSColor = NSColor(srgbRed: 1, green: 1, blue: 1, alpha: 1))
   {
     self.width = width
     self.color = color
@@ -13,21 +13,21 @@ public struct borderStruct
 
 public struct backgroundStruct
 {
-  public var color:UInt64 = 0xffffff
-  public var x:UInt32 = 0
-  public var y:UInt32 = 0
-  public var width:Int32 = 0
-  public var height:Int32 = 0
+  public var color:  NSColor = NSColor(srgbRed: 1, green: 1, blue: 1, alpha: 1)
+  public var x:      Double = 0
+  public var y:      Double = 0
+  public var width:  Double = 0
+  public var height: Double = 0
   public init
   (
-    _ color:UInt64 = 0xffffff
-    _ x:UInt32 = 0
-    _ y:UInt32 = 0
-    _ width:Int32 = 0
-    _ height:Int32 = 0
+    _ color:  NSColor = NSColor(srgbRed: 1, green: 1, blue: 1, alpha: 1)
+    _ x:      Double = 0
+    _ y:      Double = 0
+    _ width:  Double = 0
+    _ height: Double = 0
   )
   {
-    self.color = 0xffffff
+    self.color = color
     self.x = x
     self.y = y
     self.width = width
@@ -37,14 +37,14 @@ public struct backgroundStruct
 
 public struct fontStruct
 {
-  public var family:String
-  public var size:UInt32 = 10
-  public var weight:UInt32
+  public var family: String
+  public var size: UInt32 = 10
+  public var weight: UInt32
   public init
   (
-    _ family:String
-    _ size:UInt32 = 10
-    _ weight:UInt32
+    _ family: String
+    _ size: UInt32 = 10
+    _ weight: UInt32
   )
   {
     self.family = family
@@ -55,40 +55,38 @@ public struct fontStruct
 
 public struct textStruct
 {
-  public var value:String
-  public var x:UInt32 = 0
-  public var y:UInt32 = 0
-  public var font:fontStruct
+  public var value: String
+  public var x: Double = 0
+  public var y: Double = 0
+  public var font: fontStruct
   public init
   (
-    _ value:String?
-    _ x:UInt32 = 0
-    _ y:UInt32 = 0
+    _ value: String?
+    _ x: Double = 0
+    _ y: Double = 0
     _ font:fontStruct?
   )
   {
     self.value = value
     self.x = x
     self.y = y
-    self.width = width
-    self.height = height
     self.font = font
   }
 }
 
 public protocol commonWidgetInterface
 {
-  var x:UInt8=0
-  var y:UInt8=0
-  var width:Int=0
-  var height:Int=0
-  var title:String
-  var subWindows:[NSView]
-  var border:borderStruct
-  var background:backgroundStruct
-  var text:textStruct
-  func show(_ microseconds:UInt32) -> Int;
-  func hide(_ microseconds:UInt32) -> Int;
+  var x:      Double
+  var y:      Double
+  var width:  Double
+  var height: Double  
+  var title: String
+  var subWindows: [NSView]
+  var border: borderStruct
+  var background: backgroundStruct
+  var text: textStruct
+  func show(_ microseconds: UInt32) -> Int;
+  func hide(_ microseconds: UInt32) -> Int;
   @objc mutating func onClientMessage()
   @objc mutating func onResize()
   @objc mutating func onButtonUp()

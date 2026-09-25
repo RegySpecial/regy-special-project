@@ -3,7 +3,7 @@ cAudioBeepLibrary = src/lib/c/audio/beep.c
 cColorsLibrary =    src/lib/c/colors.c
 cManageArguments =  src/main/c/manageArguments.c
 
-testManageArguments = test/manageArguments.cpp
+testManageArguments = test/c++/manageArguments.cpp
 
 amd64-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
 amd64-testVideoGame =       /home/regyspecial/Scrivania/testVideoGame
