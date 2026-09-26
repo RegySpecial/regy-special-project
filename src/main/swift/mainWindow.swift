@@ -37,6 +37,7 @@ public class mainWindow : commonWidgetInterface
     self.y = 0
     self.width = NSScreen.main?.frame.width
     self.height = NSScreen.main?.frame.height
+
     self.id = NSWindow
     (
       contentRect:
@@ -52,6 +53,9 @@ public class mainWindow : commonWidgetInterface
       defer:true,
       screen:NSScreen.main
     )
+    let winDelegate = windowDelegate()
+    self.id.delegate = winDelegate
+    
     self.title = title
     self.id.setIsVisible(true)
     self.id.title = self.title
@@ -60,11 +64,7 @@ public class mainWindow : commonWidgetInterface
       [mainScreenButton(self,"Options"),mainScreenButton(self,"More information")]
     ]
 
-    let GridLayout:NSGridView = NSGridView(views: ButtonGrid.map{
-      $0.map{
-        $0.id
-      }
-    })
+    let GridLayout:NSGridView = NSGridView(views: ButtonGrid.map(\.map(\.id))
 
     GridLayout.frame = self.id.frame
     self.id.backgroundColor = NSColor(srgbRed:0,green:0,blue:0,alpha:1)

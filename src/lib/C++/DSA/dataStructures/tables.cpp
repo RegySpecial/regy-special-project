@@ -12,17 +12,20 @@ struct hashTableItems{
 template<
   typename keyDataType,
   typename valueDataType,
-  typename capacityDataType=unsigned long
+  typename capacityDataType = unsigned long long
 >
 class hashTable{
 public:
   struct hashTableItems<keyDataType,valueDataType>**items;
   capacityDataType capacity;
-  static unsigned long long hash(keyDataType key){
-    unsigned long long hash=0;
-    for(unsigned long long i=0;key+i!=0;i++)hash+=31*key[i]
-    return hash%this->capacity;
+
+  static capacityDataType hash(keyDataType key){
+    capacityDataType hash=0;
+    for(capacityDataType i=0;key+i!=0;i++)
+      hash+=31*key[i]
+    return hash % this->capacity;
   }
+
   hashTable(hashTableItems<keyDataType,valueDataType>*items,capacityDataType capacity){
     this->items=(hashTableItems<keyDataType,valueDataType>*)malloc(sizeof(hashTableItems<keyDataType,valueDataType>)*capacity);
     for(capacityDataType index=0;index<capacity;index++){
@@ -33,6 +36,7 @@ public:
       }
     }
   }
+  
   inline valueDataType operator[](keyDataType key){
     return this->next[hashTable::hash(key)];
   }

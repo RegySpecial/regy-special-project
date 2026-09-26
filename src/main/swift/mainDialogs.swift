@@ -8,20 +8,20 @@ public class dialog: commonWidgetInterface
     self.y = 20
     self.width = self.root.width - 40
     self.height = self.root.height - 40
-    let titles:[String] = {
+    let titles:[String] = [
       "layoutMode",
       "Play",
       "Exit",
       "Options",
       "More information"
-    };
-    let dialogColors:[UInt32] = {
+    ]
+    let dialogColors:[UInt32] = [
       255,
       255<<8,
       255<<16,
       0xffff,
       0xffffff
-    };
+    ]
     self.background = backgroundStruct(0)
     self.border = borderStruct(1, 0xffffff)
     self.id.0 = NSPanel() ?? nil
