@@ -116,7 +116,8 @@ mainWindow::mainWindow(int argc, char *argv[], char *envp[],const char *title)
       .max_height = this->height
     };
   
-  this->id=XCreateWindow(
+  this->id = XCreateWindow
+  (
     this->display,
     this->screen->root,
     this->x,
@@ -131,7 +132,8 @@ mainWindow::mainWindow(int argc, char *argv[], char *envp[],const char *title)
     &mainWindowAttributes
   );
 
-  XSetStandardProperties(
+  XSetStandardProperties
+  (
     this->display,
     this->id,
     this->title,
@@ -185,4 +187,25 @@ int mainWindow::hide(unsigned int microseconds)
   usleep(microseconds);
   return XUnmapWindow(this->display, this->id);
 #endif
+}
+
+int mainWindow::eventLoop(unsigned int microseconds)
+{
+  for (XEvent eventStructure; readBit<unsigned char>(this->gameContext.generalPurposeMask, generalPurposeMaskBits_eventLoop); )
+  {
+    XNextEvent(this->display, &eventStructure);
+    for (unsigned long long i = 0; i < this->subWindows.size; i++)
+    {
+      switch (eventStructure.type)
+      {
+        case ResizeRequest:
+          if (this->id == eventStructure.xresizerequest.window)
+          
+          break;
+        
+        default:
+          break;
+      }
+    }
+  }
 }

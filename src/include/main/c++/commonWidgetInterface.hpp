@@ -2,10 +2,10 @@
 #define commonWidgetInterfaceHpp
 #if defined __WIN32||defined __WIN64
 #include <windows.h>
-#define window HWND
+#define windowType HWND
 #elifdef WaylandEnabled
 #include <wayland-client.h>
-#define window wayland_window
+#define windowType wayland_window
 #else
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -15,7 +15,7 @@
 #include "../../lib/c++/DSA/algorithms/arrays.hpp"
 #include "../../main/c/manageArguments.h"
 #include "../../lib/c++/bitManipulation.hpp"
-#define window Window
+#define windowType Window
 #endif
 
 class commonWidgetInterface
@@ -26,9 +26,9 @@ class commonWidgetInterface
     int width =  0,
         height = 0;
     const char *title;
-    window id = 0;
+    windowType id = 0;
     GC graphicId = 0;
-    dynamicArray<window> subWindows;
+    dynamicArray<windowType> subWindows;
     struct
     {
       unsigned int width = 1;

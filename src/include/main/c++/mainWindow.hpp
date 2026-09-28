@@ -1,5 +1,9 @@
 #ifndef mainWindowHpp
 #define mainWindowHpp
+#include "commonWidgetInterface.hpp"
+#include "../c/manageArguments.h"
+#include "../../lib/c++/bitManipulation.hpp"
+#include "../c/generalPurposeMaskBits.h"
 #if !(defined __WIN32 && defined __WIN64)
 #ifdef WaylandEnabled
 #define graphicDisplay struct wl_display
@@ -7,7 +11,6 @@
 #define graphicDisplay Display
 #endif
 #endif
-#include "commonWidgetInterface.hpp"
 
 class mainWindow : public commonWidgetInterface
 {
@@ -33,10 +36,12 @@ class mainWindow : public commonWidgetInterface
         **envp;
     graphicDisplay *display;
     Screen *screen;
+    gameContextStructure gameContext;
     mainWindow(int argc, char *argv[], char *envp[], const char *title);
     #endif
     ~mainWindow();
     int show(unsigned int microseconds) override;
     int hide(unsigned int microseconds) override;
+    int eventLoop(unsigned int microseconds);
 };
 #endif

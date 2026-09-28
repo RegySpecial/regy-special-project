@@ -6,8 +6,6 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
     text,
     20,
     20,
-    0,
-    0,
     255 << 16,
     {
       "-urw-century schoolbook l-regular-r-normal--0-0-0-0-p-0-iso8859-15",

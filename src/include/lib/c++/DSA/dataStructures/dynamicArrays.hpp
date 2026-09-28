@@ -59,11 +59,11 @@ public:
         free(oldItems);
         oldItems = NULL;
       }
-      for (sizeDataType i = this->size; i > index; i--)
-        this->items[i] = this->items[i - 1];
-      this->items[index] = item;
-      this->size += 1;
     }
+    for (sizeDataType i = this->size; i > index; i--)
+      this->items[i] = this->items[i - 1];
+    this->items[index] = item;
+    this->size += 1;
   }
 
   void remove(sizeDataType index)
@@ -99,9 +99,9 @@ public:
         free(oldItems);
         oldItems = NULL;
       }
-      this->items[this->size] = item;
-      this->size += 1;
     }
+    this->items[this->size] = item;
+    this->size += 1;
   }
 
   inline void pop()
@@ -653,15 +653,15 @@ public:
     }
   }
 
-  void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
+  void merge(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
     for (sizeDataType index = 0; index < this->size; index++)
       this->push(sourceDynamicArray->items[index]);
   }
-  void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray, sizeDataType size){
+  void merge(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray, sizeDataType size){
     for (sizeDataType index = 0; index < size && size <= this->size; index++)
       this->push(sourceDynamicArray->items[index]);
   }
-  void concat(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray, sizeDataType left, sizeDataType right){
+  void merge(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray, sizeDataType left, sizeDataType right){
     for (; 0 <= left && left < right && right <= this->size; left++)
       this->push(sourceDynamicArray->items[left]);
   }
@@ -677,6 +677,41 @@ public:
   void copy(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray, sizeDataType left, sizeDataType right){
     for (; 0 <= left && left < right && right <= this->size; left++)
       this->items[left] = sourceDynamicArray->items[left];
+  }
+
+  void join(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
+    for (sizeDataType thisIndex = 0; thisIndex < this->size; thisIndex++)
+      for (sizeDataType sourceIndex = 0; sourceIndex < sourceDynamicArray->size; sourceIndex++)
+        if (sourceDynamicArray->items[sourceIndex] != this->items[thisIndex])
+          this->push(sourceDynamicArray->items[sourceIndex]);
+  }
+  void join(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray, sizeDataType size){
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
+      this->push(sourceDynamicArray->items[index]);
+  }
+  void join(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray, sizeDataType left, sizeDataType right){
+    for (; 0 <= left && left < right && right <= this->size; left++)
+      this->push(sourceDynamicArray->items[left]);
+  }
+
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  intersect(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray){
+    dynamicArray<itemsDataType,sizeDataType,capacityDataType> resultDynamicArray;
+    for (sizeDataType thisIndex = 0; thisIndex < this->size; thisIndex++)
+      for (sizeDataType sourceIndex = 0; sourceIndex < sourceDynamicArray->size; sourceIndex++)
+        if (sourceDynamicArray->items[sourceIndex] == this->items[thisIndex])
+          resultDynamicArray.push(sourceDynamicArray->items[sourceIndex]);
+    return resultDynamicArray;
+  }
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  intersect(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray, sizeDataType size){
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
+      this->push(sourceDynamicArray->items[index]);
+  }
+  dynamicArray<itemsDataType,sizeDataType,capacityDataType>
+  intersect(dynamicArray<itemsDataType,sizeDataType,capacityDataType>*sourceDynamicArray, sizeDataType left, sizeDataType right){
+    for (; 0 <= left && left < right && right <= this->size; left++)
+      this->push(sourceDynamicArray->items[left]);
   }
 
   ~dynamicArray(){
