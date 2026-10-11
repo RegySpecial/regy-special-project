@@ -283,11 +283,10 @@ gameContextStructure manageBackgroundFlag(int argc, char *argv[])
     {
       case argumentOptionBackgroundFlagSuboptions_color:
         regex_t regularExpression;
-        regmatch_t occurrency;
         int regularExpressionCompilation,
             regularExpressionExecution;
         assert(!(regularExpressionCompilation = regcomp(&regularExpression, colorFunctionsRegularExpression, REG_ICASE | REG_EXTENDED)));
-        if (!(regularExpressionExecution = regexec(&regularExpression, suboptionValue, 1, &occurrency, REG_ICASE | REG_EXTENDED)))
+        if (!(regularExpressionExecution = regexec(&regularExpression, suboptionValue, 1, NULL, REG_ICASE | REG_EXTENDED)))
         {
           unsigned char functionIndex = 0;
           char colorFuntionString[5 + 1 + 4 * (3 + 1) + 1] = {};

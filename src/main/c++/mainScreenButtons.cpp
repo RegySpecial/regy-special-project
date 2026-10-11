@@ -89,12 +89,12 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
   };
 
   this->root->onClientMessage = [](XClientMessageEvent *event, void *extraArgs){
-    mainScreenButton*exitButton = (mainScreenButton*)extraArgs;
+    Window *exitButton = (Window *)extraArgs;
     XEvent eventOutput;
-    if((Atom)event->data.l == XInternAtom(exitButton->root->display, "WM_DELETE_WINDOW", 0))
+    if((Atom)event->data.l == XInternAtom(event->display, "WM_DELETE_WINDOW", 0))
       XSendEvent(
-        exitButton->root->display,
-        exitButton->id,
+        event->display,
+        *exitButton,
         0,
         ButtonPressMask,
         &eventOutput

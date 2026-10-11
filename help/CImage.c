@@ -7,12 +7,12 @@ typedef struct{
   char*mime;
 }image;
 int main(){
-  image*img=(image*)malloc(sizeof(image));
+  image*img=(image*)malloc(sizeof (image));
   img->width=1920;
   img->height=1080;
-  img->pixels=(unsigned long**)malloc(sizeof(unsigned long*)*img->height);
+  img->pixels=(unsigned long**)malloc(sizeof (unsigned long*)*img->height);
   for(unsigned int y=0;y<img->height;y++){
-    *(img->pixels+y)=(long*)calloc(img->width,sizeof(unsigned long));
+    *(img->pixels+y)=(long*)calloc(img->width,sizeof (unsigned long));
   }
   img->mime=(char*)malloc(14);
   strcpy(img->mime,"image/jpeg");

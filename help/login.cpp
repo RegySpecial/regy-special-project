@@ -229,7 +229,7 @@ int main(int argc,char*argv[]) {
           formCoordinates.x,
           formCoordinates.y,
           "The text box content is empty",
-          sizeof("The text box content is empty")-1
+          sizeof ("The text box content is empty")-1
         );
         XDrawString(
           display,

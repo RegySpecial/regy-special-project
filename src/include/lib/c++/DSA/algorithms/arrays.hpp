@@ -202,17 +202,17 @@ sizeDataType search(itemsDataType*array,itemsDataType item,sizeDataType(*predica
 
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
 void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType),sizeDataType size){
-  for(sizeDataType index=0;index<size;index++)
+  for(sizeDataType index=0; index<size; index++)
     forEachFunction(array[index]);
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
 void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType,sizeDataType),sizeDataType size){
-  for(sizeDataType index=0;index<size;index++)
+  for(sizeDataType index=0; index<size; index++)
     forEachFunction(array[index],index);
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
 void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType size){
-  for(sizeDataType index=0;index<size;index++)
+  for(sizeDataType index=0; index<size; index++)
     forEachFunction(array[index],index,array);
 }
 
@@ -246,7 +246,7 @@ accumulationValueDataType reduce
   accumulationValueDataType accumulationValue
 )
 {
-  for(sizeDataType index=0;index<size;index++)
+  for(sizeDataType index=0; index<size; index++)
     accumulationValue = reduceFunction(array[index],index,array);
   return accumulationValue;
 }

@@ -148,7 +148,7 @@ mainWindow::mainWindow(int argc, char *argv[], char *envp[],const char *title)
 
   this->onResize = [](XResizeRequestEvent *event, void *extraArgs){
     mainWindow *self = (mainWindow*) extraArgs;
-    for(unsigned long i=0;i<self->subWindows.size;i++)
+    for(unsigned long i = 0; i < self->subWindows.size;i++)
       XResizeWindow(self->display,self->subWindows[i],event->width,event->height);
   };
 }
@@ -189,23 +189,37 @@ int mainWindow::hide(unsigned int microseconds)
 #endif
 }
 
-int mainWindow::eventLoop(unsigned int microseconds)
+void mainWindow::eventLoop(unsigned int microseconds)
 {
+  usleep(microseconds);
   for (XEvent eventStructure; readBit<unsigned char>(this->gameContext.generalPurposeMask, generalPurposeMaskBits_eventLoop); )
   {
     XNextEvent(this->display, &eventStructure);
-    for (unsigned long long i = 0; i < this->subWindows.size; i++)
+    
+    switch (eventStructure.type)
     {
-      switch (eventStructure.type)
-      {
-        case ResizeRequest:
-          if (this->id == eventStructure.xresizerequest.window)
-          
-          break;
-        
-        default:
-          break;
-      }
+      case ClientMessage:
+        Window argument = this->subWindows[1];
+        if (eventStructure.xclient.window == this->id)
+          this->onClientMessage(&eventStructure.xclient, &argument);
+        break;
+      case ResizeRequest:
+        if (eventStructure.xresizerequest.window == this->id)
+          this->onResize(&eventStructure.xresizerequest, this);
+        for (unsigned int i = 0; i < this->requestStruct.resizeEventListeners.size; i++)
+          if (eventStructure.xresizerequest.window == this->requestStruct.subWindowIdentifiers[i])
+            this->requestStruct.resizeEventListeners[i];
+        break;
+      case ButtonPress:
+        for (unsigned int i = 0; i < this->requestStruct.buttonDownEventListeners.size; i++)
+          if (eventStructure.xbutton.window == this->requestStruct.subWindowIdentifiers[i])
+            this->requestStruct.buttonDownEventListeners[i];
+        break;
+      case KeyPress:
+        for (unsigned int i = 0; i < this->requestStruct.keyDownEventListeners.size; i++)
+          if (eventStructure.xkey.window == this->requestStruct.subWindowIdentifiers[i])
+            this->requestStruct.keyDownEventListeners[i];
+        break;
     }
   }
 }

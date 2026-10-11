@@ -6366,8 +6366,8 @@ SQLITE_API int sqlite3_sleep(int);
 ** LPCWSTR zPath = Windows::Storage::ApplicationData::Current->
 ** &nbsp;     TemporaryFolder->Path->Data();
 ** char zPathBuf&#91;MAX_PATH + 1&#93;;
-** memset(zPathBuf, 0, sizeof(zPathBuf));
-** WideCharToMultiByte(CP_UTF8, 0, zPath, -1, zPathBuf, sizeof(zPathBuf),
+** memset(zPathBuf, 0, sizeof (zPathBuf));
+** WideCharToMultiByte(CP_UTF8, 0, zPath, -1, zPathBuf, sizeof (zPathBuf),
 ** &nbsp;     NULL, NULL);
 ** sqlite3_temp_directory = sqlite3_mprintf("%s", zPathBuf);
 ** </pre></blockquote>

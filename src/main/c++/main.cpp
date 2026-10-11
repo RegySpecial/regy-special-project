@@ -77,7 +77,7 @@ void PrintSQLDiagnosticError(void* SQLHandle,SQLSMALLINT type,const char* text){
   SQLCHAR state[6],message[256];
   SQLINTEGER nativeError;
   SQLSMALLINT size;
-  SQLGetDiagRecA(type,SQLHandle,1,state,&nativeError,message,sizeof(message),&size);
+  SQLGetDiagRecA(type,SQLHandle,1,state,&nativeError,message,sizeof (message),&size);
   std::cerr<<text<<": "<<message<<"\n";
 }
 #if defined __WIN32||defined __WIN64
@@ -186,7 +186,7 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
             while(SQLFetch(SQLStatement)==SQL_SUCCESS){
               unsigned char name[256];
               long indicator;
-              SQLGetData(SQLStatement,2,SQL_C_CHAR,name,sizeof(name),&indicator);
+              SQLGetData(SQLStatement,2,SQL_C_CHAR,name,sizeof (name),&indicator);
               std::cout<<name<<"\n";
             }
           }else
@@ -236,7 +236,7 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
       titleGraphics.DrawString(L"Difficoltà gioco",-1,&font,titleRect,&titleAlign,&titleBrush);
       EndPaint(hwnd,&paintStructure);
       EndPaint(GetDlgItem(hwnd,0),&titlePaint);
-      for(unsigned char INDEX=1;INDEX<5;INDEX++){
+      for(unsigned char INDEX=1; index<5; index++){
         PAINTSTRUCT buttonPaint;
         const HDC paintButtons=BeginPaint(GetDlgItem(hwnd,INDEX),&buttonPaint);
         Gdiplus::Graphics buttonGraphics(paintButtons);

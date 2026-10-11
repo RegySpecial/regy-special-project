@@ -1,14 +1,16 @@
 #ifndef tablesHpp
 #define tablesHpp
 #include<stdlib.h>
+
 template<
   typename key,
   typename value
 >
-struct hashTableItems{
+struct hashTableItems
+{
   key key;
   value value;
-  struct hashTableItems<key,value>*next;
+  struct hashTableItems<key, value> *next;
 };
 
 template<
@@ -16,44 +18,51 @@ template<
   typename valueDataType,
   typename capacityDataType = unsigned long long
 >
-class hashTable{
-public:
-  struct hashTableItems<keyDataType,valueDataType>**items;
-  capacityDataType capacity;
+class hashTable
+{
+  public:
+    struct hashTableItems<keyDataType, valueDataType>**items;
+    capacityDataType capacity;
 
-  static capacityDataType hash(keyDataType key){
-    capacityDataType hash=0;
-    for(capacityDataType i=0;key+i!=0;i++)
-      hash+=31*key[i]
-    return hash % this->capacity;
-  }
-
-  hashTable(hashTableItems<keyDataType,valueDataType>*items,capacityDataType capacity){
-    this->items = (hashTableItems<keyDataType,valueDataType> *) malloc(sizeof(hashTableItems<keyDataType,valueDataType>) * capacity);
-    for(capacityDataType index = 0; index < capacity; index++){
-      if(this->items[hashTable::hash(index)]){
-        this->items[hashTable::hash(index)].next = NULL;
+    static capacityDataType hash(keyDataType key)
+    {
+      capacityDataType hash = 0;
+      if (sizeof key / sizeof *key == 1)
+        return key % this->capacity;
+      for (capacityDataType i = 0; key + i; i++)
+        hash += 31 * key[i]
+      return hash % this->capacity;
+    }
+  
+    hashTable(hashTableItems<keyDataType,valueDataType> *items, capacityDataType capacity)
+    {
+      this->items = (hashTableItems<keyDataType,valueDataType> *) malloc(sizeof (hashTableItems<keyDataType, valueDataType>) * capacity);
+      for (capacityDataType index = 0; index < capacity; index++)
+        if (this->items[hashTable::hash(index)])
+          this->items[hashTable::hash(index)].next = NULL;
+        else
+          this->items[hashTable::hash(index)] = items[hashTable::hash(index)];
+    }
+    
+    inline valueDataType operator[](keyDataType key)
+    {
+      return this->next[hashTable::hash(key)];
+    }
+    
+    void insert(keyDataType key,valueDataType value){
+      if(this->items[hashTable::hash(key)]){
+  
       }else{
-        this->items[hashTable::hash(index)] = items[hashTable::hash(index)];
+        this->items[hashTable::hash(key)].key=key;
+        this->items[hashTable::hash(key)].value=value;
+        this->items[hashTable::hash(key)].next=NULL;
       }
     }
-  }
   
-  inline valueDataType operator[](keyDataType key){
-    return this->next[hashTable::hash(key)];
-  }
-  void insert(keyDataType key,valueDataType value){
-    if(this->items[hashTable::hash(key)]){
-
-    }else{
-      this->items[hashTable::hash(key)].key=key;
-      this->items[hashTable::hash(key)].value=value;
-      this->items[hashTable::hash(key)].next=NULL;
+    ~hashTable()
+    {
+      free(this->items);
+      this->items=NULL;
     }
-  }
-  ~hashTable(){
-    free(this->items);
-    this->items=NULL;
-  }
 };
 #endif

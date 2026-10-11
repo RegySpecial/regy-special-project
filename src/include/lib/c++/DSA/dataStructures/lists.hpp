@@ -183,7 +183,7 @@ public:
   void insert(dataType value,unsigned long long position){
     if(position==1)this->push(value);
     linkedList<dataType>newNode(value);
-    for(unsigned int index=0;index<position;index++){
+    for(unsigned int index=0; index<position; index++){
       if(index==position)
         this->next = &newNode;
     }
@@ -240,7 +240,7 @@ public:
   linkedList<dataType>insert(dataType value,unsigned long long position){
     if(position==1)this->push(value);
     linkedList<dataType>newNode(value);
-    for(unsigned int index=0;index<position;index++){
+    for(unsigned int index=0; index<position; index++){
       if(index==position){
         this->node=&newNode;
         return newNode;

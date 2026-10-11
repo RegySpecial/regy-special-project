@@ -71,11 +71,11 @@ int main(int argc,char*argv[],char*envp[]){
     if(SQL_NO_DATA==SQLReturn)SQLReturn=SQLExecDirectA(SQLStatement,(SQLCHAR*)"insert into User select 1,\"Player 1\"",SQL_NTS);
   }else{
     SQLReturn=SQLPrepareA(SQLStatement,(SQLCHAR*)"select distinct name from User where name=?",SQL_NTS);
-    SQLReturn=SQLBindParameter(SQLStatement,1,SQL_PARAM_INPUT,SQL_C_CHAR,SQL_VARCHAR,40,0,(void*)userInput,sizeof(userInput),NULL);
+    SQLReturn=SQLBindParameter(SQLStatement,1,SQL_PARAM_INPUT,SQL_C_CHAR,SQL_VARCHAR,40,0,(void*)userInput,sizeof (userInput),NULL);
     SQLReturn=SQLExecute(SQLStatement);
   }
   while(SQLFetch(SQLStatement)==SQL_SUCCESS){
-    SQLGetData(SQLStatement,1,SQL_C_CHAR,(void*)userInput,sizeof(userInput),&indicator);
+    SQLGetData(SQLStatement,1,SQL_C_CHAR,(void*)userInput,sizeof (userInput),&indicator);
     std::cout<<userInput<<'\n';
   }
   SQLFreeHandle(SQL_HANDLE_STMT,SQLStatement);
