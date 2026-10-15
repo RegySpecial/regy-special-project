@@ -13,21 +13,21 @@ public:
     this->value=value;
     this->next=NULL;
   }
-  void forEach(void(*callbackFunction)(dataType)){
+  void forEach(void (*callbackFunction)(dataType)){
     unsigned long nodeIndex=0;
     if(this->next!=NULL){
       callbackFunction(this->value,nodeIndex++);
       this->forEach(callbackFunction);
     }
   }
-  void forEach(void(*callbackFunction)(dataType,unsigned long)){
+  void forEach(void (*callbackFunction)(dataType,unsigned long)){
     unsigned long nodeIndex=0;
     if(this->next!=NULL){
       callbackFunction(this->value,nodeIndex++);
       this->forEach(callbackFunction);
     }
   }
-  void forEach(void(*callbackFunction)(dataType,unsigned long,linkedList<dataType>*)){
+  void forEach(void (*callbackFunction)(dataType,unsigned long,linkedList<dataType>*)){
     unsigned long nodeIndex=0;
     if(this->next!=NULL){
       callbackFunction(this->value,nodeIndex++,this);
@@ -89,7 +89,7 @@ public:
     this->next=NULL;
     this->prev=NULL;
   }
-  void forEach(void(*callbackFunction)(dataType,unsigned int)){
+  void forEach(void (*callbackFunction)(dataType,unsigned int)){
     unsigned long nodeIndex=0;
     for(linkedList*head=this->node;head!=NULL;nodeIndex++){
       callback(*head,nodeIndex);

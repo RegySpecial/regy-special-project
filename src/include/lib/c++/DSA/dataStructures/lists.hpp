@@ -19,14 +19,14 @@ public:
     this->next = NULL;
   }
 
-  void forEach(void(*callbackFunction)(dataType))
+  void forEach(void (*callbackFunction)(dataType))
   {
     for (linkedList<dataType> *node = this; node; node = node->next)
       callbackFunction(node->value);
   }
 
   template<typename sizeDataType = unsigned long long>
-  void forEach(void(*callbackFunction)(dataType), sizeDataType size)
+  void forEach(void (*callbackFunction)(dataType), sizeDataType size)
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node && index < size; node = node->next, index++)
@@ -34,14 +34,14 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void forEach(void(*callbackFunction)(dataType), sizeDataType left, sizeDataType right)
+  void forEach(void (*callbackFunction)(dataType), sizeDataType left, sizeDataType right)
   {
     for (linkedList<dataType> *node = this; node && 0 <= left && left < right; node = node->next, left++)
       callbackFunction(node->value);
   }
 
   template<typename sizeDataType = unsigned long long>
-  void forEach(void(*callbackFunction)(dataType, sizeDataType))
+  void forEach(void (*callbackFunction)(dataType, sizeDataType))
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node; node = node->next, index++)
@@ -49,7 +49,7 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void forEach(void(*callbackFunction)(dataType, sizeDataType), sizeDataType size)
+  void forEach(void (*callbackFunction)(dataType, sizeDataType), sizeDataType size)
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node && index < size; node = node->next, index++)
@@ -57,14 +57,14 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void forEach(void(*callbackFunction)(dataType, sizeDataType), sizeDataType left, sizeDataType right)
+  void forEach(void (*callbackFunction)(dataType, sizeDataType), sizeDataType left, sizeDataType right)
   {
     for (linkedList<dataType> *node = this; node && 0 <= left && left < right; node = node->next, left++)
       callbackFunction(node->value, left);
   }
 
   template<typename sizeDataType = unsigned long long>
-  void forEach(void(*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *))
+  void forEach(void (*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *))
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node; node = node->next, index++)
@@ -72,7 +72,7 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void forEach(void(*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *), sizeDataType size)
+  void forEach(void (*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *), sizeDataType size)
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node && index < size; node = node->next, index++)
@@ -80,7 +80,7 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void forEach(void(*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *), sizeDataType left, sizeDataType right)
+  void forEach(void (*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *), sizeDataType left, sizeDataType right)
   {
     for (linkedList<dataType> *node = this; node && 0 <= left && left < right; node = node->next, left++)
       callbackFunction(node->value, index, this);
@@ -88,7 +88,7 @@ public:
 
   //filter
 
-  linkedList<dataType> filter(void(*filterFunction)(dataType))
+  linkedList<dataType> filter(void (*filterFunction)(dataType))
   {
     linkedList<dataType> filterLinkedList;
 
@@ -101,7 +101,7 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void filter(void(*callbackFunction)(dataType), sizeDataType size)
+  void filter(void (*callbackFunction)(dataType), sizeDataType size)
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node && index < size; node = node->next, index++)
@@ -109,14 +109,14 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void filter(void(*callbackFunction)(dataType), sizeDataType left, sizeDataType right)
+  void filter(void (*callbackFunction)(dataType), sizeDataType left, sizeDataType right)
   {
     for (linkedList<dataType> *node = this; node && 0 <= left && left < right; node = node->next, left++)
       callbackFunction(node->value);
   }
 
   template<typename sizeDataType = unsigned long long>
-  void filter(void(*callbackFunction)(dataType, sizeDataType))
+  void filter(void (*callbackFunction)(dataType, sizeDataType))
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node; node = node->next, index++)
@@ -124,7 +124,7 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void filter(void(*callbackFunction)(dataType, sizeDataType), sizeDataType size)
+  void filter(void (*callbackFunction)(dataType, sizeDataType), sizeDataType size)
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node && index < size; node = node->next, index++)
@@ -132,14 +132,14 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void filter(void(*callbackFunction)(dataType, sizeDataType), sizeDataType left, sizeDataType right)
+  void filter(void (*callbackFunction)(dataType, sizeDataType), sizeDataType left, sizeDataType right)
   {
     for (linkedList<dataType> *node = this; node && 0 <= left && left < right; node = node->next, left++)
       callbackFunction(node->value, left);
   }
 
   template<typename sizeDataType = unsigned long long>
-  void filter(void(*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *))
+  void filter(void (*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *))
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node; node = node->next, index++)
@@ -147,7 +147,7 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void filter(void(*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *), sizeDataType size)
+  void filter(void (*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *), sizeDataType size)
   {
     sizeDataType index = 0;
     for (linkedList<dataType> *node = this; node && index < size; node = node->next, index++)
@@ -155,7 +155,7 @@ public:
   }
 
   template<typename sizeDataType = unsigned long long>
-  void filter(void(*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *), sizeDataType left, sizeDataType right)
+  void filter(void (*callbackFunction)(dataType, sizeDataType, linkedList<dataType> *), sizeDataType left, sizeDataType right)
   {
     for (linkedList<dataType> *node = this; node && 0 <= left && left < right; node = node->next, left++)
       callbackFunction(node->value, index, this);
@@ -214,7 +214,7 @@ public:
     this->prev=NULL;
   }
 
-  void forEach(void(*callbackFunction)(dataType,unsigned int)){
+  void forEach(void (*callbackFunction)(dataType,unsigned int)){
     unsigned long nodeIndex=0;
     for(linkedList*head=this->node;head!=NULL;nodeIndex++){
       callback(*head,nodeIndex);

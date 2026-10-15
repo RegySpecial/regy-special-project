@@ -29,19 +29,19 @@ bool every(itemsDataType*array,bool(*everyFunction)(itemsDataType,sizeDataType,i
 }
 
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-bool every(itemsDataType*array,bool(*everyFunction)(itemsDataType),sizeDataType left,sizeDataType right){
+bool every(itemsDataType*array,bool(*everyFunction)(itemsDataType),sizeDataType left, sizeDataType right){
   bool everyCondition = 1;
   for(;0<=left&&left<right;left++)everyCondition &= everyFunction(array[left]);
   return everyCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-bool every(itemsDataType*array,bool(*everyFunction)(itemsDataType,sizeDataType),sizeDataType left,sizeDataType right){
+bool every(itemsDataType*array,bool(*everyFunction)(itemsDataType,sizeDataType),sizeDataType left, sizeDataType right){
   bool everyCondition = 1;
   for(;0<=left&&left<right;left++)everyCondition &= everyFunction(array[left],left);
   return everyCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-bool every(itemsDataType*array,bool(*everyFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left,sizeDataType right){
+bool every(itemsDataType*array,bool(*everyFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left, sizeDataType right){
   bool everyCondition = 1;
   for(;0<=left&&left<right;left++)everyCondition &= everyFunction(array[left],left,array);
   return everyCondition;
@@ -49,76 +49,76 @@ bool every(itemsDataType*array,bool(*everyFunction)(itemsDataType,sizeDataType,i
 
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
 bool some(itemsDataType*array,bool(*someFunction)(itemsDataType),sizeDataType size){
-  bool someCondition=0;
+  bool someCondition = 0;
   for(sizeDataType i=0;i<size;i++)someCondition |= someFunction(array[i]);
   return someCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
 bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType),sizeDataType size){
-  bool someCondition=0;
+  bool someCondition = 0;
   for(sizeDataType i=0;i<size;i++)someCondition |= someFunction(array[i],i);
   return someCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
 bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType size){
-  bool someCondition=0;
+  bool someCondition = 0;
   for(sizeDataType i=0;i<size;i++)someCondition |= someFunction(array[i],i,array);
   return someCondition;
 }
 
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-bool some(itemsDataType*array,bool(*someFunction)(itemsDataType),sizeDataType left,sizeDataType right){
-  bool someCondition=0;
+bool some(itemsDataType*array,bool(*someFunction)(itemsDataType),sizeDataType left, sizeDataType right){
+  bool someCondition = 0;
   for(;0<=left&&left<right;left++)someCondition |= someFunction(array[left]);
   return someCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType),sizeDataType left,sizeDataType right){
-  bool someCondition=0;
+bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType),sizeDataType left, sizeDataType right){
+  bool someCondition = 0;
   for(;0<=left&&left<right;left++)someCondition |= someFunction(array[left],left);
   return someCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left,sizeDataType right){
-  bool someCondition=0;
+bool some(itemsDataType*array,bool(*someFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left, sizeDataType right){
+  bool someCondition = 0;
   for(;0<=left&&left<right;left++)someCondition |= someFunction(array[left],left,array);
   return someCondition;
 }
 
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
 bool xsome(itemsDataType*array,bool(*xsomeFunction)(itemsDataType),sizeDataType size){
-  bool xsomeCondition=0;
+  bool xsomeCondition = 0;
   for(sizeDataType i=0;i<size;i++)xsomeCondition^=xsomeFunction(array[i]);
   return xsomeCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
 bool xsome(itemsDataType*array,bool(*xsomeFunction)(itemsDataType,sizeDataType),sizeDataType size){
-  bool xsomeCondition=0;
+  bool xsomeCondition = 0;
   for(sizeDataType i=0;i<size;i++)xsomeCondition^=xsomeFunction(array[i],i);
   return xsomeCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
 bool xsome(itemsDataType*array,bool(*xsomeFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType size){
-  bool xsomeCondition=0;
+  bool xsomeCondition = 0;
   for(sizeDataType i=0;i<size;i++)xsomeCondition^=xsomeFunction(array[i],i,array);
   return xsomeCondition;
 }
 
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-bool xsome(itemsDataType*array,bool(*xsomeFunction)(itemsDataType),sizeDataType left,sizeDataType right){
-  bool xsomeCondition=0;
+bool xsome(itemsDataType*array,bool(*xsomeFunction)(itemsDataType),sizeDataType left, sizeDataType right){
+  bool xsomeCondition = 0;
   for(;0<=left&&left<right;left++)xsomeCondition^=xsomeFunction(array[left]);
   return xsomeCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-bool xsome(itemsDataType*array,bool(*xsomeFunction)(itemsDataType,sizeDataType),sizeDataType left,sizeDataType right){
-  bool xsomeCondition=0;
+bool xsome(itemsDataType*array,bool(*xsomeFunction)(itemsDataType,sizeDataType),sizeDataType left, sizeDataType right){
+  bool xsomeCondition = 0;
   for(;0<=left&&left<right;left++)xsomeCondition^=xsomeFunction(array[left],left);
   return xsomeCondition;
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-bool xsome(itemsDataType*array,bool(*xsomeFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left,sizeDataType right){
-  bool xsomeCondition=0;
+bool xsome(itemsDataType*array,bool(*xsomeFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left, sizeDataType right){
+  bool xsomeCondition = 0;
   for(;0<=left&&left<right;left++)xsomeCondition^=xsomeFunction(array[left],left,array);
   return xsomeCondition;
 }
@@ -133,7 +133,7 @@ sizeDataType compare(itemsDataType*array1,itemsDataType*array2,sizeDataType size
   return*array1!=*array2||size==1?*array1-*array2:compare<itemsDataType,sizeDataType>(array1+1,array2+1,size-1);
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-sizeDataType compare(itemsDataType*array1,itemsDataType*array2,sizeDataType left,sizeDataType right){
+sizeDataType compare(itemsDataType*array1,itemsDataType*array2,sizeDataType left, sizeDataType right){
   return*array1!=*array2||0<=left&&left<right?*array1-*array2:compare<itemsDataType,sizeDataType>(array1+1,array2+1,left+1,right);
 }
 
@@ -151,14 +151,14 @@ sizeDataType stringLength(itemsDataType*array,sizeDataType size){
          : 1 + stringLength<itemsDataType,sizeDataType>(++array,--size);
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-sizeDataType stringLength(itemsDataType*array,sizeDataType left,sizeDataType right){
+sizeDataType stringLength(itemsDataType*array,sizeDataType left, sizeDataType right){
   return !*array || 0 <= left && left < right
          ? 0
          : 1 + stringLength<itemsDataType,sizeDataType>(++array,++left,right);
 }
 
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-void sort(itemsDataType*array,itemsDataType(*comparisonFunction)(itemsDataType,itemsDataType),sizeDataType left,sizeDataType right){
+void sort(itemsDataType*array,itemsDataType(*comparisonFunction)(itemsDataType, itemsDataType),sizeDataType left, sizeDataType right){
   if(0<=left&&left<right){
     sizeDataType i=left-1;
     itemsDataType tmp;
@@ -179,12 +179,12 @@ void sort(itemsDataType*array,itemsDataType(*comparisonFunction)(itemsDataType,i
   }
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-void sort(itemsDataType*array,itemsDataType(*comparisonFunction)(itemsDataType,itemsDataType),sizeDataType size){
+void sort(itemsDataType*array,itemsDataType(*comparisonFunction)(itemsDataType, itemsDataType),sizeDataType size){
   sort<itemsDataType,sizeDataType>(array,comparisonFunction,0,size);
 }
 
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-sizeDataType search(itemsDataType*array,itemsDataType item,sizeDataType(*predicate)(itemsDataType,itemsDataType),sizeDataType left,sizeDataType right){
+sizeDataType search(itemsDataType*array,itemsDataType item,sizeDataType(*predicate)(itemsDataType, itemsDataType),sizeDataType left, sizeDataType right){
   if(0<=left&&left<right){
     sort<itemsDataType,sizeDataType>(array,left,right,predicate);
     const sizeDataType middle=(right-left)/2;
@@ -217,17 +217,17 @@ void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType,sizeDataTy
 }
 
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType),sizeDataType left,sizeDataType right){
+void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType),sizeDataType left, sizeDataType right){
   for(;0<=left&&left<right;left++)
     forEachFunction(array[left]);
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType,sizeDataType),sizeDataType left,sizeDataType right){
+void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType,sizeDataType),sizeDataType left, sizeDataType right){
   for(;0<=left&&left<right;left++)
     forEachFunction(array[left],left);
 }
 template<typename itemsDataType,typename sizeDataType = unsigned long long>
-void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left,sizeDataType right){
+void forEach(itemsDataType*array,void(*forEachFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left, sizeDataType right){
   for(;0<=left&&left<right;left++)
     forEachFunction(array[left],left,array);
 }
@@ -251,7 +251,7 @@ accumulationValueDataType reduce
   return accumulationValue;
 }
 template<typename accumulationValueDataType,typename itemsDataType,typename sizeDataType = unsigned long long>
-accumulationValueDataType reduce(itemsDataType*array,void(*forEachFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left,sizeDataType right){
+accumulationValueDataType reduce(itemsDataType*array,void(*forEachFunction)(itemsDataType,sizeDataType,itemsDataType*),sizeDataType left, sizeDataType right){
   for(;0<=left&&left<right;left++)
     forEachFunction(array[left],left,array);
 }

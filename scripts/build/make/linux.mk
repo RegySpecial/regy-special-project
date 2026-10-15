@@ -5,11 +5,16 @@ cManageArguments =  src/main/c/manageArguments.c
 
 testManageArguments = test/c++/manageArguments.cpp
 
-amd64-testManageArguments = /home/regyspecial/Scrivania/testManageArguments
-amd64-testVideoGame =       /home/regyspecial/Scrivania/testVideoGame
+amd64-testManageArguments = /home/regyspecial/Scrivania/amd64-testManageArguments
+amd64-testVideoGame =       /home/regyspecial/Scrivania/amd64-testVideoGame
 
 build-amd64-testManageArguments: $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments)
 	g++ -std=c++26 -Wall -O $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+
+cppDynamicArrays =        src/lib/c++/DSA/dataStructures/dynamicArrays.cpp
+amd64-testDynamicArrays = /home/regyspecial/Scrivania/amd64-testDynamicArrays
+build-amd64-testDynamicArrays: $(cppDynamicArrays)
+	g++ -std=c++26 -Wall -Wextra -O3 $(cppDynamicArrays) $(cConsoleLibrary) -o $(amd64-testDynamicArrays)
 
 386-a-goImageLibrary = bin/lib/static/a/go/elf/linux/386/CImage.a
 
@@ -124,7 +129,7 @@ amd64-regyspecial =  bin/exec/elf/linux/amd64/RegySpecial
 arm-regyspecial =  bin/exec/elf/linux/arm/RegySpecial
 riscv-regyspecial =  bin/exec/elf/linux/riscv/RegySpecial
 
-build-amd64-linux-elf:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
+build-amd64:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
 	g++ -std=c++26 -Wall -O \
 	$(cConsoleLibrary) \
 	$(mainFile) \
@@ -134,7 +139,7 @@ build-amd64-linux-elf:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppB
 	-o $(amd64-elf) \
 	-lX11 -lodbc -lGL
 
-debug-amd64-linux-elf:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
+debug-amd64:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
 	g++ -std=c++26 -Wall -g \
 	$(cConsoleLibrary) \
 	$(mainFile) \
@@ -144,7 +149,7 @@ debug-amd64-linux-elf:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppB
 	-o $(amd64-elf) \
 	-lX11 -lodbc -lGL
 
-sanitize-amd64-linux-elf:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
+sanitize-amd64:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
 	g++ -std=c++26 -Wall -g -fsanitize=address \
 	$(cConsoleLibrary) \
 	$(mainFile) \
