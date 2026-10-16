@@ -30,7 +30,7 @@ class window : public widget
           height = 0;
     }
     icon;
-    window(mainApplication *mainApplication);
+    window(mainApplication *application);
     ~window();
     int show(unsigned int microseconds) override;
     int hide(unsigned int microseconds) override;
