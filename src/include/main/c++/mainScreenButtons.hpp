@@ -1,6 +1,6 @@
 #include "mainWindow.hpp"
 #include "mainDialogs.hpp"
-class mainScreenButton : public commonWidgetInterface
+class mainScreenButton : public widget
 {
   public:
     mainWindow *root;

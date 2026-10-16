@@ -5,7 +5,7 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 
-public class gameModeButton : commonWidgetInterface
+public class gameModeButton : widget
 {
   public var root:dialog!
   init(_ root:dialog!, _ text:String, _ color:NSColor)

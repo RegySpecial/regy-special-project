@@ -1,7 +1,7 @@
 #ifndef formHpp
 #define formHpp
 #include"mainWindow.hpp"
-class form : public commonWidgetInterface
+class form : public widget
 {
   public:
     mainWindow *root;

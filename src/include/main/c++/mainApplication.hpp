@@ -39,6 +39,7 @@ class mainApplication
     displayConnection *display;
     #ifndef waylandEnabled
     Screen *screen;
+    dynamicArray<>
     #endif
     mainApplication(int argc, char **argv, char **envp);
     ~mainApplication();

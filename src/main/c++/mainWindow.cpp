@@ -5,9 +5,9 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include "../../include/main/c++/mainWindow.hpp"
-#if defined __WIN32 || defined __WIN64
-mainWindow::mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int cmdshow, const char *title)
+mainWindow::mainWindow(mainApplication *application)
 {
+  #if defined __WIN32 || defined __WIN64
   this->hInst = hInst;
   this->hPrevInst = hPrevInst;
   this->cmdLine = cmdLine;
@@ -57,21 +57,8 @@ mainWindow::mainWindow(HINSTANCE hInst, HINSTANCE hInstPrev, char* cmdline, int 
   );
 
   HANDLE_WM_PAINT(MainWindow,0,0,PaintTheIntro);
-}
 #else
-mainWindow::mainWindow(int argc, char *argv[], char *envp[],const char *title)
-{
-  this->argc = argc;
-  this->argv = argv;
-  this->envp = envp;
-
-  this->display = 
-    #ifdef WaylandEnabled
-    wl_display_connnect
-    #else
-    XOpenDisplay
-    #endif
-    (0);
+  this->application = application;
 
   if (!this->display)
   {
@@ -90,12 +77,10 @@ mainWindow::mainWindow(int argc, char *argv[], char *envp[],const char *title)
 
   this->title = title;
 
-  this->screen = XDefaultScreenOfDisplay(this->display);
-
   this->x = 0;
   this->y = 0;
-  this->width = this->screen->width;
-  this->height = this->screen->height;
+  this->width = application->screen->width;
+  this->height = application->screen->height;
 
   this->background.color = 0;
   this->border.color = 0xffffff;
@@ -118,8 +103,8 @@ mainWindow::mainWindow(int argc, char *argv[], char *envp[],const char *title)
   
   this->id = XCreateWindow
   (
-    this->display,
-    this->screen->root,
+    application->display,
+    application->screen->root,
     this->x,
     this->y,
     this->width,
@@ -134,7 +119,7 @@ mainWindow::mainWindow(int argc, char *argv[], char *envp[],const char *title)
 
   XSetStandardProperties
   (
-    this->display,
+    application->display,
     this->id,
     this->title,
     NULL,
@@ -149,10 +134,10 @@ mainWindow::mainWindow(int argc, char *argv[], char *envp[],const char *title)
   this->onResize = [](XResizeRequestEvent *event, void *extraArgs){
     mainWindow *self = (mainWindow*) extraArgs;
     for(unsigned long i = 0; i < self->subWindows.size;i++)
-      XResizeWindow(self->display,self->subWindows[i],event->width,event->height);
+      XResizeWindow(self->display,self->subWindows.at(i),event->width,event->height);
   };
-}
 #endif
+}
 mainWindow::~mainWindow()
 {
 #if defined __WIN32 || defined __WIN64
@@ -199,7 +184,7 @@ void mainWindow::eventLoop(unsigned int microseconds)
     switch (eventStructure.type)
     {
       case ClientMessage:
-        Window argument = this->subWindows[1];
+        Window argument = this->subWindows.at(1);
         if (eventStructure.xclient.window == this->id)
           this->onClientMessage(&eventStructure.xclient, &argument);
         break;

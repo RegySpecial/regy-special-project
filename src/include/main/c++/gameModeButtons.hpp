@@ -5,7 +5,7 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include "mainDialogs.hpp"
-class gameModeButton : public commonWidgetInterface
+class gameModeButton : public widget
 {
   public:
     dialog *root;

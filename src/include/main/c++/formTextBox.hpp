@@ -1,7 +1,7 @@
 #ifndef formTextBoxHpp
 #define formTextBoxHpp
 #include "form.hpp"
-class formTextBox:public commonWidgetInterface{
+class formTextBox:public widget{
   public:
     form*root;
   	unsigned char pointer =  0,

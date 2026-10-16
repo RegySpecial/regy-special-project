@@ -74,7 +74,7 @@ public struct textStruct
   }
 }
 
-public protocol commonWidgetInterface
+public protocol widget
 {
   var x:      Double
   var y:      Double

@@ -1,4 +1,4 @@
-public class form:commonWidgetInterface{
+public class form:widget{
   public var id:NSPanel!
   public var root:mainWindow
   init(_ root:mainWindow){

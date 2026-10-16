@@ -1,7 +1,7 @@
 ```mermaid
 classDiagram
 
-class commonWidgetInterface{
+class widget{
   + x: unsigned int= 0
   + y: unsinged int = 0
   + width: int = 0

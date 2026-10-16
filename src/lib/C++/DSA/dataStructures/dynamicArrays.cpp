@@ -56,8 +56,8 @@ dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(itemsD
     failureMessage("Failed to allocate memory for the dynamic array");
     return;
   }
-  for (sizeDataType index=0; index < this->size; index++)
-    this->items[index]=items[index];
+  for (sizeDataType index = 0; index < this->size; index++)
+    this->items[index] = items[index];
 }
 
 template
@@ -162,8 +162,9 @@ void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::remove(sizeDat
 {
   if (index < this->size)
   {
-    for (; index < this->size; index++)
+    for (; index < this->size - 1; index++)
       this->items[index] = this->items[index + 1];
+    this->items[this->size - 1] = 0;
     --this->size;
   }
   else

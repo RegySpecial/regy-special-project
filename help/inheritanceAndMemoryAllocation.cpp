@@ -27,9 +27,13 @@ class alloc1
 : public alloc<T>
 {
 public:
-  alloc1(T *pointer, size_t size) : alloc<T>::alloc(pointer, size)
-  {
-    coso:
+  alloc1(T *pointer, size_t size);
+};
+
+template<typename T>
+alloc1<T>::alloc1(T *pointer, size_t size) : alloc<T>::alloc(pointer, size)
+{
+  coso:
     for (size_t i = 0; i < this->size - 1; i++)
       for (size_t j = i + 1; j < this->size; j++)
         if (this->pointer[i] == this->pointer[j])
@@ -39,8 +43,7 @@ public:
           --this->size;
           goto coso;
         }
-  }
-};
+}
 
 int main() {
   int array[] = {5, 5, 5, 3, 21, 2, 213, 23, 21, 4, 6, 6};

@@ -12,7 +12,7 @@
 #include "../c/info/user/cpu.h"
 #include "../c/info/user/os.h"
 #include "../c/info/vendor/compiler.h"
-class dialog : public commonWidgetInterface
+class dialog : public widget
 {
   public:
     mainWindow *root;

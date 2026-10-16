@@ -18,8 +18,8 @@ class set
 public dynamicArray<itemsDataType, sizeDataType, capacityDataType>
 {
   public:
-    set();
-    set(capacityDataType capacity);
+    set() : dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray() {};
+    set(capacityDataType capacity) : dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(capacity) {};
     set(itemsDataType *items, capacityDataType capacity);
   
     set(sizeDataType size, capacityDataType capacity);

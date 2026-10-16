@@ -1,4 +1,4 @@
-public class dialog: commonWidgetInterface
+public class dialog: widget
 {
   var id:(NSPanel?,NSWindow?)
   init(_ root:mainWindow,_ type:UInt8){

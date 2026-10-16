@@ -1,5 +1,5 @@
-#ifndef commonWidgetInterfaceHpp
-#define commonWidgetInterfaceHpp
+#ifndef widgetHpp
+#define widgetHpp
 #if defined __WIN32||defined __WIN64
 #include <windows.h>
 typedef HWND windowType;
@@ -18,7 +18,7 @@ typedef wayland_window windowType;
 typedef Window windowType;
 #endif
 
-class commonWidgetInterface
+class widget
 {
   public:
     unsigned int x = 0,
@@ -28,7 +28,7 @@ class commonWidgetInterface
     const char *title;
     windowType id;
     GC graphicId = 0;
-    dynamicArray<commonWidgetInterface> subWindows;
+    dynamicArray<widget> subWindows;
     struct
     {
       unsigned int width = 1;

@@ -12,61 +12,19 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-set<itemsDataType, sizeDataType, capacityDataType>::set()
-: dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray()
-{
-  this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
-  if (!this->items)
-  {
-    failureMessage("Failed to reallocate memory for the dynamic set");
-    return;
-  }
-}
-  
-template
-<
-  typename itemsDataType,
-  typename sizeDataType,
-  typename capacityDataType
->
-set<itemsDataType, sizeDataType, capacityDataType>::set(capacityDataType capacity)
-: dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(capacity)
-{
-  this->capacity = capacity;
-  this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
-  if (!this->items)
-  {
-    failureMessage("Failed to reallocate memory for the dynamic set");
-    return;
-  }
-}
-
-template
-<
-  typename itemsDataType,
-  typename sizeDataType,
-  typename capacityDataType
->
 set<itemsDataType, sizeDataType, capacityDataType>::set(itemsDataType *items, capacityDataType capacity)
 : dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(items, capacity)
 {
-  this->capacity = capacity;
-  this->size = this->capacity;
-  this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
-  if (!this->items)
-  {
-    failureMessage("Failed to allocate memory for the dynamic set");
-    return;
-  }
-
-  for (sizeDataType index = 0; index < this->size - 1; index++)
-    for (sizeDataType subIndex = index + 1; subIndex < this->size; subIndex++)
-      if (items[index] == items[subIndex])
-      {
-        for (sizeDataType remotionIndex = subIndex; remotionIndex < this->size - 1; remotionIndex++)
-          items[remotionIndex] = items[remotionIndex + 1];
-        --this->size;
-      }
+  repeat:
+    for (sizeDataType index = 0; index < this->size - 1; index++)
+      for (sizeDataType subIndex = index + 1; subIndex < this->size; subIndex++)
+        if (items[index] == items[subIndex])
+        {
+          for (sizeDataType remotionIndex = subIndex; remotionIndex < this->size - 1; remotionIndex++)
+            items[remotionIndex] = items[remotionIndex + 1];
+          --this->size;
+          goto repeat;
+        }
 
   for (sizeDataType index = 0; index < this->size; index++)
     this->items[index] = items[index];
@@ -81,14 +39,8 @@ template
 set<itemsDataType, sizeDataType, capacityDataType>::set(sizeDataType size, capacityDataType capacity)
 : dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(size, capacity)
 {
-  this->size = size;
-  this->capacity = capacity;
-  this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
-  if (!this->items)
-  {
-    failureMessage("Failed to allocate memory for the dynamic array");
-    return;
-  }
+  for (sizeDataType i = 0; i < this->size; i++)
+    this->items[i] = i;
 }
 
 template
@@ -100,26 +52,16 @@ template
 set<itemsDataType, sizeDataType, capacityDataType>::set(itemsDataType *items, sizeDataType size, capacityDataType capacity)
 : dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(items, size, capacity)
 {
-  this->capacity = capacity;
-  this->size = size;
-  this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
-  if (!this->items)
-  {
-    failureMessage("Failed to allocate memory for the dynamic array");
-    return;
-  }
-
-  for (sizeDataType index = 0; index < this->size - 1; index++)
-    for (sizeDataType subIndex = index + 1; subIndex < this->size; subIndex++)
-      if (items[index] == items[subIndex])
-      {
-        for (sizeDataType remotionIndex = subIndex; remotionIndex < this->size - 1; remotionIndex++)
-          items[remotionIndex] = items[remotionIndex + 1];
-        --this->size;
-      }
-  
-  for (sizeDataType index = 0; index < this->size; index++)
-    this->items[index] = items[index];
+  repeat:
+    for (sizeDataType index = 0; index < this->size - 1; index++)
+      for (sizeDataType subIndex = index + 1; subIndex < this->size; subIndex++)
+        if (this->items[index] == this->items[subIndex])
+        {
+          for (sizeDataType remotionIndex = subIndex; remotionIndex < this->size - 1; remotionIndex++)
+            this->items[remotionIndex] = this->items[remotionIndex + 1];
+          --this->size;
+          goto repeat;
+        }
 }
 
 template
@@ -182,8 +124,9 @@ void set<itemsDataType, sizeDataType, capacityDataType>::remove(sizeDataType ind
 {
   if (index < this->size)
   {
-    for (; index < this->size; index++)
+    for (; index < this->size - 1; index++)
       this->items[index] = this->items[index + 1];
+    this->items[this->size - 1] = 0;
     --this->size;
   }
   else

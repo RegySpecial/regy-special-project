@@ -7,7 +7,7 @@
 #if os(macOS)
 import Cocoa
 
-public class mainWindow : commonWidgetInterface
+public class mainWindow : widget
 {
   public var id: NSWindow!
   public var argc: Int
