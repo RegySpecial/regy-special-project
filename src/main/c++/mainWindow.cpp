@@ -5,14 +5,9 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include "../../include/main/c++/mainWindow.hpp"
-mainWindow::mainWindow(mainApplication *application)
+window::window(application *app, const char *title)
 {
   #if defined __WIN32 || defined __WIN64
-  this->hInst = hInst;
-  this->hPrevInst = hPrevInst;
-  this->cmdLine = cmdLine;
-  this->cmdShow = cmdShow;
-
   this->x = 0;
   this->y = 0;
   this->width = GetSystemMetrics(SM_CXSCREEN);
@@ -58,29 +53,26 @@ mainWindow::mainWindow(mainApplication *application)
 
   HANDLE_WM_PAINT(MainWindow,0,0,PaintTheIntro);
 #else
-  this->application = application;
-
-  if (!this->display)
-  {
-    failureMessage
-    (
-      "Cannot establish a connection with the "
-      #ifdef WaylandEnabled
-      "Wayland"
-      #else
-      "X"
-      #endif
-      " Graphic Server"
-    );
-    abort();
-  }
+  this->app = app;
 
   this->title = title;
 
   this->x = 0;
   this->y = 0;
-  this->width = application->screen->width;
-  this->height = application->screen->height;
+  this->width = 
+  #if defined __WIN32 || defined __WIN64
+  GetSystemMetrics(SM_CXSCREEN)
+  #else
+  this->app->screen->width
+  #endif
+  ;
+  this->height = 
+  #if defined __WIN32 || defined __WIN64
+  GetSystemMetrics(SM_CYSCREEN)
+  #else
+  app->screen->height
+  #endif
+  ;
 
   this->background.color = 0;
   this->border.color = 0xffffff;
@@ -103,108 +95,99 @@ mainWindow::mainWindow(mainApplication *application)
   
   this->id = XCreateWindow
   (
-    application->display,
-    application->screen->root,
+    app->display,
+    app->screen->root,
     this->x,
     this->y,
     this->width,
     this->height,
     this->border.width,
-    this->screen->root_depth,
+    this->app->screen->root_depth,
     InputOutput,
-    this->screen->root_visual,
+    this->app->screen->root_visual,
     this->attributeMask,
     &mainWindowAttributes
   );
 
   XSetStandardProperties
   (
-    application->display,
+    app->display,
     this->id,
     this->title,
     NULL,
     0,
-    this->argv,
-    this->argc,
+    this->app->argv,
+    this->app->argc,
     &mainWindowBounds
   );
 
-  XMapRaised(this->display, this->id);
+  XMapRaised(this->app->display, this->id);
 
   this->onResize = [](XResizeRequestEvent *event, void *extraArgs){
-    mainWindow *self = (mainWindow*) extraArgs;
-    for(unsigned long i = 0; i < self->subWindows.size;i++)
-      XResizeWindow(self->display,self->subWindows.at(i),event->width,event->height);
+    window *self = (window *) extraArgs;
+    for(unsigned long i = 0; i < self->subwidget.size;i++)
+      XResizeWindow(self->app->display, self->id, event->width,event->height);
   };
 #endif
 }
-mainWindow::~mainWindow()
+
+window::~window()
 {
 #if defined __WIN32 || defined __WIN64
   assert(UnregisterClassA(&windowClass));
   assert(DestroyWindow(this->id));
-#elifdef WaylandEnabled
-  wl_display_disconnect(this->display);
 #else
-  XDestroySubwindows(this->display,this->id);
-  XDestroyWindow(this->display,this->id);
-  XCloseDisplay(this->display);
+  XDestroySubwindows(this->app->display, this->id);
+  XDestroyWindow(this->app->display, this->id);
 #endif
 }
 
-int mainWindow::show(unsigned int microseconds)
+int window::show(unsigned int microseconds)
 {
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_NORMAL);
 #else
   usleep(microseconds);
-  return XMapRaised(this->display, this->id);
+  return XMapRaised(this->app->display, this->id);
 #endif
 }
 
-int mainWindow::hide(unsigned int microseconds)
+int window::hide(unsigned int microseconds)
 {
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
   return ShowWinodw(this->id, SW_HIDE);
 #else
   usleep(microseconds);
-  return XUnmapWindow(this->display, this->id);
+  return XUnmapWindow(this->app->display, this->id);
 #endif
 }
 
-void mainWindow::eventLoop(unsigned int microseconds)
+bool window::addEventListener(unsigned char eventState, void (*listener)(event *event, window *target, void *extraArguments))
 {
-  usleep(microseconds);
-  for (XEvent eventStructure; readBit<unsigned char>(this->gameContext.generalPurposeMask, generalPurposeMaskBits_eventLoop); )
+  if (0 > eventState && eventState > eventState_lastEvent)
   {
-    XNextEvent(this->display, &eventStructure);
-    
-    switch (eventStructure.type)
-    {
-      case ClientMessage:
-        Window argument = this->subWindows.at(1);
-        if (eventStructure.xclient.window == this->id)
-          this->onClientMessage(&eventStructure.xclient, &argument);
-        break;
-      case ResizeRequest:
-        if (eventStructure.xresizerequest.window == this->id)
-          this->onResize(&eventStructure.xresizerequest, this);
-        for (unsigned int i = 0; i < this->requestStruct.resizeEventListeners.size; i++)
-          if (eventStructure.xresizerequest.window == this->requestStruct.subWindowIdentifiers[i])
-            this->requestStruct.resizeEventListeners[i];
-        break;
-      case ButtonPress:
-        for (unsigned int i = 0; i < this->requestStruct.buttonDownEventListeners.size; i++)
-          if (eventStructure.xbutton.window == this->requestStruct.subWindowIdentifiers[i])
-            this->requestStruct.buttonDownEventListeners[i];
-        break;
-      case KeyPress:
-        for (unsigned int i = 0; i < this->requestStruct.keyDownEventListeners.size; i++)
-          if (eventStructure.xkey.window == this->requestStruct.subWindowIdentifiers[i])
-            this->requestStruct.keyDownEventListeners[i];
-        break;
-    }
+    failureMessage("Invalid event identifier\n");
+    return 0;
   }
+  event eventClass;
+  eventClass.target = this;
+  this->eventMask = setBit<long>(this->eventMask, eventState);
+  XSelectInput(this->app->display, this->id, this->eventMask);
+  this->app->events.push(eventClass);
+  return 1;
+}
+
+bool window::removeEventListener(unsigned char eventState)
+{
+  if (0 > eventState && eventState > eventState_lastEvent)
+  {
+    failureMessage("Invalid event identifier\n");
+    return 0;
+  }
+  this->eventMask = clearBit<long>(this->eventMask, eventState);
+  XSelectInput(this->app->display, this->id, this->eventMask);
+  this->app->events.pop();
+  return 1;
 }

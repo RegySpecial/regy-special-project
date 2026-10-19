@@ -1,78 +1,100 @@
 #ifndef eventsH
 #define eventsH
+#include "coreTypedef.h"
+
 #if defined __cplusplus||defined c_plusplus
-extern "C"
+extern "C" {
 #endif
   typedef enum
+  : unsigned char
   {
   #if defined __WIN32||defined __WIN64
   #else
-    eventIdentifier_keyDown = 2,
+    eventState_keyDown = 2,
   #endif
-    eventIdentifier_keyUp,
-    eventIdentifier_mouseDown,
-    eventIdentifier_mouseUp,
-    eventIdentifier_move,
-    eventIdentifier_enter,
-    eventIdentifier_leave,
-    eventIdentifier_focus, 
-    eventIdentifier_blur,
-    eventIdentifier_keyMap,
-    eventIdentifier_view,
-    eventIdentifier_graphicShow,
-    eventIdentifier_unview,
-    eventIdentifier_visible,
-    eventIdentifier_create,
-    eventIdentifier_destroy,
-    eventIdentifier_hide,
-    eventIdentifier_show,
-    eventIdentifier_askShow,
-    eventIdentifier_reparent,
-    eventIdentifier_config,
-    eventIdentifier_askConfig,
-    eventIdentifier_gravity,
-    eventIdentifier_resize,
-    eventIdentifier_circulate,
-    eventIdentifier_askCirculate,
-    eventIdentifier_property,
-    eventIdentifier_unselect,
-    eventIdentifier_askSelect, 
-    eventIdentifier_select,
-    eventIdentifier_colorMap,
-    eventIdentifier_message,
-    eventIdentifier_showing,
-    eventIdentifier_event,
-    eventIdentifier_lastEvent
+    eventState_keyUp,
+    eventState_mouseDown,
+    eventState_mouseUp,
+    eventState_move,
+    eventState_enter,
+    eventState_leave,
+    eventState_focus, 
+    eventState_blur,
+    eventState_keyMap,
+    eventState_view,
+    eventState_graphicShow,
+    eventState_unview,
+    eventState_visible,
+    eventState_create,
+    eventState_destroy,
+    eventState_hide,
+    eventState_show,
+    eventState_askShow,
+    eventState_reparent,
+    eventState_config,
+    eventState_askConfig,
+    eventState_gravity,
+    eventState_resize,
+    eventState_circulate,
+    eventState_askCirculate,
+    eventState_property,
+    eventState_unselect,
+    eventState_askSelect, 
+    eventState_select,
+    eventState_colorMap,
+    eventState_message,
+    eventState_showing,
+    eventState_event,
+    eventState_lastEvent
   }
-  eventIdentifier;
+  eventState;
+#if defined __cplusplus||defined c_plusplus
+}
+#endif
 
-  typedef enum
-  {
-    eventGroup_keyboard,
-    eventGroup_mouse,
-    eventGroup_motion,
-    eventGroup_crossing,
-    eventGroup_focus,
-    eventGroup_keyMap,
-    eventGroup_exposition,
-    eventGroup_windowOperation,
-    eventGroup_show,
-    eventGroup_circulation,
-    eventGroup_selection,
-    eventGroup_error,
-    eventGroup_generic
-  }
-  eventGroup;
+class event
+{
+  public:
+    unsigned char state;
+    application *app;
+    widget *target;
+    bool propagation;
+};
 
-  typedef struct
-  {
-    unsigned char group,
-                  identifier;
-    
-    windowType widgetId;
-    
-    void (*action)(XEvent *event, void *extraArguments);
-  }
-  eventDataStructure;
-  
+class mouseEvent
+: event
+{
+  public:
+    unsigned button;
+    int x,
+        y;
+};
+
+class pointerEvent
+: event
+{
+  public:
+    int x,
+        y;
+};
+
+class windowEvent
+: event
+{
+  public:
+    int x,
+        y;
+    unsigned int width,
+                 height;
+};
+
+class keyboardEvent
+: event
+{
+  public:
+    int x,
+        y;
+    unsigned int width,
+                 height;
+};
 #endif

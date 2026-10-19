@@ -2,7 +2,8 @@
 #define tablesHpp
 #include<stdlib.h>
 
-template<
+template
+<
   typename key,
   typename value
 >
@@ -16,12 +17,14 @@ struct hashTableItems
 template<
   typename keyDataType,
   typename valueDataType,
+  typename sizeDataType = unsigned long long,
   typename capacityDataType = unsigned long long
 >
 class hashTable
 {
   public:
     struct hashTableItems<keyDataType, valueDataType>**items;
+    sizeDataType size;
     capacityDataType capacity;
 
     static capacityDataType hash(keyDataType key)
@@ -36,7 +39,7 @@ class hashTable
   
     hashTable(hashTableItems<keyDataType,valueDataType> *items, capacityDataType capacity)
     {
-      this->items = (hashTableItems<keyDataType,valueDataType> *) malloc(sizeof (hashTableItems<keyDataType, valueDataType>) * capacity);
+      this->items = (hashTableItems<keyDataType,valueDataType> **) calloc(capacity, sizeof (struct hashTableItems<keyDataType, valueDataType> *));
       for (capacityDataType index = 0; index < capacity; index++)
         if (this->items[hashTable::hash(index)])
           this->items[hashTable::hash(index)].next = NULL;
@@ -44,25 +47,25 @@ class hashTable
           this->items[hashTable::hash(index)] = items[hashTable::hash(index)];
     }
     
-    inline valueDataType operator[](keyDataType key)
+    inline valueDataType at(keyDataType key)
     {
       return this->next[hashTable::hash(key)];
     }
     
     void insert(keyDataType key,valueDataType value){
       if(this->items[hashTable::hash(key)]){
-  
+        this->items[hashTable::hash(key)]
       }else{
-        this->items[hashTable::hash(key)].key=key;
-        this->items[hashTable::hash(key)].value=value;
-        this->items[hashTable::hash(key)].next=NULL;
+        this->items[hashTable::hash(key)].key = key;
+        this->items[hashTable::hash(key)].value = value;
+        this->items[hashTable::hash(key)].next = NULL;
       }
     }
   
     ~hashTable()
     {
       free(this->items);
-      this->items=NULL;
+      this->items = NULL;
     }
 };
 #endif

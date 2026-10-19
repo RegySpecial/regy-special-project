@@ -1,7 +1,7 @@
-#include "../../include/main/c++/mainApplication.hpp"
+#include "../../include/main/c++/application.hpp"
 
 #if defined __WIN32 || defined __WIN64
-mainApplication::mainApplication(HINSTANCE hInst, HINSTANCE hInstPrev, char *cmdline, int cmdshow)
+application::application(HINSTANCE hInst, HINSTANCE hInstPrev, char *cmdline, int cmdshow)
 {
   this->hInst = hInst;
   this->hInstPrev = hInstPrev;
@@ -9,7 +9,7 @@ mainApplication::mainApplication(HINSTANCE hInst, HINSTANCE hInstPrev, char *cmd
   this->cmdshow = cmdshow;
 }
 #else
-mainApplication::mainApplication(int argc, char **argv, char **envp)
+application::application(int argc, char **argv, char **envp)
 {
   this->argc = argc;
   this->argv = argv;
@@ -25,11 +25,32 @@ mainApplication::mainApplication(int argc, char **argv, char **envp)
   #endif
   (0);
 
+  if (!this->display)
+  {
+    failureMessage
+    (
+      "Cannot establish a connection with the "
+      #ifdef WaylandEnabled
+      "Wayland"
+      #else
+      "X"
+      #endif
+      " Graphic Server"
+    );
+    abort();
+  }
+
   this->screen = XDefaultScreenOfDisplay(this->display);
+
+  if (!this->screen)
+  {
+    failureMessage("cannot get informations about the screen");
+    abort();
+  }
 }
 #endif
 
-mainApplication::~mainApplication()
+application::~application()
 {
   #if defined __WIN32 || defined __WIN64
   #else
@@ -42,7 +63,7 @@ mainApplication::~mainApplication()
   #endif
 }
 
-void mainApplication::eventLoop(unsigned int microseconds)
+void application::eventLoop(unsigned int microseconds)
 {
   #if defined __WIN32 || defined __WIN64
   Sleep
@@ -54,11 +75,10 @@ void mainApplication::eventLoop(unsigned int microseconds)
   for (XEvent event; readBit<unsigned char>(this->gameContextContainer.generalPurposeMask, generalPurposeMaskBits_eventLoop);)
   {
     XNextEvent(this->display, &event);
-    
   }
 }
 
-class mainApplication
+class application
 {
   public:
     #if defined __WIN32 || defined __WIN64
@@ -66,7 +86,7 @@ class mainApplication
               hInstPrev;
     char *cmdline;
     int cmdshow;
-    mainApplication(HINSTANCE hInst, HINSTANCE hInstPrev, char *cmdline, int cmdshow);
+    application(HINSTANCE hInst, HINSTANCE hInstPrev, char *cmdline, int cmdshow);
     #else
     int argc;
     char
@@ -77,8 +97,8 @@ class mainApplication
     #ifndef waylandEnabled
     Screen *screen;
     #endif
-    mainApplication(int argc, char **argv, char **envp);
-    ~mainApplication();
+    application(int argc, char **argv, char **envp);
+    ~application();
     void eventLoop(unsigned int microseconds);
     #endif
 };

@@ -1,22 +1,6 @@
 #ifndef widgetHpp
 #define widgetHpp
-#if defined __WIN32||defined __WIN64
-#include <windows.h>
-typedef HWND windowType;
-#elifdef WaylandEnabled
-#include <wayland-client.h>
-typedef wayland_window windowType;
-#else
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/XKBlib.h>
-#include "../../lib/c/audio/beep.h"
-#include "../../lib/c++/DSA/dataStructures/dynamicArrays.hpp"
-#include "../../lib/c++/DSA/algorithms/arrays.hpp"
-#include "../../main/c/manageArguments.h"
-#include "../../lib/c++/bitManipulation.hpp"
-typedef Window windowType;
-#endif
+#include "application.hpp"
 
 class widget
 {
@@ -26,9 +10,10 @@ class widget
     int width =  0,
         height = 0;
     const char *title;
+    application *app;
     windowType id;
     GC graphicId = 0;
-    dynamicArray<widget> subWindows;
+    dynamicArray<widget> subwidget;
     struct
     {
       unsigned int width = 1;
