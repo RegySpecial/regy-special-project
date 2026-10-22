@@ -44,7 +44,8 @@ gameModeButton::gameModeButton(dialog *root, const char *title, unsigned long co
   this->graphicId = XCreateGC(this->root->root->display, this->id, this->graphicMask, &gcValues);
   this->root->subWindows.push(this->id);
 }
-gameModeButton::~gameModeButton(){
+gameModeButton::~gameModeButton()
+{
   this->root->subWindows.remove(this->id);
   XFreeGC(this->root->root->display, this->graphicId);
 }

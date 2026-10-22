@@ -72,7 +72,7 @@ int main(int argc, char *argv[], char *envp[])
   for (unsigned char i = 0; i < sizeof cpuArchitectures / sizeof *cpuArchitectures; i++)
     if (argv[1] != cpuArchitectures[i])
     {
-      failureMessage("Invalid cpu architecture\n");
+      errorMessage("Invalid cpu architecture\n");
       return 1;
     }
   int cmd = system("echo coso");

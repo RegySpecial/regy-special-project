@@ -1,6 +1,7 @@
 #include "../../include/main/c++/formTextBox.hpp"
 
-formTextBox::formTextBox(form*root){
+formTextBox::formTextBox(form*root)
+{
   XSetWindowAttributes formTextBoxAttributes={
     .background_pixel=(self.background.color=0),
     .border_pixel=(self.border.color=255<<8),
@@ -33,11 +34,13 @@ formTextBox::formTextBox(form*root){
   );
 }
 
-formTextBox::~formTextBox(){
+formTextBox::~formTextBox()
+{
   XFreeGC(self.root.root.display,self.graphicId);
 }
 
-void formTextBox::onKeyDown(XKeyPressedEvent *event, void *extraArgs){
+void formTextBox::onKeyDown(XKeyPressedEvent *event, void *extraArgs)
+{
   gameContextStructure*gameCtxtStruct=(gameContextStructure*)extraArgs;
   char trueKey=(char)XkbKeycodeToKeysym(
     self.root.root.display,//X display
@@ -47,7 +50,8 @@ void formTextBox::onKeyDown(XKeyPressedEvent *event, void *extraArgs){
     readBit<unsigned char>(event.state,LockMapIndex)//key level
   );
   //Mod2=Alt
-  switch(event.keycode){
+  switch(event.keycode)
+{
     case 22://Backspace key case
       if(self.pointer==0)
         beep(1000,100);
@@ -72,7 +76,8 @@ void formTextBox::onKeyDown(XKeyPressedEvent *event, void *extraArgs){
       beep(1000,100);
       break;
     case 119://canc key case
-      if(self.pointer<self.textSize){
+      if(self.pointer<self.textSize)
+{
         for(unsigned char I=self.pointer;gameCtxtStruct.userName[I]!=0;I++)
           gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I+1];
         self.textSize-=1;

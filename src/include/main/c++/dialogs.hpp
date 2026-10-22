@@ -15,9 +15,9 @@
 class dialog : public widget
 {
   public:
-    mainWindow *root;
+    window *root;
     unsigned char type;
-    dialog(mainWindow *root, unsigned char type);
+    dialog(window *root, unsigned char type);
     ~dialog();
     int show(unsigned int microseconds) override;
     int hide(unsigned int microseconds) override;

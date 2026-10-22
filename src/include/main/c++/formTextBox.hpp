@@ -1,9 +1,11 @@
 #ifndef formTextBoxHpp
 #define formTextBoxHpp
 #include "form.hpp"
-class formTextBox:public widget{
+class formTextBox
+: public widget
+{
   public:
-    form*root;
+    form *root;
   	unsigned char pointer =  0,
   	              min =      1,
   	              max =      40,

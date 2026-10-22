@@ -1,9 +1,11 @@
-#include<X11/Xlib.h>
-#include<X11/Xutil.h>
-void stackLayout(Window*windows,unsigned int gridX,unsigned int gridY){
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+void stackLayout(Window*windows,unsigned int gridX,unsigned int gridY)
+{
 
 }
-void queueLayout(Window*windows,unsigned int gridX,unsigned int gridY){
+void queueLayout(Window*windows,unsigned int gridX,unsigned int gridY)
+{
 
 }
 void gridLayout(
@@ -19,8 +21,10 @@ void gridLayout(
   unsigned int yGap
 )
 {
-  for(unsigned int y=0;y<rows;y++){
-    for(unsigned int x=0;x<columns;x++){
+  for(unsigned int y=0;y<rows;y++)
+  {
+    for(unsigned int x=0;x<columns;x++)
+    {
       XMoveResizeWindow(
         display,
         windows[y][x],

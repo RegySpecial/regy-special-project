@@ -1,7 +1,7 @@
 package main
 /*
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 */
 import "C"
 import "unsafe"
@@ -9,7 +9,8 @@ import "image/jpeg"
 import "fmt"
 import "os"
 //export jpg
-func jpg(path*C.char)(width,height int,data*C.char){
+func jpg(path*C.char)(width,height int,data*C.char)
+{
   file,err:=os.Open(C.GoString(path))
   if err!=nil{
  	fmt.Println("error while loading the file")
@@ -37,7 +38,8 @@ func jpg(path*C.char)(width,height int,data*C.char){
   defer file.Close()
   return jpegFile.Bounds().Dx(),jpegFile.Bounds().Dy(),(*C.char)(Cdata)
 }
-func main(){
+func main()
+{
     file,err:=os.Open("/usr/share/backgrounds/lorikeet.jpg")
 	if err!=nil{
 		fmt.Println("error while loading the file")

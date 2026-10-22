@@ -8,11 +8,15 @@
 */
 #ifndef consoleH
 #define consoleH
-#include <stdio.h>/*fprintf stderr printf sprintf*/
+#include "colors.h" /*rgb*/
+#include <stdio.h>  /*fprintf stderr printf sprintf*/
+#include <stdarg.h> /*va_list va_start va_end*/
 #if defined __cplusplus || defined c_plusplus
-extern "C"{
+extern "C" {
 #endif
-  typedef enum{
+  typedef enum
+  : unsigned char
+  {
     textStyleMaskBit_reset,
     textStyleMaskBit_bold,
     textStyleMaskBit_faint,
@@ -25,35 +29,28 @@ extern "C"{
     textStyleMaskBit_strike,
     textStyleMaskBit_backgroundColorEnabled,
     textStyleMaskBit_textColorEnabled
-  }textStyleMaskBit;
-  typedef struct{
+  }
+  textStyleMaskBit;
+
+  typedef struct
+  {
     const char*messageTypeString,
               *messageString;
-    struct textColor{
-      unsigned char red,
-                    green,
-                    blue;
-    }textColor;
-    struct backgroundColor{
-      unsigned char red,
-                    green,
-                    blue;
-    }backgroundColor;
+    rgb textColor,
+        backgroundColor;
     unsigned long long textStyleMask;
-  }messageStructure;
-  int customizedMessage(messageStructure*messageStructureReference);
-  static inline int failureMessage(const char*messageString){
-    return fprintf(stderr,"\e[38;255;255;255m[\e[38;2;255;0;0mFailed\e[38;2;255;255;255m]%s\e[0m\n",messageString);
   }
-  static inline int OKMessage(const char*messageString){
-    return printf("\e[38;255;255;255m[\e[38;2;0;255;0mOK\e[38;2;255;255;255m]%s\e[0m\n",messageString);
-  }
-  static inline int warningMessage(const char*messageString){
-    return printf("\e[38;255;255;255m[\e[38;2;255;255;0mWarning\e[38;2;255;255;255m]%s\e[0m\n",messageString);
-  }
-  static inline int informationMessage(const char*messageString){
-    return printf("\e[38;255;255;255m[\e[38;2;0;0;255mInfo\e[38;2;255;255;255m]%s\e[0m\n",messageString);
-  }
+  messageStructure;
+
+  int customizedMessage(messageStructure *messageStructureReference);
+
+  void errorMessage(const char *errorMessageFormat, ...);
+  
+  void successMessage(const char *successMessageFormat, ...);
+  
+  void warningMessage(const char *warningMessageFormat, ...);
+  
+  void informationMessage(const char *informationMessageFormat, ...);
 #if defined __cplusplus || defined c_plusplus
 }
 #endif

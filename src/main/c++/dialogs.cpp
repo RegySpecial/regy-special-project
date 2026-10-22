@@ -4,9 +4,10 @@
 *@date (First version [Linux]) 2026 July 19th Sunday, 15:46:00
 *@license GNU General Public License to stop private corporation to not share source code
 */
-#include "../../include/main/c++/mainDialogs.hpp"
+#include "../../include/main/c++/dialogs.hpp"
 
-dialog::dialog(mainWindow *root, unsigned char type){
+dialog::dialog(mainWindow *root, unsigned char type)
+{
   const char
     *titles[] = {
       "layoutMode",
@@ -90,13 +91,15 @@ dialog::dialog(mainWindow *root, unsigned char type){
   XMapRaised(this->root->display,this->id);
   XMapSubwindows(this->root->display,this->id);
 
-  this->onClientMessage = [](XClientMessageEvent *event, void *extraArgs){
+  this->onClientMessage = [](XClientMessageEvent *event, void *extraArgs)
+{
     dialog *self = (dialog*) extraArgs;
     if((Atom)event->data.l == XInternAtom(self->root->display, "WM_DELETE_WINDOW", 0))
       XUnmapWindow(self->root->display, self->id);
   };
 
-  this->onExpose = [](XExposeEvent *event, void *extraArgs){
+  this->onExpose = [](XExposeEvent *event, void *extraArgs)
+{
     dialog *self = (dialog*) extraArgs;
     const char
       *modeInformation[4][3]={
@@ -123,7 +126,8 @@ dialog::dialog(mainWindow *root, unsigned char type){
       },
       *moreInformationTextes[3] = {cpu, os, byteOrder},
       *optionsTextes[3] = {"Volume:", "Musica:", "Suoni:"};
-    switch(self->type){
+    switch(self->type)
+{
       case dialogType_layoutMode:
         XDrawString
         (
@@ -223,7 +227,8 @@ dialog::dialog(mainWindow *root, unsigned char type){
   this->root->subWindows.push(this->id);
 }
 
-dialog::~dialog(){
+dialog::~dialog()
+{
   this->root->subWindows.remove(this->id);
   XFreeGC(this->root->display, this->graphicId);
   XDestroySubwindows(this->root->display, this->id);

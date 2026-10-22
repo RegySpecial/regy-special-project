@@ -28,7 +28,8 @@ cmyk rgbToCmyk(rgb rgbStruct)
   return cmykStruct;
 }
 
-cmyka rgbToCmyka(rgb rgbStruct){
+cmyka rgbToCmyka(rgb rgbStruct)
+{
   cmyk cmykStruct = rgbToCmyk(rgbStruct);
   cmyka cmykaStruct = {
     cmykStruct.cyan,
@@ -238,7 +239,8 @@ cmyk cmykaToCmyk(cmyka cmykaStruct)
   return cmykStruct;
 }
 
-hsl cmykaToHsl(cmyka cmykaStruct){
+hsl cmykaToHsl(cmyka cmykaStruct)
+{
   return rgbToHsl(cmykaToRgb(cmykaStruct));
 }
 

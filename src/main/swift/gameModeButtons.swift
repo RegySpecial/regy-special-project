@@ -16,7 +16,8 @@ public class gameModeButton : widget
   int hide(unsigned int microseconds);
 }
 #include "../../include/main/c++/gameModeButtons.hpp"
-gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color){
+gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color)
+{
   XSetWindowAttributes gameModeButtonAttributes{
     .background_pixel=0,
     .border_pixel=0x808080,
@@ -42,6 +43,7 @@ gameModeButton::gameModeButton(dialog*root,const char*title,unsigned long color)
   XGCValues gcValues={.foreground=(self.text.color=color)};
   self.graphicId=XCreateGC(self.root.root.display,self.id,(self.graphicMask=GCForeground),&gcValues);
 }
-gameModeButton::~gameModeButton(){
+gameModeButton::~gameModeButton()
+{
   XFreeGC(self.root.root.display,self.graphicId);
 }

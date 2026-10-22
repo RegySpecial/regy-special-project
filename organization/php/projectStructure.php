@@ -41,11 +41,13 @@
       function searchDir(string $path)
       {
         $entry = scandir($path);
-        for ($i = 2;$i < count($entry);$i++){
+        for ($i = 2;$i < count($entry);$i++)
+          {
           $fileOrDir = str_replace('<', '&lt;', str_replace('>', '&gt;', str_replace('"', "&doublequote;", $entry[$i])));
           $fileType = filetype("$path/$fileOrDir");
           $fileMime = mime_content_type("$path/$fileOrDir");
-          switch($_GET['view']){
+          switch ($_GET['view'])
+          {
             case 'square':
               echo "<div id=\"ID\" class=\"$fileType:$fileMime\">$fileOrDir";
               if (is_dir("$path/$fileOrDir"))
@@ -66,19 +68,22 @@
     ?>
     <script>
       document.querySelectorAll`#ID`.forEach(element=>{
-        element.addEventListener("mouseover",function(e){
+        element.addEventListener("mouseover",function(e)
+        {
           document.querySelector("pre").style.display = "block"
           document.querySelector("pre").style.top = `${e.clientY}px`
           document.querySelector("pre").style.left = `${e.clientX}px`
           document.querySelector("pre").textContent = element.className
         },1)
-        element.addEventListener("mousemove",function(e){
+        element.addEventListener("mousemove",function(e)
+        {
           document.querySelector("pre").style.display = "block"
           document.querySelector("pre").style.top = `${e.clientY}px`
           document.querySelector("pre").style.left = `${e.clientX}px`
           document.querySelector("pre").textContent = element.className
         },1)
-        element.addEventListener("mouseout",function(){
+        element.addEventListener("mouseout",function()
+        {
           document.querySelector("pre").style.display = "none"
         },1)
       })

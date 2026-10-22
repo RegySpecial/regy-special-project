@@ -1,16 +1,18 @@
-#include<sql.h>
-#include<sqlext.h>
-#include<stdio.h>
-#include<iostream>
+#include <sql.h>
+#include <sqlext.h>
+#include <stdio.h>
+#include <iostream>
 namespace sql{
   class environment{
     public:
       SQLHANDLE sqlHandle;
       SQLRETURN sqlReturn;
-      environment(){
+      environment()
+      {
         this->sqlReturn=SQLAllocHandle(SQL_HANDLE_ENV,SQL_NULL_HENV,&this->sqlHandle);
       }
-      ~environment(){
+      ~environment()
+      {
         SQLFreeHandle(SQL_HANDLE_ENV,this->sqlHandle);
       }
   };
@@ -18,10 +20,12 @@ namespace sql{
     public:
       SQLHANDLE sqlHandle;
       SQLRETURN sqlReturn;
-      connection(sql::environment*sqlEnv){
+      connection(sql::environment*sqlEnv)
+      {
         this->sqlReturn=SQLAllocHandle(SQL_HANDLE_STMT,sqlEnv->sqlHandle,&this->sqlHandle);
       }
-      ~connection(){
+      ~connection()
+      {
         SQLFreeHandle(SQL_HANDLE_DBC,this->sqlHandle);
       }
   };
@@ -29,15 +33,18 @@ namespace sql{
     public:
       SQLHANDLE sqlHandle;
       SQLRETURN sqlReturn;
-      statement(sql::connection*sqlConnect){
+      statement(sql::connection*sqlConnect)
+      {
         this->sqlReturn=SQLAllocHandle(SQL_HANDLE_STMT,sqlConnect->sqlHandle,&this->sqlHandle);
       }
-      ~statement(){
+      ~statement()
+      {
         SQLFreeHandle(SQL_HANDLE_ENV,this->sqlHandle);
       }
   };
 }
-int main(int argc,char*argv[],char*envp[]){
+int main(int argc,char*argv[],char*envp[])
+{
   void*SQLEnvironment,
       *SQLStatement,
       *SQLConnection;
@@ -66,15 +73,19 @@ int main(int argc,char*argv[],char*envp[]){
   if(SQLReturn!=SQL_SUCCESS&&SQLReturn!=SQL_SUCCESS_WITH_INFO)
     PrintSQLDiagnosticError(SQLConnection,SQL_HANDLE_DBC,"Errore nella dichiarazione dello statement");
   
-  if(argc==1){
+  if(argc==1)
+  {
     SQLReturn=SQLExecDirectA(SQLStatement,(SQLCHAR*)"select distinct name from User where id=1",SQL_NTS);
     if(SQL_NO_DATA==SQLReturn)SQLReturn=SQLExecDirectA(SQLStatement,(SQLCHAR*)"insert into User select 1,\"Player 1\"",SQL_NTS);
-  }else{
+  }
+  else
+  {
     SQLReturn=SQLPrepareA(SQLStatement,(SQLCHAR*)"select distinct name from User where name=?",SQL_NTS);
     SQLReturn=SQLBindParameter(SQLStatement,1,SQL_PARAM_INPUT,SQL_C_CHAR,SQL_VARCHAR,40,0,(void*)userInput,sizeof (userInput),NULL);
     SQLReturn=SQLExecute(SQLStatement);
   }
-  while(SQLFetch(SQLStatement)==SQL_SUCCESS){
+  while(SQLFetch(SQLStatement)==SQL_SUCCESS)
+  {
     SQLGetData(SQLStatement,1,SQL_C_CHAR,(void*)userInput,sizeof (userInput),&indicator);
     std::cout<<userInput<<'\n';
   }

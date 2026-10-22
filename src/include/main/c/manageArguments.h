@@ -23,9 +23,10 @@
 #define colorFunctionsRegularExpression "\\s*((hsl|rgb)\\s*\\((\\s*[0-9]{1,3}\\s*\\,){2}\\s*[0-9]{1,3}\\s*\\)|((hsl|rgb)a|cymk)\\s*\\((\\s*[0-9]{1,3}\\s*\\,){3}\\s*[0-9]{1,3}\\s*\\)|cmyka\\s*\\((\\s*[0-9]{1,3}\\s*\\,){4}\\s*[0-9]{1,3}\\s*\\))\\s*"
 
 #if defined __cplusplus || defined c_plusplus
-extern "C"{
+extern "C" {
 #endif
   typedef enum
+  : unsigned char
   {
     argumentOptionFlag_help,
     argumentOptionFlag_user,
@@ -33,43 +34,55 @@ extern "C"{
     argumentOptionFlag_audio,
     argumentOptionFlag_debug,
     argumentOptionFlag_0
-  } argumentOptionFlag;
+  }
+  argumentOptionFlag;
 
   typedef enum
+  : unsigned char
   {
     argumentOptionFlagSuboptionsIndex_user,
     argumentOptionFlagSuboptionsIndex_background,
     argumentOptionFlagSuboptionsIndex_help
-  } argumentOptionFlagSuboptionsIndex;
+  }
+  argumentOptionFlagSuboptionsIndex;
   
   typedef enum
+  : unsigned char
   {
     argumentOptionUserFlagSuboptions_name,
     argumentOptionUserFlagSuboptions_identifier
-  } argumentOptionUserFlagSuboptions;
+  }
+  argumentOptionUserFlagSuboptions;
 
   typedef enum
+  : unsigned char
   {
     argumentOptionHelpFlagSuboptions_user,
     argumentOptionHelpFlagSuboptions_background,
     argumentOptionHelpFlagSuboptions_audio
-  } argumentOptionHelpFlagSuboptions;
+  }
+  argumentOptionHelpFlagSuboptions;
 
   typedef enum
+  : unsigned char
   {
     argumentOptionBackgroundFlagSuboptions_color,
     argumentOptionBackgroundFlagSuboptions_pixelmap,
     argumentOptionBackgroundFlagSuboptions_path
-  } argumentOptionBackgroundFlagSuboptions;
+  }
+  argumentOptionBackgroundFlagSuboptions;
 
   typedef enum
+  : unsigned char
   {
     argumentOptionAudioFlagSuboptions_path,
     argumentOptionAudioFlagSuboptions_beepmap,
     argumentOptionAudioFlagSuboptions_volume
-  } argumentOptionAudioFlagSuboptions;
+  }
+  argumentOptionAudioFlagSuboptions;
 
   typedef enum
+  : unsigned char
   {
     exitStatus_success,
     exitStatus_userNameTooBig,
@@ -91,7 +104,8 @@ extern "C"{
     exitStatus_regularExpressionCompilationFailure,
     exitStatus_forkFailure,
     exitStatus_execFailure
-  } exitStatus;
+  }
+  exitStatus;
 
   typedef struct
   {

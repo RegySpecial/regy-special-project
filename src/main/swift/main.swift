@@ -15,7 +15,8 @@ public class ApplicationDelegate : NSObject,
     defer:true,
     screen:NSScreen.main
   )
-  func applicationDidFinishLaunching(_ aNotification:Notification){
+  func applicationDidFinishLaunching(_ aNotification:Notification)
+{
     self.window.setIsVisible(true)
     self.window.title="RegySpecial"
     if CommandLine.argc==1{

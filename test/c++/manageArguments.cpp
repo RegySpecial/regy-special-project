@@ -1,4 +1,4 @@
-#include "../src/include/main/c/manageArguments.h"
+#include "../../src/include/main/c/manageArguments.h"
 int main(int argc,char*argv[],char*envp[])
 {
   gameContextStructure structure = manageCommandLineArguments(argc,argv);

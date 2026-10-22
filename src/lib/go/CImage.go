@@ -1,7 +1,7 @@
 package main
 /*
-#include<stdlib.h>
-#include<stdio.h>
+#include <stdlib.h>
+#include <stdio.h>
 typedef struct{
   unsigned long
     width,
@@ -19,7 +19,8 @@ import "image"
 import "fmt"
 import "os"
 //export RetrieveImageData
-func RetrieveImageData(path*C.char)(width,height int,mime,data*C.char){
+func RetrieveImageData(path*C.char)(width,height int,mime,data*C.char)
+{
   file,err:=os.Open(C.GoString(path))
   if err!=nil{
     fmt.Println("error while loading the file")
@@ -48,7 +49,8 @@ func RetrieveImageData(path*C.char)(width,height int,mime,data*C.char){
   return imgFile.Bounds().Max.X,imgFile.Bounds().Max.Y,C.CString(imgType),(*C.char)(ImageData)
 }
 //export CleanImageData
-func CleanImageData(data*C.char){
+func CleanImageData(data*C.char)
+{
   if data!=nil{
     C.free(unsafe.Pointer(data))
     data=nil
@@ -56,7 +58,8 @@ func CleanImageData(data*C.char){
 }
 
 //export RetrieveDataFromJpegImage
-func RetrieveDataFromJpegImage(path*C.char)(width,height int,data*C.char){
+func RetrieveDataFromJpegImage(path*C.char)(width,height int,data*C.char)
+{
   file,err:=os.Open(C.GoString(path))
   if err!=nil{
     fmt.Println("error while loading the file")
@@ -87,7 +90,8 @@ func RetrieveDataFromJpegImage(path*C.char)(width,height int,data*C.char){
   return jpegFile.Bounds().Dx(),jpegFile.Bounds().Dy(),(*C.char)(ImageData)
 }
 //export RetrieveDataFromPngImage
-func RetrieveDataFromPngImage(path*C.char)(width int,height int,data*C.char){
+func RetrieveDataFromPngImage(path*C.char)(width int,height int,data*C.char)
+{
   file,err:=os.Open(C.GoString(path))
   if err!=nil{
     fmt.Println("error while loading the file")
@@ -119,7 +123,8 @@ func RetrieveDataFromPngImage(path*C.char)(width int,height int,data*C.char){
   return pngFile.Bounds().Max.X-pngFile.Bounds().Min.X,pngFile.Bounds().Max.Y-pngFile.Bounds().Min.Y,(*C.char)(ImageData)
 }
 //export RetrieveGifData
-func RetrieveGifData(path*C.char){
+func RetrieveGifData(path*C.char)
+{
   file,err:=os.Open(C.GoString(path))
   if err!=nil{
     fmt.Println("error while loading the file")
@@ -133,4 +138,5 @@ func RetrieveGifData(path*C.char){
   fmt.Print(gifFile)
 }
 
-func main(){}
+func main()
+{}

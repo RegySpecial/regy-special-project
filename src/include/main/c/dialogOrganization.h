@@ -7,31 +7,43 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #if defined __cplusplus || defined c_plusplus
-extern "C"{
+extern "C" {
 #endif
-  typedef enum{
+  typedef enum
+  : unsigned char
+  {
     dialogViewType_ask,
     dialogViewType_root,
     dialogViewType_unroot
-  }dialogViewType;
-  typedef enum{
+  }
+  dialogViewType;
+  typedef enum
+  : unsigned char
+  {
     dialogType_layoutMode,
     dialogType_play,
     dialogType_exit,
     dialogType_options,
     dialogType_moreInformation,
-  }dialogType;
-  typedef enum{
+  }
+  dialogType;
+  typedef enum
+  : unsigned char
+  {
     gameMode_simple,
     gameMode_intermediate,
     gameMode_advanced,
     gameMode_extreme,
     gameMode_customized
-  }gameMode;
-  typedef enum{
+  }
+  gameMode;
+  typedef enum
+  : unsigned char
+  {
     dialogConfirm_OK,
     dialogConfirm_Cancel
-  }dialogConfirm;
+  }
+  dialogConfirm;
 #if defined __cplusplus || defined c_plusplus
 }
 #endif

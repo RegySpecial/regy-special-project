@@ -1,6 +1,6 @@
 #ifndef tablesHpp
 #define tablesHpp
-#include<stdlib.h>
+#include <stdlib.h>
 
 template
 <
@@ -52,8 +52,10 @@ class hashTable
       return this->next[hashTable::hash(key)];
     }
     
-    void insert(keyDataType key,valueDataType value){
-      if(this->items[hashTable::hash(key)]){
+    void insert(keyDataType key,valueDataType value)
+{
+      if(this->items[hashTable::hash(key)])
+{
         this->items[hashTable::hash(key)]
       }else{
         this->items[hashTable::hash(key)].key = key;

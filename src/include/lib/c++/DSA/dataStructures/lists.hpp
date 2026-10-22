@@ -164,37 +164,44 @@ public:
   template<typename indexDataType = unsigned long long>
   dataType at(indexDataType index)
   {
-    this->forEach([&](dataType item, indexDataType i,linkedList<dataType> *original){
+    this->forEach([&](dataType item, indexDataType i,linkedList<dataType> *original)
+    {
       if(i == index)
         return item;
     });
   }
 
-  void push(dataType value){
+  void push(dataType value)
+  {
     linkedList<dataType> newNode(value);
     this->next = &newNode;
   }
 
-  void pop(){
+  void pop()
+  {
     this->value = 0;
     this->next = NULL;
   }
 
-  void insert(dataType value,unsigned long long position){
+  void insert(dataType value,unsigned long long position)
+  {
     if(position==1)this->push(value);
     linkedList<dataType>newNode(value);
-    for(unsigned int index=0; index<position; index++){
+    for(unsigned int index=0; index<position; index++)
+    {
       if(index==position)
         this->next = &newNode;
     }
   }
-  char remove(dataType value){
+  char remove(dataType value)
+  {
     linkedList<dataType>newNode(value);
     this->next=&newNode;
     return &newNode!=NULL;
   }
 
-  ~linkedList(){
+  ~linkedList()
+  {
     this->value = 0;
     this->next = NULL;
   }
@@ -208,57 +215,71 @@ public:
     *prev,
     *next;
   
-  linkedList(dataType value){
+  linkedList(dataType value)
+  {
     this->value=value;
     this->next=NULL;
     this->prev=NULL;
   }
 
-  void forEach(void (*callbackFunction)(dataType,unsigned int)){
+  void forEach(void (*callbackFunction)(dataType,unsigned int))
+  {
     unsigned long nodeIndex=0;
-    for(linkedList*head=this->node;head!=NULL;nodeIndex++){
+    for(linkedList*head=this->node;head!=NULL;nodeIndex++)
+    {
       callback(*head,nodeIndex);
       head=head->node;
     }
   }
-  linkedList<dataType>filter(unsigned char(*filterFunction)(dataType,unsigned int)){
+  linkedList<dataType>filter(unsigned char(*filterFunction)(dataType,unsigned int))
+  {
     linkedList filterLinkedList;
-    this->forEach([&](dataType element,unsigned int index){
+    this->forEach([&](dataType element,unsigned int index)
+{
       if(filterFunction(element,index)>0)filterLinkedList.add(head->value,nodeIndex);
     });
   }
-  linkedList<dataType>push(dataType value){
+  linkedList<dataType>push(dataType value)
+  {
     linkedList<dataType>newNode(value);
     this->node=&newNode;
     return newNode;
   }
-  linkedList<dataType>pop(){
+  linkedList<dataType>pop()
+  {
     this->value=0;
     this->node=NULL;
     return*this;
   }
-  linkedList<dataType>insert(dataType value,unsigned long long position){
+  linkedList<dataType>insert(dataType value,unsigned long long position)
+  {
     if(position==1)this->push(value);
     linkedList<dataType>newNode(value);
-    for(unsigned int index=0; index<position; index++){
-      if(index==position){
+    for(unsigned int index=0; index<position; index++)
+    {
+      if(index==position)
+      {
         this->node=&newNode;
         return newNode;
       }
     }
   }
-  char remove(dataType value){
+  char remove(dataType value)
+  {
     linkedList<dataType>newNode(value);
     this->node=&newNode;
     return &newNode!=NULL;
   }
-  void traverse(){
-    for(linkedList<dataType>*head=this;head!=NULL;){
+  void traverse()
+  {
+    for(linkedList<dataType>*head=this;head!=NULL;)
+    {
       std::cout<<"Value "<<head->value<<'\n';
       head=head->node;
     }
   }
-  ~linkedList(){
+  ~linkedList()
+  {
     this->value=0;
     this->node=NULL;
   }

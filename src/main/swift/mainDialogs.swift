@@ -1,7 +1,8 @@
 public class dialog: widget
 {
   var id:(NSPanel?,NSWindow?)
-  init(_ root:mainWindow,_ type:UInt8){
+  init(_ root:mainWindow,_ type:UInt8)
+{
     self.root = root
     self.type = type
     self.x = 20

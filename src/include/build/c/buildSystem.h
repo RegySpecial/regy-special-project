@@ -4,9 +4,10 @@
 #include "../../lib/c/console.h"
 
 #if defined __cplusplus || defined c_plusplus
-extern "C"{
+extern "C" {
 #endif
   typedef enum
+  : unsigned char
   {
     cpuArchitecture_i386,
     cpuArchitecture_amd64,
@@ -25,6 +26,7 @@ extern "C"{
   cpuArchitecture;
   
   typedef enum
+  : unsigned char
   {
     operatingSystem_aix,
     operatingSystem_android,
@@ -43,6 +45,7 @@ extern "C"{
   operatingSystem;
 
   typedef enum
+  : unsigned char
   {
     executable,
     staticLibrary,

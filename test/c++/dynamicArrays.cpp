@@ -23,7 +23,7 @@ int main()
 		  mask |= !strcasecmp(commandInput, commandList[commandIndex]);
     
 		if (!mask)
-		  failureMessage("INVALID COMMAND!");
+		  errorMessage("INVALID COMMAND!");
     else if (!strcasecmp(commandInput, "push"))
       do
       {
@@ -31,7 +31,7 @@ int main()
         printf("Print a number to push into the dynamic array:");
 	      pushScanExit = scanf("%d", &numberToPush);
         if(!pushScanExit)
-          failureMessage("INVALID NUMBER TO PUSH!");
+          errorMessage("INVALID NUMBER TO PUSH!");
         else
           dynamic_array.push(numberToPush);
         while(getchar() != '\n');
@@ -47,7 +47,7 @@ int main()
   }
   while (strncasecmp(commandInput, "exit", 4));
 
-  OKMessage("Main process exited with status 0!");
+  successMessage("Main process exited with status 0!");
 
   return 0;
 }

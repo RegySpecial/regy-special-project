@@ -9,9 +9,12 @@
 #if defined __cplusplus || defined c_plusplus
 extern "C"
 #endif
-typedef enum{
+typedef enum
+: unsigned char
+{
   generalPurposeMaskBits_debug,
   generalPurposeMaskBits_eventLoop,
   generalPurposeMaskBits_dialogBindToWindow
-}generalPurposeMaskBits;
+}
+generalPurposeMaskBits;
 #endif

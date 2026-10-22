@@ -100,13 +100,16 @@ public class mainWindow : widget
   let textBox:NSTextField=NSTextField(labelWithString:"inserire il nome utente")
   var submitButton:NSButton!
   var form:NSStackView!
-  @objc func handleGameMode(){
+  @objc func handleGameMode()
+  {
     print("coso")
   }
-  @objc override func close(){
+  @objc override func close()
+  {
     appShare.terminate(appShare)
   }
-  @objc func playDialog(){
+  @objc func playDialog()
+  {
     let PlayDialog:NSWindow=NSWindow
     (
       contentRect:NSRect(x:20,y:20,width:self.frame.width-40,height:self.frame.height-40),
@@ -158,7 +161,8 @@ public class mainWindow : widget
     PlayDialog.contentView?.addSubview(dialogCancelButton)
     PlayDialog.contentView?.addSubview(dialogConfirmButton)
   }
-  @objc func showIntro(){
+  @objc func showIntro()
+  {
     let ButtonGrid:[[String:Selector]]=[
       [
         "Play":#selector(self.playDialog),

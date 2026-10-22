@@ -1,7 +1,7 @@
 #ifndef applicationHpp
 #define applicationHpp
 
-#include "../c/events.h"
+#include "events.hpp"
 
 class application
 {
@@ -19,13 +19,13 @@ class application
       **envp;
     displayConnection *display;
     gameContextStructure gameContextContainer;
-    dynamicArray<event> events;
+    dynamicArray<event> eventQueue;
     #ifndef waylandEnabled
     Screen *screen;
     #endif
     application(int argc, char **argv, char **envp);
+    #endif
     ~application();
     void eventLoop(unsigned int microseconds);
-    #endif
 };
 #endif

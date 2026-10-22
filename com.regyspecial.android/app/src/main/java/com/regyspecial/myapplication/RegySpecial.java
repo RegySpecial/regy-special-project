@@ -24,7 +24,8 @@ public class MainActivity extends Activity {
                     Class.forName("com.sqlite.jdbc.Driver");
                     java.sql.Connection SQLiteConnection=DriverManager.getConnection("jdbc:sqlite://file://");
                     java.sql.PreparedStatement SQLQuery=SQLiteConnection.prepareStatement("select distinct name from User");
-                    while(SQLQuery.execute()){
+                    while(SQLQuery.execute())
+                    {
                         java.sql.ResultSet result=SQLQuery.getResultSet();
                         result.getString(1);
                     }

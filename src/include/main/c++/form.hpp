@@ -1,11 +1,11 @@
 #ifndef formHpp
 #define formHpp
-#include"mainWindow.hpp"
+#include "mainWindow.hpp"
 class form : public widget
 {
   public:
-    mainWindow *root;
-    form(mainWindow *root);
+    window *root;
+    form(window *root);
     ~form();
     int show(unsigned int microseconds) override;
     int hide(unsigned int microseconds) override;

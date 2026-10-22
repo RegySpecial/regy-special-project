@@ -1,6 +1,6 @@
 #ifndef eventsH
 #define eventsH
-#include "coreTypedef.h"
+#include "coreTypedef.hpp"
 
 #if defined __cplusplus||defined c_plusplus
 extern "C" {
@@ -92,9 +92,7 @@ class keyboardEvent
 : event
 {
   public:
-    int x,
-        y;
-    unsigned int width,
-                 height;
+    unsigned char key;
+    unsigned char specialKeyMask;
 };
 #endif

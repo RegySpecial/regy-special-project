@@ -1,10 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-class RegySpecial{
-  public static void main(String[] args){
-    try{
-      JFrame frame = new JFrame("RegySpecial"){
-        public void paint(Graphics g){
+class RegySpecial
+{
+  public static void main(String[] args)
+  {
+    try
+    {
+      JFrame frame = new JFrame("RegySpecial")
+      {
+        public void paint(Graphics g)
+        {
           g.drawImage(new ImageIcon("../blobs/images/author-4745750_1280.jpg").getImage(),0,0,(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(),(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight(),null);
         }
       };
@@ -39,14 +44,18 @@ class RegySpecial{
 			);
       GridLayout gridLayout=new GridLayout(2,2,10,10);
       buttonGrid.setLayout(gridLayout);
-      for(final String[] buttonRow:buttonTextGrid){
-        for(final String text:buttonRow){
+      for(final String[] buttonRow:buttonTextGrid)
+      {
+        for(final String text:buttonRow)
+        {
           JButton button=new JButton(text);
 					buttonGrid.add(button);
         }
       }
 			frame.add(buttonGrid);
-    }catch(Exception e){
+    }
+    catch(Exception e)
+    {
       e.printStackTrace();
     }
   }

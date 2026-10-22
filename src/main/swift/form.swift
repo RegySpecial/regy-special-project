@@ -1,7 +1,8 @@
 public class form:widget{
   public var id:NSPanel!
   public var root:mainWindow
-  init(_ root:mainWindow){
+  init(_ root:mainWindow)
+  {
     self.root=root;
     self.x=self.root.width*20/100,//20% of screen.width
     self.y=self.root.height*20/100,//20% of screen.width
@@ -13,7 +14,8 @@ public class form:widget{
 }
 #include "../../include/main/c++/form.hpp"
 
-form::form(mainWindow*root){
+form::form(mainWindow*root)
+{
   self.root=root;
   self.x=self.root.width*20/100,//20% of screen.width
   self.y=self.root.height*20/100,//20% of screen.width
@@ -43,6 +45,7 @@ form::form(mainWindow*root){
     &formAttributes
   );
 }
-form::~form(){
+form::~form()
+{
   XDestroySubwindows(self.root.display,self.id);
 }

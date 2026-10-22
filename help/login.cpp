@@ -5,10 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include<X11/XKBlib.h>
-#include<math.h>
-#include<unistd.h>
-#include<signal.h>
+#include <X11/XKBlib.h>
+#include <math.h>
+#include <unistd.h>
+#include <signal.h>
 typedef struct{
   int x,y;
   unsigned int width,height;
@@ -128,22 +128,26 @@ int main(int argc,char*argv[]) {
     &submitButtonAttributes
   );
   int getSubmitButtonAttr=XGetWindowAttributes(display,submitButton,&submitButtonAttr);
-  if(!window){
+  if(!window)
+  {
     std::cerr << "Failed to create window\n";
     XCloseDisplay(display);
     return 1;
   }
-  if(!form){
+  if(!form)
+  {
     std::cerr << "Failed to create form\n";
     XCloseDisplay(display);
     return 1;
   }
-  if(!textBox){
+  if(!textBox)
+  {
     std::cerr << "Failed to create text box\n";
     XCloseDisplay(display);
     return 1;
   }
-  if(!submitButton){
+  if(!submitButton)
+  {
     std::cerr << "Failed to create submit button\n";
     XCloseDisplay(display);
     return 1;
@@ -163,15 +167,19 @@ int main(int argc,char*argv[]) {
      submitButtonGC=XCreateGC(display,submitButton,GCForeground,&textBoxTextGCValues); 
   register char text[41];
   std::cout<<window<<' '<<form<<' '<<textBox<<' '<<submitButton<<'\n';
-  for(unsigned char textI=0;running;){
+  for(unsigned char textI=0;running;)
+  {
     XNextEvent(display,&event);
-    switch(event.xany.window,event.xany.type){
-      case(textBox,KeyPress):{
+    switch(event.xany.window,event.xany.type)
+    {
+      case (textBox,KeyPress):
+      {
         char trueKey=(char)XkbKeycodeToKeysym(display,event.xkey.keycode,0,event.xkey.state&ShiftMask==1);
         //Backspace|LeftArrow|RightArrow
         unsigned char specialKeyCodes[]={22,113,114};
         text[textI]=(trueKey)*(event.xkey.keycode!=22);
-        if(textI==0&&event.xkey.keycode==22||textI==40&&event.xkey.keycode!=22||event.xkey.keycode==50){
+        if(textI==0&&event.xkey.keycode==22||textI==40&&event.xkey.keycode!=22||event.xkey.keycode==50)
+        {
           putchar('\a');
           XClearWindow(display,form);
           XDrawString(
@@ -195,7 +203,9 @@ int main(int argc,char*argv[]) {
               43:
             0
           );
-        }else{
+        }
+        else
+        {
           textI+=pow(-1,((event.xkey.keycode==22||event.xkey.keycode==113)&&0<=textI&&textI<=40)^(event.xkey.keycode==114));
           XClearWindow(display,textBox);
           XDrawString(
@@ -221,7 +231,8 @@ int main(int argc,char*argv[]) {
         std::cout<<event.xkey.keycode<<' '<<text<<'\n';
         break;
       }
-      case(form,Expose):{
+      case (form,Expose):
+      {
         XDrawString(
           display,
           form,
@@ -242,7 +253,8 @@ int main(int argc,char*argv[]) {
         );
         break;
       }
-      case(submitButton,ButtonPress):{
+      case (submitButton,ButtonPress):
+      {
         std::cout<<"x:"<<event.xbutton.x<<" y:"<<event.xbutton.y<<" dx:"<<(submitButtonAttr.x-event.xbutton.x)<<" dy:"<<(submitButtonAttr.y-event.xbutton.y)<<'\n';
         if(strcmp(text,"coso shish sus troio t6yf iojijo hjjhjh")==0)running=0;
         break;

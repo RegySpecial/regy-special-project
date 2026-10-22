@@ -7,7 +7,8 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 template<typename returnDataType=unsigned long long>
-returnDataType stringToNumber(const char*string){
+returnDataType stringToNumber(const char*string)
+{
   returnDataType number = 0;
   for (unsigned long i = *string == '+' || *string == '-';string[i];i++)
     if ('0' <= string[i] && string[i] <= '9')
@@ -18,7 +19,8 @@ returnDataType stringToNumber(const char*string){
 }
 
 template<typename numberDataType=unsigned long long>
-void numberToBase(char*outputBuffer,numberDataType number,unsigned char base){
+void numberToBase(char*outputBuffer,numberDataType number,unsigned char base)
+{
   for (unsigned long long c = 0;outputBuffer[c];outputBuffer[c++] = 0);
   if (2 <= base && base <= 36)
     for (unsigned char bit = 0;bit < sizeof number * 8;bit++) {
@@ -28,7 +30,8 @@ void numberToBase(char*outputBuffer,numberDataType number,unsigned char base){
 }
 /*1st overload of numberToBase*/
 template<typename numberDataType=unsigned long long,typename sizeDataType = unsigned long long>
-void numberToBase(char*outputBuffer,sizeDataType size,numberDataType number,unsigned char base){
+void numberToBase(char*outputBuffer,sizeDataType size,numberDataType number,unsigned char base)
+{
   for (sizeDataType c = 0;c < size;outputBuffer[c++] = 0);
   if (2 <= base && base <= 36)
     for (unsigned char bit = 0;bit < sizeof number * 8;bit++) {
@@ -38,7 +41,8 @@ void numberToBase(char*outputBuffer,sizeDataType size,numberDataType number,unsi
 }
 
 template<typename numberDataType=unsigned long long>
-numberDataType grayCode(numberDataType number){
+numberDataType grayCode(numberDataType number)
+{
   numberDataType resultingCode = 0,
                  Gn = number >> (sizeof number * 8) & 1,
                  Gn1 = 0;
@@ -51,7 +55,8 @@ numberDataType grayCode(numberDataType number){
 }
 
 template<typename numberDataType=unsigned long long>
-numberDataType hammingDistance(numberDataType firstNumber, numberDataType secondNumber){
+numberDataType hammingDistance(numberDataType firstNumber, numberDataType secondNumber)
+{
   numberDataType result = 0;
   for (unsigned long bit = 0; bit < sizeof firstNumber; bit++)
     result += (firstNumber >> bit & 1) ^ (secondNumber >> bit & 1);

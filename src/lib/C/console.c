@@ -7,7 +7,8 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include "../../include/lib/c/console.h"
-int customizedMessage(messageStructure*messageStructureReference){
+int customizedMessage(messageStructure*messageStructureReference)
+{
   char backgroundColorFormat[20],
        textColorFormat[20];
   sprintf(
@@ -41,4 +42,40 @@ int customizedMessage(messageStructure*messageStructureReference){
     messageStructureReference->messageTypeString,
     messageStructureReference->messageString
   );
+}
+
+void errorMessage(const char *errorMessageFormat, ...)
+{
+  va_list varArgs;
+  va_start(varArgs, errorMessageFormat);
+  fprintf(stderr, "\e[38;2;255;255;255m[\e[38;2;255;0;0mError\e[38;2;255;255;255m]\e[0m");
+  vfprintf(stderr, errorMessageFormat, varArgs);
+  va_end(varArgs);
+}
+
+void successMessage(const char *successMessageFormat, ...)
+{
+  va_list varArgs;
+  va_start(varArgs, successMessageFormat);
+  printf("\e[38;2;255;255;255m[\e[38;2;0;255;0mSuccess\e[38;2;255;255;255m]\e[0m");
+  vprintf(successMessageFormat, varArgs);
+  va_end(varArgs);
+}
+
+void warningMessage(const char *warningMessageFormat, ...)
+{
+  va_list varArgs;
+  va_start(varArgs, warningMessageFormat);
+  printf("\e[38;2;255;255;255m[\e[38;2;255;255;0mWarning\e[38;2;255;255;255m]\e[0m");
+  vprintf(warningMessageFormat, varArgs);
+  va_end(varArgs);
+}
+
+void informationMessage(const char *informationMessageFormat, ...)
+{
+  va_list varArgs;
+  va_start(varArgs, informationMessageFormat);
+  printf("\e[38;2;255;255;255m[\e[38;2;0;0;255mInformation\e[38;2;255;255;255m]\e[0m");
+  vprintf(informationMessageFormat, varArgs);
+  va_end(varArgs);
 }

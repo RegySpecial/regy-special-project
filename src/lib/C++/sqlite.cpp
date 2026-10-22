@@ -1,12 +1,14 @@
 /*
 * for more information visit "https://sqlite.org/fileformat2.html"
 */
-#include<stdio.h>
-#include<iostream>
-class SQLite{
+#include <stdio.h>
+#include <iostream>
+class SQLite
+{
   public:
-    FILE*databaseFile;
-    struct{
+    FILE *databaseFile;
+    struct
+    {
       unsigned char headerString[16];
       unsigned short pageSize;
       unsigned char writeVersion:8,//File format write version. 1 for legacy; 2 for WAL.
@@ -41,9 +43,11 @@ class SQLite{
     }BTreePageHeader;
     struct{
     }BTreeCell;
-    SQLite(char*databaseFilePath){
+    SQLite(char*databaseFilePath)
+    {
       this->databaseFile=fopen(databaseFilePath,"rb");
-      if(this->databaseFile==NULL){
+      if(this->databaseFile==NULL)
+      {
         perror("Failed to open database");
         return;
       }
@@ -51,18 +55,22 @@ class SQLite{
       fseek(this->databaseFile,16,SEEK_CUR);
       fwrite(&(this->databaseHeader.pageSize),1,2,this->databaseFile);
     }
-    void printTables(){
+    void printTables()
+    {
 
     }
-    ~SQLite(){
+    ~SQLite()
+    {
       fclose(this->databaseFile);
       this->databaseFile=NULL;
     }
 };
-int main(int argc,char*argv[]){
-  if(argc==2){
+int main(int argc,char*argv[])
+{
+  if(argc==2)
+  {
     SQLite connect(argv[1]);
-    std::cout<<connect.pageSize<<'\n';
+    std::cout<<connect.databaseHeader.pageSize<<'\n';
   }
   return 0;
 }

@@ -27,7 +27,7 @@ application::application(int argc, char **argv, char **envp)
 
   if (!this->display)
   {
-    failureMessage
+    errorMessage
     (
       "Cannot establish a connection with the "
       #ifdef WaylandEnabled
@@ -44,7 +44,7 @@ application::application(int argc, char **argv, char **envp)
 
   if (!this->screen)
   {
-    failureMessage("cannot get informations about the screen");
+    errorMessage("cannot get informations about the screen");
     abort();
   }
 }
@@ -72,33 +72,20 @@ void application::eventLoop(unsigned int microseconds)
   #endif
   (microseconds);
 
-  for (XEvent event; readBit<unsigned char>(this->gameContextContainer.generalPurposeMask, generalPurposeMaskBits_eventLoop);)
+  for (XEvent eventStructure; readBit<unsigned char>(this->gameContextContainer.generalPurposeMask, generalPurposeMaskBits_eventLoop);)
   {
-    XNextEvent(this->display, &event);
+    XNextEvent(this->display, &eventStructure);
+    for (unsigned long long eventQueueIndex = 0; eventQueueIndex < this->eventQueue.size; eventQueueIndex++)
+    {
+      switch (eventStructure.type)
+      {
+        case KeyPress:
+          this->eventQueue.at(eventQueueIndex).target;
+          break;
+        
+        default:
+          break;
+      }
+    }
   }
 }
-
-class application
-{
-  public:
-    #if defined __WIN32 || defined __WIN64
-    HINSTANCE hInst,
-              hInstPrev;
-    char *cmdline;
-    int cmdshow;
-    application(HINSTANCE hInst, HINSTANCE hInstPrev, char *cmdline, int cmdshow);
-    #else
-    int argc;
-    char
-      **argv,
-      **envp;
-    gameContextStructure gameContextContainer;
-    displayConnection *display;
-    #ifndef waylandEnabled
-    Screen *screen;
-    #endif
-    application(int argc, char **argv, char **envp);
-    ~application();
-    void eventLoop(unsigned int microseconds);
-    #endif
-};

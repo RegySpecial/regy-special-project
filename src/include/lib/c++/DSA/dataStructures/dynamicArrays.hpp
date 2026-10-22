@@ -6,9 +6,9 @@
 *@date (First version [Linux/Parrot OS]) 2026 March 7th Saturday, 16:12:08
 *@license GNU General Public License to stop private corporation to not share source code
 */
-#include<iostream>
-#include<stdlib.h>
-#include"../../../c/console.h"
+#include <iostream>
+#include <stdlib.h>
+#include "../../../c/console.h"
 
 template
 <
@@ -155,10 +155,12 @@ public:
   accumulationValueDataType reduce(itemsDataType (*reduceFunction)(itemsDataType, sizeDataType, dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right);
 
   void sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType), sizeDataType left, sizeDataType right);
-  inline void sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType), sizeDataType size){
+  inline void sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType), sizeDataType size)
+  {
     this->sort(comparisonFunction, 0, size);
   }
-  inline void sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType)){
+  inline void sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType))
+  {
     this->sort(comparisonFunction, this->size);
   }
 

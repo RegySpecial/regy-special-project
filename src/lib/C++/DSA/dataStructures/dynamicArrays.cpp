@@ -18,7 +18,7 @@ dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray()
   this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
   if (!this->items)
   {
-    failureMessage("Failed to reallocate memory for the dynamic array");
+    errorMessage("Failed to reallocate memory for the dynamic array");
     return;
   }
 }
@@ -35,7 +35,7 @@ dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(capaci
   this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
   if (!this->items)
   {
-    failureMessage("Failed to allocate memory for the dynamic array");
+    errorMessage("Failed to allocate memory for the dynamic array");
     return;
   }
 }
@@ -53,7 +53,7 @@ dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(itemsD
   this->items = (itemsDataType *)calloc(this->capacity, sizeof (itemsDataType));
   if (!this->items)
   {
-    failureMessage("Failed to allocate memory for the dynamic array");
+    errorMessage("Failed to allocate memory for the dynamic array");
     return;
   }
   for (sizeDataType index = 0; index < this->size; index++)
@@ -73,7 +73,7 @@ dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(sizeDa
   this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
   if (!this->items)
   {
-    failureMessage("Failed to allocate memory for the dynamic array");
+    errorMessage("Failed to allocate memory for the dynamic array");
     return;
   }
 }
@@ -91,7 +91,7 @@ dynamicArray<itemsDataType, sizeDataType, capacityDataType>::dynamicArray(itemsD
   this->items = (itemsDataType *) calloc(this->capacity,sizeof (itemsDataType));
   if (!this->items)
   {
-    failureMessage("Failed to allocate memory for the dynamic array");
+    errorMessage("Failed to allocate memory for the dynamic array");
     return;
   }
   for (sizeDataType index = 0; index < this->size; index++)
@@ -122,7 +122,7 @@ void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::insert(itemsDa
 {
   if (index >= this->size)
   {
-    failureMessage("Index out of range");
+    errorMessage("Index out of range");
     return;
   }
 
@@ -139,7 +139,7 @@ void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::insert(itemsDa
       this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
       if (!this->items)
       {
-        failureMessage("Failed to reallocate memory for the dynamic array");
+        errorMessage("Failed to reallocate memory for the dynamic array");
         return;
       }
       free(oldItems);
@@ -168,7 +168,7 @@ void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::remove(sizeDat
     --this->size;
   }
   else
-    failureMessage("Index out of range!");
+    errorMessage("Index out of range!");
 }
 
 template
@@ -192,7 +192,7 @@ void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::push(itemsData
       this->items = (itemsDataType *) calloc(this->capacity,sizeof (itemsDataType));
       if (!this->items)
       {
-        failureMessage("Failed to reallocate memory for the dynamic array");
+        errorMessage("Failed to reallocate memory for the dynamic array");
         return;
       }
       free(oldItems);
@@ -214,7 +214,7 @@ itemsDataType dynamicArray<itemsDataType, sizeDataType, capacityDataType>::at(si
   if (0 <= index && index < this->size)
     return this->items[index];
   else
-    failureMessage("Index out of range!");
+    errorMessage("Index out of range!");
 }
 
 template
@@ -426,7 +426,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::filter(bool (*filterFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *)){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::filter(bool (*filterFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *))
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>filteredDynamicArray(0,this->capacity);
   for (sizeDataType index = 0; index < this->size; index++)
     if (filterFunction(this->at(index), index, this))
@@ -440,7 +441,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::filter(bool (*filterFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::filter(bool (*filterFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size)
+{
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>filteredDynamicArray(0,this->capacity);
     for (sizeDataType index = 0; index < size && size <= this->size; index++)
       if (filterFunction(this->at(index), index, this))
@@ -454,7 +456,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::filter(bool (*filterFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::filter(bool (*filterFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right)
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>filteredDynamicArray(0,this->capacity);
   for (; 0 <= left && left < right && right <= this->size; left++)
     if (filterFunction(this->at(left), left, this))
@@ -468,7 +471,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType)){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType))
+{
   bool everyCondition = 1;
   for (sizeDataType index = 0; index < this->size; index++)
     everyCondition &= everyFunction(this->at(index));
@@ -480,7 +484,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType), sizeDataType size){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType), sizeDataType size)
+{
   bool everyCondition = 1;
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     everyCondition &= everyFunction(this->at(index));
@@ -492,7 +497,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType), sizeDataType left, sizeDataType right){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType), sizeDataType left, sizeDataType right)
+{
   bool everyCondition = 1;
   for (; 0 <= left && left < right && right <= this->size; left++)
     everyCondition &= everyFunction(this->at(left));
@@ -505,7 +511,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType)){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType))
+{
   bool everyCondition = 1;
   for (sizeDataType index = 0; index < this->size; index++)
     everyCondition &= everyFunction(this->at(index), index);
@@ -517,7 +524,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType), sizeDataType size){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType), sizeDataType size)
+{
   bool everyCondition = 1;
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     everyCondition &= everyFunction(this->at(index), index);
@@ -529,7 +537,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType), sizeDataType left, sizeDataType right){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType), sizeDataType left, sizeDataType right)
+{
   bool everyCondition = 1;
   for (; 0 <= left && left < right && right <= this->size; left++)
     everyCondition &= everyFunction(this->at(left), left);
@@ -542,7 +551,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *)){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *))
+{
   bool everyCondition = 1;
   for (sizeDataType index = 0; index < this->size; index++)
     everyCondition &= everyFunction(this->at(index), index, this);
@@ -554,7 +564,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size)
+{
   bool everyCondition = 1;
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     everyCondition &= everyFunction(this->at(index), index, this);
@@ -566,7 +577,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::every(bool (*everyFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right)
+{
   bool everyCondition = 1;
   for (; 0 <= left && left < right && right <= this->size; left++)
     everyCondition &= everyFunction(this->at(left), left, this);
@@ -578,7 +590,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType)){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType))
+{
   bool someCondition = 0;
   for (sizeDataType index = 0; index < this->size; index++)
     someCondition |= someFunction(this->at(index));
@@ -590,7 +603,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType), sizeDataType size){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType), sizeDataType size)
+{
   bool someCondition = 0;
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     someCondition |= someFunction(this->at(index));
@@ -602,7 +616,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType), sizeDataType left, sizeDataType right){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType), sizeDataType left, sizeDataType right)
+{
   bool someCondition = 0;
   for (; 0 <= left && left < right && right <= this->size; left++)
     someCondition |= someFunction(this->at(left));
@@ -614,7 +629,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType)){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType))
+{
   bool someCondition = 0;
   for (sizeDataType index = 0; index < this->size; index++)
     someCondition |= someFunction(this->at(index), index);
@@ -626,7 +642,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType), sizeDataType size){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType), sizeDataType size)
+{
   bool someCondition = 0;
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     someCondition |= someFunction(this->at(index), index);
@@ -638,7 +655,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType), sizeDataType left, sizeDataType right){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType), sizeDataType left, sizeDataType right)
+{
   bool someCondition = 0;
   for (; 0 <= left && left < right && right <= this->size; left++)
     someCondition |= someFunction(this->at(left), left);
@@ -651,7 +669,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *)){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *))
+{
   bool someCondition = 0;
   for (sizeDataType index = 0; index < this->size; index++)
     someCondition |= someFunction(this->at(index), index, this);
@@ -663,7 +682,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size)
+{
   bool someCondition = 0;
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     someCondition |= someFunction(this->at(index), index, this);
@@ -675,7 +695,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::some(bool (*someFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right)
+{
   bool someCondition = 0;
   for (; 0 <= left && left < right && right <= this->size; left++)
     someCondition |= someFunction(this->at(left), left, this);
@@ -688,7 +709,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType)){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType))
+{
   bool xsomeCondition = 0;
   for (sizeDataType index = 0; index < this->size; index++)
     xsomeCondition ^= xsomeFunction(this->at(index));
@@ -700,7 +722,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType), sizeDataType size){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType), sizeDataType size)
+{
   bool xsomeCondition = 0;
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     xsomeCondition ^= xsomeFunction(this->at(index));
@@ -712,7 +735,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType), sizeDataType left, sizeDataType right){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType), sizeDataType left, sizeDataType right)
+{
   bool xsomeCondition = 0;
   for (; 0 <= left && left < right && right <= this->size; left++)
     xsomeCondition ^= xsomeFunction(this->at(left));
@@ -724,7 +748,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType)){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType))
+{
   bool xsomeCondition = 0;
   for (sizeDataType index = 0; index < this->size; index++)
     xsomeCondition ^= xsomeFunction(this->at(index), index);
@@ -736,7 +761,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType), sizeDataType size){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType), sizeDataType size)
+{
   bool xsomeCondition = 0;
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     xsomeCondition ^= xsomeFunction(this->at(index), index);
@@ -748,7 +774,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType), sizeDataType left, sizeDataType right){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType), sizeDataType left, sizeDataType right)
+{
   bool xsomeCondition = 0;
   for (; 0 <= left && left < right && right <= this->size; left++)
     xsomeCondition ^= xsomeFunction(this->at(left), left);
@@ -761,7 +788,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *)){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *))
+{
   bool xsomeCondition = 0;
   for (sizeDataType index = 0; index < this->size; index++)
     xsomeCondition ^= xsomeFunction(this->at(index), index, this);
@@ -773,7 +801,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size)
+{
   bool xsomeCondition = 0;
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     xsomeCondition ^= xsomeFunction(this->at(index), index, this);
@@ -785,7 +814,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right){
+bool dynamicArray<itemsDataType, sizeDataType, capacityDataType>::xsome(bool (*xsomeFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right)
+{
   bool xsomeCondition = 0;
   for (; 0 <= left && left < right && right <= this->size; left++)
     xsomeCondition ^= xsomeFunction(this->at(left), left, this);
@@ -799,7 +829,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType)){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType))
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
   for (sizeDataType index = 0; index < this->size; index++)
     mapDynamicArray->push(mapFunction(this->at(index)));
@@ -812,7 +843,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType), sizeDataType size){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType), sizeDataType size)
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     mapDynamicArray->push(mapFunction(this->at(index)));
@@ -825,7 +857,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType), sizeDataType left, sizeDataType right){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType), sizeDataType left, sizeDataType right)
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
   for (; 0 <= left && left < right && right <= this->size; left++)
     mapDynamicArray->push(mapFunction(this->at(left)));
@@ -838,7 +871,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType)){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType))
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
   for (sizeDataType index = 0; index < this->size; index++)
     mapDynamicArray->push(mapFunction(this->at(index), index));
@@ -851,7 +885,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType), sizeDataType size){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType), sizeDataType size)
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     mapDynamicArray->push(mapFunction(this->at(index), index));
@@ -864,7 +899,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType), sizeDataType left, sizeDataType right){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType), sizeDataType left, sizeDataType right)
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
   for (; 0 <= left && left < right && right <= this->size; left++)
     mapDynamicArray->push(mapFunction(this->at(left), left));
@@ -877,7 +913,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *)){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *))
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
   for (sizeDataType index = 0; index < this->size; index++)
     mapDynamicArray->push(mapFunction(this->at(index), index, this));
@@ -890,7 +927,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size)
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     mapDynamicArray->push(mapFunction(this->at(index), index, this));
@@ -903,7 +941,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right)
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
   for (; 0 <= left && left < right && right <= this->size; left++)
     mapDynamicArray->push(mapFunction(this->at(left), left, this));
@@ -917,7 +956,8 @@ template
 >
 template<typename accumulationValueDataType>
 accumulationValueDataType
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue)
+{
   for (sizeDataType index = 0; index < this->size; index++)
     accumulationValue = reduceFunction(this->at(index));
   return accumulationValue;
@@ -930,7 +970,8 @@ template
 >
 template<typename accumulationValueDataType>
 accumulationValueDataType
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue, sizeDataType size){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue, sizeDataType size)
+{
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     accumulationValue = reduceFunction(this->at(index));
   return accumulationValue;
@@ -943,7 +984,8 @@ template
 >
 template<typename accumulationValueDataType>
 accumulationValueDataType
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
+{
   for (; 0 <= left && left < right && right <= this->size; left++)
     accumulationValue = reduceFunction(this->at(left));
   return accumulationValue;
@@ -956,7 +998,8 @@ template
 >
 template<typename accumulationValueDataType>
 accumulationValueDataType
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue)
+{
   for (sizeDataType index = 0; index < this->size; index++)
     accumulationValue = reduceFunction(this->at(index), index);
   return accumulationValue;
@@ -969,7 +1012,8 @@ template
 >
 template<typename accumulationValueDataType>
 accumulationValueDataType
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue, sizeDataType size){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue, sizeDataType size)
+{
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     accumulationValue = reduceFunction(this->at(index), index);
   return accumulationValue;
@@ -982,7 +1026,8 @@ template
 >
 template<typename accumulationValueDataType>
 accumulationValueDataType
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
+{
   for (; 0 <= left && left < right && right <= this->size; left++)
     accumulationValue = reduceFunction(this->at(left), left);
   return accumulationValue;
@@ -995,7 +1040,8 @@ template
 >
 template<typename accumulationValueDataType>
 accumulationValueDataType
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue)
+{
   for (sizeDataType index = 0; index < this->size; index++)
     accumulationValue = reduceFunction(this->at(index), index, this);
   return accumulationValue;
@@ -1008,7 +1054,8 @@ template
 >
 template<typename accumulationValueDataType>
 accumulationValueDataType
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue, sizeDataType size){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue, sizeDataType size)
+{
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     accumulationValue = reduceFunction(this->at(index), index, this);
   return accumulationValue;
@@ -1021,7 +1068,8 @@ template
 >
 template<typename accumulationValueDataType>
 accumulationValueDataType
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
+{
   for (; 0 <= left && left < right && right <= this->size; left++)
     accumulationValue = reduceFunction(this->at(left), left, this);
   return accumulationValue;
@@ -1032,7 +1080,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType), sizeDataType left, sizeDataType right){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType), sizeDataType left, sizeDataType right)
+{
   if (0 <= left && left < right && right <= this->size)
   {
     sizeDataType i = left - 1;
@@ -1061,8 +1110,10 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reverse(){
-  for (sizeDataType index = 0; index < this->size / 2; index++){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reverse()
+{
+  for (sizeDataType index = 0; index < this->size / 2; index++)
+{
     itemsDataType tmp = this->items[index];
     this->items[index] = this->items[this->size - index-1];
     this->items[this->size - index-1] = tmp;
@@ -1074,8 +1125,10 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reverse(sizeDataType size){
-  for (sizeDataType index = 0; index < size / 2 && size <= this->size; index++){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reverse(sizeDataType size)
+{
+  for (sizeDataType index = 0; index < size / 2 && size <= this->size; index++)
+{
     itemsDataType tmp = this->items[index];
     this->items[index] = this->items[this->size - index - 1];
     this->items[this->size - index - 1]=tmp;
@@ -1087,8 +1140,10 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reverse(sizeDataType left, sizeDataType right){
-  for(;0 <= left && left < right / 2 && right <= this->size; left++){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reverse(sizeDataType left, sizeDataType right)
+{
+  for(;0 <= left && left < right / 2 && right <= this->size; left++)
+{
     itemsDataType tmp = this->items[left];
     this->items[left] = this->items[this->size - left - 1];
     this->items[this->size - left - 1] = tmp;
@@ -1101,7 +1156,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::merge(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::merge(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray)
+{
   for (sizeDataType index = 0; index < this->size; index++)
     this->push(sourceDynamicArray->items[index]);
 }
@@ -1111,7 +1167,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::merge(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType size){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::merge(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType size)
+{
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     this->push(sourceDynamicArray->items[index]);
 }
@@ -1121,7 +1178,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::merge(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType left, sizeDataType right){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::merge(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType left, sizeDataType right)
+{
   for (; 0 <= left && left < right && right <= this->size; left++)
     this->push(sourceDynamicArray->items[left]);
 }
@@ -1132,7 +1190,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::copy(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::copy(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray)
+{
   for (sizeDataType index = 0; index < this->size; index++)
     this->items[index] = sourceDynamicArray->items[index];
 }
@@ -1142,7 +1201,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::copy(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType size){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::copy(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType size)
+{
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     this->items[index] = sourceDynamicArray->items[index];
 }
@@ -1152,7 +1212,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::copy(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType left, sizeDataType right){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::copy(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType left, sizeDataType right)
+{
   for (; 0 <= left && left < right && right <= this->size; left++)
     this->items[left] = sourceDynamicArray->items[left];
 }
@@ -1163,7 +1224,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::join(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::join(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray)
+{
   this->merge(sourceDynamicArray);
   repeat:
     for (sizeDataType i = 0; i < this->size - 1; i++)
@@ -1180,7 +1242,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::join(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType size){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::join(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType size)
+{
   this->merge(sourceDynamicArray, size);
   repeat:
     for (sizeDataType i = 0; i < this->size - 1; i++)
@@ -1197,7 +1260,8 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::join(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType left, sizeDataType right){
+void dynamicArray<itemsDataType, sizeDataType, capacityDataType>::join(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType left, sizeDataType right)
+{
   this->merge(sourceDynamicArray, left, right);
   repeat:
     for (sizeDataType i = 0; i < this->size - 1; i++)
@@ -1216,7 +1280,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::intersect(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::intersect(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray)
+{
   dynamicArray<itemsDataType, sizeDataType, capacityDataType> resultDynamicArray;
   for (sizeDataType thisIndex = 0; thisIndex < this->size; thisIndex++)
     for (sizeDataType sourceIndex = 0; sourceIndex < sourceDynamicArray->size; sourceIndex++)
@@ -1231,7 +1296,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::intersect(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType size){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::intersect(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType size)
+{
   for (sizeDataType index = 0; index < size && size <= this->size; index++)
     this->push(sourceDynamicArray->items[index]);
 }
@@ -1242,7 +1308,8 @@ template
   typename capacityDataType
 >
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>
-dynamicArray<itemsDataType, sizeDataType, capacityDataType>::intersect(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType left, sizeDataType right){
+dynamicArray<itemsDataType, sizeDataType, capacityDataType>::intersect(dynamicArray<itemsDataType, sizeDataType, capacityDataType> *sourceDynamicArray, sizeDataType left, sizeDataType right)
+{
   for (; 0 <= left && left < right && right <= this->size; left++)
     this->push(sourceDynamicArray->items[left]);
 }

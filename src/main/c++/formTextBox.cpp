@@ -52,7 +52,8 @@ formTextBox::formTextBox(form *root)
     &gcValues
   );
 
-  this->onKeyDown = [](XKeyPressedEvent *event, void *extraArgs){
+  this->onKeyDown = [](XKeyPressedEvent *event, void *extraArgs)
+{
     struct messageStructure
     {
       gameContextStructure *gameCtxtStruct;

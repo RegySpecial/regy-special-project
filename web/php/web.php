@@ -31,7 +31,8 @@
     </section>
     <section id="mainScreen">
       <?php
-        if(!isset($_GET["user"])){
+        if(!isset($_GET["user"]))
+        {
       ?>
       <form>
         <input type="text">

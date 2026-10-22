@@ -1,6 +1,7 @@
 #include "../../include/main/c++/mainScreenButtons.hpp"
 
-mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
+mainScreenButton::mainScreenButton(mainWindow*root,const char*text)
+{
   this->root = root;
   this->text = {
     text,
@@ -55,13 +56,15 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
 
   this->graphicId = XCreateGC(this->root->display, this->id, this->graphicMask, &gcValues);
 
-  this->onButtonDown = [](XButtonPressedEvent *event, void *extraArgs){
+  this->onButtonDown = [](XButtonPressedEvent *event, void *extraArgs)
+{
     beep(1000,100);
     dialog*targetDialog=(dialog*)extraArgs;
     targetDialog->show(0);
   };
 
-  this->onPointerIn = [](XEnterWindowEvent *event, void *extraArgs){
+  this->onPointerIn = [](XEnterWindowEvent *event, void *extraArgs)
+{
     mainScreenButton *self = (mainScreenButton*) extraArgs;
     self->background.color = ~self->background.color;
     self->text.color = ~self->text.color;
@@ -76,7 +79,8 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
     );
   };
 
-  this->onPointerOut = [](XLeaveWindowEvent *event, void *extraArgs){
+  this->onPointerOut = [](XLeaveWindowEvent *event, void *extraArgs)
+{
     mainScreenButton *self = (mainScreenButton*)extraArgs;
     XEvent eventOutput;
     XSendEvent(
@@ -88,7 +92,8 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
     );
   };
 
-  this->root->onClientMessage = [](XClientMessageEvent *event, void *extraArgs){
+  this->root->onClientMessage = [](XClientMessageEvent *event, void *extraArgs)
+{
     Window *exitButton = (Window *)extraArgs;
     XEvent eventOutput;
     if((Atom)event->data.l == XInternAtom(event->display, "WM_DELETE_WINDOW", 0))
@@ -101,7 +106,8 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
       );
   };
 
-  this->onExpose = [](XExposeEvent *event, void *extraArgs){
+  this->onExpose = [](XExposeEvent *event, void *extraArgs)
+{
     mainScreenButton *self = (mainScreenButton*) extraArgs;
     XDrawString(
       self->root->display,
@@ -116,7 +122,8 @@ mainScreenButton::mainScreenButton(mainWindow*root,const char*text){
 
   this->root->subWindows.push(this->id);
 }
-mainScreenButton::~mainScreenButton(){
+mainScreenButton::~mainScreenButton()
+{
   this->root->subWindows.remove(this->id);
   XFreeGC(this->root->display,this->graphicId);
 }

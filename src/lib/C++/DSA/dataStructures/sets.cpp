@@ -74,7 +74,7 @@ void set<itemsDataType, sizeDataType, capacityDataType>::insert(itemsDataType it
 {
   if (index >= this->size)
   {
-    failureMessage("Index out of range");
+    errorMessage("Index out of range");
     return;
   }
 
@@ -84,7 +84,7 @@ void set<itemsDataType, sizeDataType, capacityDataType>::insert(itemsDataType it
   
   if (itemAlreadyInTheSet)
   {
-    failureMessage("Cannot push the element because is already in the set");
+    errorMessage("Cannot push the element because is already in the set");
     return;
   }
 
@@ -101,7 +101,7 @@ void set<itemsDataType, sizeDataType, capacityDataType>::insert(itemsDataType it
       this->items = (itemsDataType *) calloc(this->capacity,sizeof (itemsDataType));
       if (!this->items)
       {
-        failureMessage("Failed to reallocate memory for the dynamic array");
+        errorMessage("Failed to reallocate memory for the dynamic array");
         return;
       }
       free(oldItems);
@@ -130,7 +130,7 @@ void set<itemsDataType, sizeDataType, capacityDataType>::remove(sizeDataType ind
     --this->size;
   }
   else
-    failureMessage("Index out of range!");
+    errorMessage("Index out of range!");
 }
   
 template
@@ -147,7 +147,7 @@ void set<itemsDataType, sizeDataType, capacityDataType>::push(itemsDataType item
   
   if (itemAlreadyInTheSet)
   {
-    failureMessage("Cannot push the element because is already in the set");
+    errorMessage("Cannot push the element because is already in the set");
     return;
   }
 
@@ -164,7 +164,7 @@ void set<itemsDataType, sizeDataType, capacityDataType>::push(itemsDataType item
       this->items = (itemsDataType *) calloc(this->capacity,sizeof (itemsDataType));
       if (!this->items)
       {
-        failureMessage("Failed to reallocate memory for the dynamic array");
+        errorMessage("Failed to reallocate memory for the dynamic array");
         return;
       }
       free(oldItems);

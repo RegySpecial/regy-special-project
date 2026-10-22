@@ -38,12 +38,12 @@ gameContextStructure manageUserFlag(int argc, char *argv[])
           if (!isprint(suboptionValue[i]))
           {
             gCtxtStruct.exitStatus = exitStatus_userNameInvalidCode;
-            failureMessage("Invalide characted code in the user name");
+            errorMessage("Invalide characted code in the user name");
             return gCtxtStruct;
           }
         
         strlen(suboptionValue) > 40
-        ? failureMessage("Name rejected: the user name character number must lower than or equal to 40 characters!")
+        ? errorMessage("Name rejected: the user name character number must lower than or equal to 40 characters!")
         : informationMessage("Ottienimento informazioni non disponibile al momento");
 
         gCtxtStruct.exitStatus = strlen(suboptionValue) > 40;
@@ -57,7 +57,7 @@ gameContextStructure manageUserFlag(int argc, char *argv[])
         if (regularExpressionCompilation)
         {
           gCtxtStruct.exitStatus = exitStatus_regularExpressionCompilationFailure;
-          failureMessage("Could not compile the following regular expression: /^\\d$/");
+          errorMessage("Could not compile the following regular expression: /^\\d$/");
           return gCtxtStruct;
         }
 
@@ -72,11 +72,11 @@ gameContextStructure manageUserFlag(int argc, char *argv[])
                 if (strchr(suboptionValue, '.'))
                 {
                   gCtxtStruct.exitStatus = exitStatus_userIdentifierSignedFloatingPoint;
-                  failureMessage("User indentifier cannot be a negative floating point number!");
+                  errorMessage("User indentifier cannot be a negative floating point number!");
                   return gCtxtStruct;
                 }
                 gCtxtStruct.exitStatus = exitStatus_userIdentifierSigned;
-                failureMessage("User indentifier cannot be a negative number!");
+                errorMessage("User indentifier cannot be a negative number!");
                 return gCtxtStruct;
               }
             if ('0' <= suboptionValue[i] && suboptionValue[i] <= '9')
@@ -84,15 +84,15 @@ gameContextStructure manageUserFlag(int argc, char *argv[])
               if (strchr(suboptionValue, '.'))
               {
                 gCtxtStruct.exitStatus = exitStatus_userIdentifierUnsignedFloatingPoint;
-                failureMessage("User indentifier cannot be a positive floating point number!");
+                errorMessage("User indentifier cannot be a positive floating point number!");
                 return gCtxtStruct;
               }
               gCtxtStruct.exitStatus = exitStatus_userIdentifierNotANumber;
-              failureMessage("User identifier is not a number!");
+              errorMessage("User identifier is not a number!");
               return gCtxtStruct;
             }
             gCtxtStruct.exitStatus = exitStatus_userIdentifierNotANumber;
-            failureMessage("User identifier is not a number!");
+            errorMessage("User identifier is not a number!");
             return gCtxtStruct;
           }
           return gCtxtStruct;
@@ -181,7 +181,8 @@ gameContextStructure manageHelpFlag(int argc, char *argv[])
         {
           printf("Usage: %s [-u|--user=]name=<userName>,identifier=<userIdentifier>\n",*argv);
           puts("Subflags:");
-          for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++){
+          for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++)
+{
             char* const suboptionCopy = helpSuboptions[index];
                         *suboptionCopy-='z'+'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
             printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,helpExplanation[index]);
@@ -206,7 +207,8 @@ gameContextStructure manageHelpFlag(int argc, char *argv[])
             {
               printf("Usage: %s [-b|--background=]name=<userName>,identifier=<userIdentifier>\n",*argv);
               puts("Subflags:");
-              for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++){
+              for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++)
+{
                 char* const suboptionCopy = backgroundSuboptions[index];
                             *suboptionCopy-='z'+'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
                 printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,helpExplanation[index]);
@@ -354,7 +356,7 @@ gameContextStructure manageBackgroundFlag(int argc, char *argv[])
           }
           else
           {
-            failureMessage("Invalid color function or color code");
+            errorMessage("Invalid color function or color code");
             gCtxtStruct.exitStatus = 1;
           }
         }
@@ -399,10 +401,13 @@ gameContextStructure manageAudioFlag(int argc, char *argv[])
     switch (flagArgs)
     {
       case argumentOptionAudioFlagSuboptions_path:
+        informationMessage("unavailable information!");
         break;
       case argumentOptionAudioFlagSuboptions_beepmap:
+        informationMessage("unavailable information!");
         break;
       case argumentOptionAudioFlagSuboptions_volume:
+        informationMessage("unavailable information!");
         break;
     }
   }
@@ -440,7 +445,7 @@ gameContextStructure manageCommandLineArguments(int argc, char *argv[])
       {
         case -1:
           gCtxtStruct.exitStatus = exitStatus_forkFailure;
-          failureMessage("Failed to execute fork() system call: fork return = -1");
+          errorMessage("Failed to execute fork() system call: fork return = -1");
           return gCtxtStruct;
           break;
         
@@ -449,7 +454,7 @@ gameContextStructure manageCommandLineArguments(int argc, char *argv[])
           if (executionImage == -1)
           {
             gCtxtStruct.exitStatus = exitStatus_forkFailure;
-            failureMessage("Failed to execute execl(*argv, *argv, \"-help\", 0) system call: execl return = -1");
+            errorMessage("Failed to execute execl(*argv, *argv, \"-help\", 0) system call: execl return = -1");
             return gCtxtStruct;
           }
           break;

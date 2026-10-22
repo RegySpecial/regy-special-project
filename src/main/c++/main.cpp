@@ -5,46 +5,46 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #if defined __WIN32||defined __WIN64
-#include<windows.h>
-#include<mmsystem.h>
-#include<gdiplus.h>
-#include<windowsx.h>
-#include<commctrl.h>
+#include <windows.h>
+#include <mmsystem.h>
+#include <gdiplus.h>
+#include <windowsx.h>
+#include <commctrl.h>
 #else
 //include X11 libraries
-#include<GL/glx.h>
-#include<X11/Xlib.h>
-#include<X11/Xutil.h>
-#include<X11/XKBlib.h>
-#include<X11/keysym.h>
-#include<X11/Xatom.h>
-#include<sys/time.h>
-#include<pthread.h>
+#include <GL/glx.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/XKBlib.h>
+#include <X11/keysym.h>
+#include <X11/Xatom.h>
+#include <sys/time.h>
+#include <pthread.h>
 #endif
-#include<chrono>
-#include<thread>
+#include <chrono>
+#include <thread>
 //include SQL ODBC or Database Connection libraries
-#include<sql.h>
-#include<sqlext.h>
+#include <sql.h>
+#include <sqlext.h>
 //include C/C++ standard input/output libraries
-#include<iostream>
-#include<fstream>
-#include<signal.h>
-#include<string>
-#include<math.h>
+#include <iostream>
+#include <fstream>
+#include <signal.h>
+#include <string>
+#include <math.h>
 //include CGO image functions for image manipulation contained in CImage.go
-#include"../../include/lib/go/CImage.h"
+#include "../../include/lib/go/CImage.h"
 //include bit manipulation functions contained in bitManipulation.cpp
-#include"../../include/lib/c++/bitManipulation.hpp"
+#include "../../include/lib/c++/bitManipulation.hpp"
 //include arrays manipulation functions contained in arrays.cpp
-#include"../../include/lib/c++/DSA/algorithms/arrays.hpp"
-#include"../../include/main/c/dialogOrganization.h"
-#include"../../include/main/c/info/user/cpu.h"
-#include"../../include/main/c/info/user/os.h"
-#include"../../include/main/c/info/user/byteOrder.h"
-#include"../../include/main/c/info/vendor/compiler.h"
-#include"../../include/main/c/manageArguments.h"
-#include"../../include/lib/c/audio/beep.h"
+#include "../../include/lib/c++/DSA/algorithms/arrays.hpp"
+#include "../../include/main/c/dialogOrganization.h"
+#include "../../include/main/c/info/user/cpu.h"
+#include "../../include/main/c/info/user/os.h"
+#include "../../include/main/c/info/user/byteOrder.h"
+#include "../../include/main/c/info/vendor/compiler.h"
+#include "../../include/main/c/manageArguments.h"
+#include "../../include/lib/c/audio/beep.h"
 typedef enum MainWindowId{
   MainWindow_MainWindow,
   MainWindow_UsernameTextView,
@@ -73,7 +73,8 @@ typedef enum OptionsDialogElementId{
   OptionsDialog_ConfirmButton,
   OptionsDialog_DoNotConfirmButton
 }OptionsDialogElementId;
-void PrintSQLDiagnosticError(void* SQLHandle,SQLSMALLINT type,const char* text){
+void PrintSQLDiagnosticError(void* SQLHandle,SQLSMALLINT type,const char* text)
+{
   SQLCHAR state[6],message[256];
   SQLINTEGER nativeError;
   SQLSMALLINT size;
@@ -87,17 +88,21 @@ const struct DialogSize{
 }DialogSize;
 const unsigned long colors[4]={0xff00ff00,0xffffff00,0xffff8000,0xffff0000};
 const wchar_t *text[4]={L"Semplice",L"Intermedia",L"Avanzata",L"Estrema"};
-int __stdcall formCallback(HWND form,unsigned int message,unsigned int wParam,long lParam){
-  switch(message){
+int __stdcall formCallback(HWND form,unsigned int message,unsigned int wParam,long lParam)
+{
+  switch(message)
+{
     default:
       return DefDlgProcA(form,message,wParam,lParam);
   }
 }
-void MainScreen(HWND MainScreenWindow){
+void MainScreen(HWND MainScreenWindow)
+{
   PAINTSTRUCT mainScreenPaintStructure;
   HDC mainScreenPaint=BeginPaint(MainScreenWindow,&mainScreenPaintStructure);
   Gdiplus::Graphics graphics(mainScreenPaint);
-  for(float transparency=255;transparency>0;transparency--){
+  for(float transparency=255;transparency>0;transparency--)
+{
     graphics.Clear(0);
     Gdiplus::ColorMatrix matrix={
       1,0,0,0,0,
@@ -115,7 +120,8 @@ void MainScreen(HWND MainScreenWindow){
   }
   EndPaint(MainScreenWindow,&mainScreenPaintStructure);
 }
-void PaintTheIntro(HWND IntroMainWindow){
+void PaintTheIntro(HWND IntroMainWindow)
+{
   PAINTSTRUCT windowBackground;
   HDC Paint=BeginPaint(IntroMainWindow,&windowBackground);
   Gdiplus::Graphics graphics(Paint);
@@ -126,7 +132,8 @@ void PaintTheIntro(HWND IntroMainWindow){
   stringAlignment.SetAlignment(Gdiplus::StringAlignmentCenter);
   stringAlignment.SetLineAlignment(Gdiplus::StringAlignmentCenter);
   Gdiplus::RectF fontPosition(0,GetSystemMetrics(SM_CYFULLSCREEN)*9/10,GetSystemMetrics(SM_CXFULLSCREEN),font.GetSize()*2);
-  for(float transparency=0,dimensions=0;transparency<=255&&dimensions<=logo.GetWidth()/2;transparency++,dimensions++){
+  for(float transparency=0,dimensions=0;transparency<=255&&dimensions<=logo.GetWidth()/2;transparency++,dimensions++)
+{
     graphics.Clear(0);
     Gdiplus::SolidBrush authorStringForeground(Gdiplus::Color(transparency,255,255,255));
     Gdiplus::ColorMatrix logoColorMatrix={
@@ -146,8 +153,10 @@ void PaintTheIntro(HWND IntroMainWindow){
   graphics.DrawImage(&image,0,0,GetSystemMetrics(SM_CXSCREEN),GetSystemMetrics(SM_CYSCREEN));
   EndPaint(IntroMainWindow,&windowBackground);
 }
-int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wParam,long lParam){
-  switch(uMsg){
+int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wParam,long lParam)
+{
+  switch(uMsg)
+{
     case WM_INITDIALOG:
       AnimateWindow(hwnd,1,AW_BLEND);
       SetWindowLongPtr(hwnd,GWL_STYLE,WS_POPUP);
@@ -159,7 +168,8 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
       MoveWindow(GetDlgItem(hwnd,5),20,60,DialogSize.width-40,200,1);
       break;
     case WM_COMMAND:
-      switch(LOWORD(wParam)){
+      switch(LOWORD(wParam))
+{
         case 6:
           void*SQLEnvironment,*SQLStatement,*SQLConnection,*SQLDescription;
           signed short SQLReturn;
@@ -179,11 +189,13 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
           if(SQLReturn!=SQL_SUCCESS&&SQLReturn!=SQL_SUCCESS_WITH_INFO)
             PrintSQLDiagnosticError(SQLEnvironment,SQL_HANDLE_ENV,"Errore nella connessione al driver");
           SQLReturn=SQLExecDirectA(SQLStatement,(SQLCHAR*)"select * from User", SQL_NTS);
-          if(SQLFetch(SQLStatement)==SQL_SUCCESS){
+          if(SQLFetch(SQLStatement)==SQL_SUCCESS)
+{
             AnimateWindow(hwnd,100,AW_HIDE|AW_BLEND);
             EndDialog(hwnd,6);
             mciSendStringW(L"stop DarkRage",NULL,0,NULL);
-            while(SQLFetch(SQLStatement)==SQL_SUCCESS){
+            while(SQLFetch(SQLStatement)==SQL_SUCCESS)
+{
               unsigned char name[256];
               long indicator;
               SQLGetData(SQLStatement,2,SQL_C_CHAR,name,sizeof (name),&indicator);
@@ -236,7 +248,8 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
       titleGraphics.DrawString(L"Difficoltà gioco",-1,&font,titleRect,&titleAlign,&titleBrush);
       EndPaint(hwnd,&paintStructure);
       EndPaint(GetDlgItem(hwnd,0),&titlePaint);
-      for(unsigned char INDEX=1; index<5; index++){
+      for(unsigned char INDEX=1; index<5; index++)
+{
         PAINTSTRUCT buttonPaint;
         const HDC paintButtons=BeginPaint(GetDlgItem(hwnd,INDEX),&buttonPaint);
         Gdiplus::Graphics buttonGraphics(paintButtons);
@@ -250,8 +263,10 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
   }
   return 0;
 }
-int __stdcall OptionsDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wParam,long lParam){
-  switch(uMsg){
+int __stdcall OptionsDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wParam,long lParam)
+{
+  switch(uMsg)
+{
     case WM_INITDIALOG:
       for(const int id:{0,1})SendMessage(GetDlgItem(hwnd,id),TBM_SETRANGE,1,MAKELONG(0,100));
       MoveWindow(hwnd,20,20,DialogSize.width,DialogSize.height,1);
@@ -263,7 +278,8 @@ int __stdcall OptionsDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wP
       SetWindowLongPtr(hwnd,GWL_STYLE,WS_POPUP);
       break;
     case WM_COMMAND:
-      switch(HIWORD(wParam)){
+      switch(HIWORD(wParam))
+{
         case BN_CLICKED:
           switch(LOWORD(wParam))
           {
@@ -288,7 +304,8 @@ int __stdcall OptionsDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wP
       graphics.FillRectangle(&brush,0,0,DialogSize.width,DialogSize.height);
       graphics.DrawRectangle(&pen,0,0,DialogSize.width,DialogSize.height);
       EndPaint(hwnd,&dialogBackground);
-      for(const int id:{2,3}){
+      for(const int id:{2,3})
+{
         const wchar_t *textes[]={L"Conferma",L"Non Confermare"};
         PAINTSTRUCT buttonStyle;
         const HDC dialogButtonPaint=BeginPaint(GetDlgItem(hwnd,id),&buttonStyle);
@@ -310,20 +327,24 @@ int __stdcall OptionsDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wP
   }
   return 0;
 }
-long __stdcall WindowProc(HWND hwnd, unsigned int uMsg, unsigned int wParam, long lParam){
+long __stdcall WindowProc(HWND hwnd, unsigned int uMsg, unsigned int wParam, long lParam)
+{
   HDC editDC;
   PAINTSTRUCT PaintDataStructure;
-  switch(uMsg){
+  switch(uMsg)
+{
     case WM_CTLCOLOREDIT:
       editDC=(HDC)wParam;
       SetBkMode(editDC,TRANSPARENT);
       SetTextColor(editDC,RGB(255,255,0));
       return(long)CreateSolidBrush(RGB(0,128,255));
     case WM_COMMAND:
-      switch (HIWORD(wParam)){
+      switch (HIWORD(wParam))
+{
         case BN_CLICKED:
           Beep(1000,100);
-          switch(LOWORD(wParam)){
+          switch(LOWORD(wParam))
+{
             case 2:
               DialogBox((HINSTANCE)GetWindowLongPtr(hwnd,GWLP_HINSTANCE),MAKEINTRESOURCE(6),hwnd,PlayDialogProcedure);
               break;
@@ -344,25 +365,31 @@ long __stdcall WindowProc(HWND hwnd, unsigned int uMsg, unsigned int wParam, lon
       return DefWindowProc(hwnd, uMsg, wParam, lParam);
   }
 }
-int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdshow){
+int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdshow)
+{
   char user[40];
-  for(char*args=strtok(cmdline," ");args!=NULL;args=strtok(NULL," ")){
-    if(strcmp(args,"help")==0){
+  for(char*args=strtok(cmdline," ");args!=NULL;args=strtok(NULL," "))
+{
+    if(strcmp(args,"help")==0)
+{
       std::cout<<"Guida per l'esecuzione del programma RegySpecial.exe da terminale\nRegySpecial.exe [--help] --user user --background background --music music\n--user: set the user to login\n--background: set background after login\n--music: set music after login\n";
       return 0;
     }
-    if(strcmp(args,"user")==0){
+    if(strcmp(args,"user")==0)
+{
       strcpy(user,args);
     }else{
-      failureMessage("name cannot be greater than 40 characters\n");
+      errorMessage("name cannot be greater than 40 characters\n");
       return 1;
     }
   }
-  if(strcmp(cmdline,"")==0){
+  if(strcmp(cmdline,"")==0)
+{
     char*programName=GetCommandLine();
     int helpProcess=system(strcat(programName," help"));
-    if(!helpProcess){
-      failureMessage("Failed to create help process\n");
+    if(!helpProcess)
+{
+      errorMessage("Failed to create help process\n");
       return 1;
     }
     unsigned long unsignedLongPointer;
@@ -384,8 +411,9 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
       0,
       LR_LOADFROMFILE
     );
-    if(RegisterClassA(&windowClass)==0){
-      failureMessage("Failed to register the main window class RegySpecial\n");
+    if(RegisterClassA(&windowClass)==0)
+{
+      errorMessage("Failed to register the main window class RegySpecial\n");
       return 1;
     }
     const HWND MainWindow=CreateWindowA(
@@ -419,8 +447,10 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
     );
     HWND mainScreenButtons[2][2];
     unsigned char i=0;
-    for(unsigned char buttonY=0,buttonId=MainWindow_UsernameTextView;buttonY<2;buttonY++){
-      for(unsigned char buttonX=0;buttonX<2;buttonX++){
+    for(unsigned char buttonY=0,buttonId=MainWindow_UsernameTextView;buttonY<2;buttonY++)
+{
+      for(unsigned char buttonX=0;buttonX<2;buttonX++)
+{
         const char*textes[2][2]={{"Play","Exit"},{"Options","More Information"}};    
         /*
           Grid Calculation
@@ -463,21 +493,24 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
     }
     const HWND form=CreateDialogParamA(windowClass.hInstance,(char*)0,MainWindow,formCallback,0);
     MSG mainWindowMessage;
-    while(GetMessage(&mainWindowMessage,NULL,0,0)){
+    while(GetMessage(&mainWindowMessage,NULL,0,0))
+{
       TranslateMessage(&mainWindowMessage);
       DispatchMessageA(&mainWindowMessage);
     }
     Gdiplus::GdiplusShutdown(unsignedLongPointer);
     DeleteBrush(windowClass.hbrBackground);
-    if(UnregisterClassA("RegySpecial",windowClass.hInstance)==0){
-      failureMessage("Cannot unregister the main window class RegySpecial!\n");
+    if(UnregisterClassA("RegySpecial",windowClass.hInstance)==0)
+{
+      errorMessage("Cannot unregister the main window class RegySpecial!\n");
       return 1;
-    }else OKMessage("The main window class Regyspecial has been unregistered successfully!");
+    }else successMessage("The main window class Regyspecial has been unregistered successfully!");
     return mainWindowMessage.wParam;
   }
 }
 #else
-int main(int argc,char*argv[],char*envp[]){
+int main(int argc,char*argv[],char*envp[])
+{
   gameContextStructure gameCtxtStruct={{},0,0};
   unsigned char dialogIndex=0,
                 dialogButtonsIndex=0,
@@ -520,7 +553,8 @@ int main(int argc,char*argv[],char*envp[]){
 
   gameContextStructure gameCtxtStruct = manageCommandLineArguments(argc, argv);
 
-  if(argc==1){
+  if(argc==1)
+{
     assert(system(strcat(*argv," --help"))==0);
     //assert(system("ffplay -nodisp blob/audios/Sinister_Dark_Ambient_Background_Music_-_Dark_Rage_[_YouConvert.net_].mp3")==0);
       gameCtxtStruct.generalPurposeMask=setBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
@@ -536,9 +570,9 @@ int main(int argc,char*argv[],char*envp[]){
   if(readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_debug))
     assert(XInitThreads());
   else if(XInitThreads())
-    OKMessage("X Threads Initialized successfully!");
+    successMessage("X Threads Initialized successfully!");
   else{
-    failureMessage("Cannot initialize X Threads!");
+    errorMessage("Cannot initialize X Threads!");
     return 1;
   }
   
@@ -546,11 +580,12 @@ int main(int argc,char*argv[],char*envp[]){
 
   if(readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_debug))
     assert(display!=NULL);
-  else if(display==NULL){
-    failureMessage("Failed to connect to X Graphic server!");
+  else if(display==NULL)
+{
+    errorMessage("Failed to connect to X Graphic server!");
     return 1;
   }else
-    OKMessage("The connection to the X Graphic Server has been established successfully!");
+    successMessage("The connection to the X Graphic Server has been established successfully!");
 
   XVisualInfo visualInformation={.c_class=InputOutput};
   
@@ -715,19 +750,20 @@ int main(int argc,char*argv[],char*envp[]){
       &mainWindowBounds//window size hints
     )
   )
-    OKMessage("Main window standard properties has been set successfully!");
+    successMessage("Main window standard properties has been set successfully!");
   else{
-    failureMessage("Cannot set main window standard properties!");
+    errorMessage("Cannot set main window standard properties!");
     return 1;
   }
 
   if(XMapRaised(display,mainWindow)==1)puts("\e[38;2;255;255;255m[\e[38;2;0;255;0mOK\e[38;2;255;255;255m]The main window has been mapped raised succesfully!");
   else{
-    failureMessage("\e[38;2;255;255;255m[\e[38;2;255;0;0mFailed\e[38;2;255;255;255m]Something wrong occured while trying to map raised the main window!");
+    errorMessage("\e[38;2;255;255;255m[\e[38;2;255;0;0mFailed\e[38;2;255;255;255m]Something wrong occured while trying to map raised the main window!");
     return 1;
   }
 
-  for(dialogIndex=0;dialogIndex<5;dialogIndex++){
+  for(dialogIndex=0;dialogIndex<5;dialogIndex++)
+{
     dialogs[dialogIndex]=XCreateWindow(
       display,
       dialogIndex==dialogType_layoutMode?XRootWindow(display,visualInformation.screen):mainWindow,
@@ -743,7 +779,8 @@ int main(int argc,char*argv[],char*envp[]){
       &mainScreenDialogsAttributes
     );
 
-    for(dialogButtonsIndex=0;dialogButtonsIndex<2;dialogButtonsIndex++){
+    for(dialogButtonsIndex=0;dialogButtonsIndex<2;dialogButtonsIndex++)
+{
       dialogButtons[dialogIndex][dialogButtonsIndex]=XCreateWindow(
         display,
         dialogs[dialogIndex],
@@ -759,7 +796,8 @@ int main(int argc,char*argv[],char*envp[]){
         &modeButtonsAttributes
       );  
     }
-    if(!dialogs[dialogIndex]){
+    if(!dialogs[dialogIndex])
+{
       std::cerr<<"\e[38;2;255;255;255m[\e[38;2;255;0;0mFailed\e[38;2;255;255;255m]Something wrong occured while trying to create dialog #"<<dialogIndex;
       XDestroyWindow(display,mainWindow);
       XCloseDisplay(display);
@@ -767,8 +805,10 @@ int main(int argc,char*argv[],char*envp[]){
     }else printf("\e[38;2;255;255;255m[\e[38;2;0;255;0mOK\e[38;2;255;255;255m]Dialog #%i has been created successfully\n",dialogIndex);
   }
 
-  for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++){
-    for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++){
+  for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
+{
+    for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+{
       /*
         Grid Calculation
         e[x][y].x=grid.x+grid.xPadding+grid.width/grid.columns*x
@@ -795,18 +835,22 @@ int main(int argc,char*argv[],char*envp[]){
     }
   }
 
-  if(readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,2)==0){
-    if(XMapRaised(display,form)==0){
-      failureMessage("Failed to map form");
+  if(readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,2)==0)
+{
+    if(XMapRaised(display,form)==0)
+{
+      errorMessage("Failed to map form");
       return 1;
     }else gameCtxtStruct.generalPurposeMask=setBit<unsigned char>(gameCtxtStruct.generalPurposeMask,1);
-    if(XMapSubwindows(display,form)==0){
-      failureMessage("Failed to map form children");
+    if(XMapSubwindows(display,form)==0)
+{
+      errorMessage("Failed to map form children");
       return 1;
     }
   }
 
-  for(soundSliderIndex=0;soundSliderIndex<3;soundSliderIndex++){
+  for(soundSliderIndex=0;soundSliderIndex<3;soundSliderIndex++)
+{
     soundSliders[soundSliderIndex]=XCreateWindow(
       display,
       dialogs[dialogType_options],
@@ -851,7 +895,8 @@ int main(int argc,char*argv[],char*envp[]){
      userInputGC=XCreateGC(display,formTextBox,GCForeground,&userInputGCValues),
      soundSliderGC=XCreateGC(display,soundSliders[0],GCForeground,&soundSliderGCValues);
   
-  for(dialogIndex=0;dialogIndex<5;dialogIndex++){
+  for(dialogIndex=0;dialogIndex<5;dialogIndex++)
+{
     dialogsGCs[dialogIndex]=XCreateGC(
       display,
       dialogs[dialogIndex],
@@ -859,7 +904,8 @@ int main(int argc,char*argv[],char*envp[]){
       &dialogsGCValues[dialogIndex]
     );
   }
-  for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++){
+  for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++)
+{
     /*
       Grid Calculation
       e[x][y].x=grid.x+grid.xPadding+grid.width/grid.columns*RowsX
@@ -885,7 +931,8 @@ int main(int argc,char*argv[],char*envp[]){
     gameModeGCs[gameModeIndex]=XCreateGC(display,gameModeButton[gameModeIndex],GCForeground,&gameModeGCValues[gameModeIndex]);
   }
 
-  for(helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++){
+  for(helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++)
+{
     helpRechargeButtons[helpRechargeButtonIndex]=XCreateWindow(
       display,
       dialogs[dialogType_play],
@@ -901,9 +948,11 @@ int main(int argc,char*argv[],char*envp[]){
       &modeButtonsAttributes
     );
   }
-  for(XEvent event;readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_eventLoop);){//while main window event loop is running 
+  for(XEvent event;readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_eventLoop);)
+{//while main window event loop is running 
     XNextEvent(display,&event);
-    for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++){
+    for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++)
+{
       const char*modeTextes[5]={"Semplice","Intermedia","Avanzata","Estrema","Personalizzata"};
       if(event.xany.window==gameModeButton[gameModeIndex]&&event.type==Expose)
         XDrawString(
@@ -940,7 +989,8 @@ int main(int argc,char*argv[],char*envp[]){
           strlen(modeInformation[0][gameModeInformationPoint])
         );
 
-    if(event.xany.window==dialogs[dialogType_exit]&&event.type==Expose){
+    if(event.xany.window==dialogs[dialogType_exit]&&event.type==Expose)
+{
       XDrawString(
         display,
         dialogs[dialogType_exit],
@@ -952,7 +1002,8 @@ int main(int argc,char*argv[],char*envp[]){
       );
     }
 
-    if(event.xany.window==dialogs[dialogType_options]&&event.type==Expose){
+    if(event.xany.window==dialogs[dialogType_options]&&event.type==Expose)
+{
       const char*optionsTextes[3]={"Volume:","Musica:","Suoni:"};
       for(unsigned int optionIndex=0;optionIndex<3;optionIndex++)
         XDrawString(
@@ -966,7 +1017,8 @@ int main(int argc,char*argv[],char*envp[]){
         );
     }
 
-    if(event.xany.window==dialogs[dialogType_moreInformation]&&event.type==Expose){
+    if(event.xany.window==dialogs[dialogType_moreInformation]&&event.type==Expose)
+{
       XDrawString(
         display,
         dialogs[dialogType_moreInformation],
@@ -1008,8 +1060,10 @@ int main(int argc,char*argv[],char*envp[]){
     }
 
     //main window on resize
-    if(event.xany.window==mainWindow){
-      switch(event.type){
+    if(event.xany.window==mainWindow)
+{
+      switch(event.type)
+{
         case ClientMessage:
           if((Atom)event.xclient.data.l == XInternAtom(display, "WM_DELETE_WINDOW", False))
             XSendEvent(display,mainScreenButtons[0][1],0,ButtonPressMask,&event);
@@ -1027,7 +1081,8 @@ int main(int argc,char*argv[],char*envp[]){
             );
 
           for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
-            for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++){
+            for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+{
               XMoveResizeWindow(
                 display,
                 mainScreenButtons[mainScreenButtonY][mainScreenButtonX],
@@ -1049,10 +1104,14 @@ int main(int argc,char*argv[],char*envp[]){
           break;
       }
     }
-    for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++){
-      for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++){
-        if(event.xany.window==mainScreenButtons[mainScreenButtonY][mainScreenButtonX]&&!readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow)){
-          switch(event.type){
+    for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
+{
+      for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+{
+        if(event.xany.window==mainScreenButtons[mainScreenButtonY][mainScreenButtonX]&&!readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow))
+{
+          switch(event.type)
+{
             case Expose:
               XDrawString(
                 display,
@@ -1109,8 +1168,10 @@ int main(int argc,char*argv[],char*envp[]){
       }
     }
 
-    for(soundSliderIndex=0;soundSliderIndex<3;soundSliderIndex++){
-      if(event.xany.window==soundSliders[soundSliderIndex]&&event.type==ButtonPress){
+    for(soundSliderIndex=0;soundSliderIndex<3;soundSliderIndex++)
+{
+      if(event.xany.window==soundSliders[soundSliderIndex]&&event.type==ButtonPress)
+{
         XClearWindow(display,soundSliders[soundSliderIndex]);
         XFillRectangle(
           display,
@@ -1124,14 +1185,18 @@ int main(int argc,char*argv[],char*envp[]){
       }
     }
 
-    for(dialogIndex=0;dialogIndex<5;dialogIndex++){
+    for(dialogIndex=0;dialogIndex<5;dialogIndex++)
+{
       const char*dialogButtonsTextes[2]={"OK","Cancel"};
-      for(dialogButtonsIndex=0;dialogButtonsIndex<2;dialogButtonsIndex++){
-        if(event.xany.window==dialogButtons[dialogIndex][dialogButtonsIndex]&&event.type==ButtonPress){
+      for(dialogButtonsIndex=0;dialogButtonsIndex<2;dialogButtonsIndex++)
+{
+        if(event.xany.window==dialogButtons[dialogIndex][dialogButtonsIndex]&&event.type==ButtonPress)
+{
           XUnmapWindow(display,dialogs[dialogIndex]);
           if(dialogIndex==dialogType_exit&&dialogButtonsIndex==0)gameCtxtStruct.generalPurposeMask=clearBit<unsigned char>(gameCtxtStruct.generalPurposeMask,0);
         }
-        if(event.xany.window==dialogButtons[dialogIndex][dialogButtonsIndex]&&event.type==Expose){
+        if(event.xany.window==dialogButtons[dialogIndex][dialogButtonsIndex]&&event.type==Expose)
+{
           XDrawString(
             display,
             dialogButtons[dialogIndex][dialogButtonsIndex],
@@ -1156,12 +1221,16 @@ int main(int argc,char*argv[],char*envp[]){
       }
     }
     
-    for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++){
-      if(event.xany.window==gameModeButton[gameModeIndex]&&event.type==ButtonPress){
+    for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++)
+{
+      if(event.xany.window==gameModeButton[gameModeIndex]&&event.type==ButtonPress)
+{
         XClearWindow(display,dialogs[dialogType_play]);
         XSetForeground(display,gameModeGCs[gameModeIndex],gameModeGCValues[gameModeIndex].foreground);
-        if(gameModeIndex<4){
-          for(helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++){
+        if(gameModeIndex<4)
+{
+          for(helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++)
+{
             XUnmapWindow(display,helpRechargeButtons[helpRechargeButtonIndex]);
             XDrawString(
               display,
@@ -1203,7 +1272,8 @@ int main(int argc,char*argv[],char*envp[]){
             "Difficoltà enigmi:",
             sizeof "Difficoltà enigmi:"-1
           );
-          for(helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++){
+          for(helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++)
+{
             XMapRaised(display,helpRechargeButtons[helpRechargeButtonIndex]);
             XDrawString(
               display,
@@ -1219,7 +1289,8 @@ int main(int argc,char*argv[],char*envp[]){
       }
     }
 
-    if(event.xany.window==formSubmitButton&&event.type==ButtonPress){
+    if(event.xany.window==formSubmitButton&&event.type==ButtonPress)
+{
       if(strcmp(gameCtxtStruct.userName,"")==0||strcmp(gameCtxtStruct.userName," ")==0)beep(1000,100);
       else{
         gameCtxtStruct.generalPurposeMask=clearBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
@@ -1248,7 +1319,8 @@ int main(int argc,char*argv[],char*envp[]){
       }
     }
 
-    if(event.xany.window==form&&event.type==Expose){
+    if(event.xany.window==form&&event.type==Expose)
+{
       gameCtxtStruct.generalPurposeMask=setBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
       XDrawString(
         display,
@@ -1261,7 +1333,8 @@ int main(int argc,char*argv[],char*envp[]){
       );
 
       for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
-        for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++){
+        for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+{
           XDrawString(
             display,
             mainScreenButtons[mainScreenButtonY][mainScreenButtonX],
@@ -1273,8 +1346,10 @@ int main(int argc,char*argv[],char*envp[]){
           );
         }
     }
-    if(event.xany.window==formTextBox){
-      switch(event.type){
+    if(event.xany.window==formTextBox)
+{
+      switch(event.type)
+{
         case FocusIn:
           puts("Focus In!");
           break;
@@ -1290,7 +1365,8 @@ int main(int argc,char*argv[],char*envp[]){
             readBit<unsigned char>(event.xkey.state,LockMapIndex)//key level
           );
           //Mod2=Alt
-          switch(event.xkey.keycode){
+          switch(event.xkey.keycode)
+{
             case 22://Backspace key case
               if(keyHandler.pointer==0)
                 beep(1000,100);
@@ -1315,7 +1391,8 @@ int main(int argc,char*argv[],char*envp[]){
               beep(1000,100);
               break;
             case 119://canc key case
-              if(keyHandler.pointer<keyHandler.size){
+              if(keyHandler.pointer<keyHandler.size)
+{
                 for(unsigned char I=keyHandler.pointer;gameCtxtStruct.userName[I]!=0;I++)
                   gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I+1];
                 keyHandler.size-=1;
@@ -1352,7 +1429,8 @@ int main(int argc,char*argv[],char*envp[]){
   CleanImageData(logo.r2);
   XFreeGC(display,soundSliderGC);
   XFreeGC(display,userInputGC);
-  for(dialogIndex=0;dialogIndex<5;dialogIndex++){
+  for(dialogIndex=0;dialogIndex<5;dialogIndex++)
+{
     XFreeGC(display,dialogsGCs[dialogIndex]);
     XDestroySubwindows(display,dialogs[dialogIndex]);
     XDestroyWindow(display,dialogs[dialogIndex]);

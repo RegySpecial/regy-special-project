@@ -1,5 +1,5 @@
-#ifndef coreTypedefH
-#define coreTypedefH
+#ifndef coreTypedefHpp
+#define coreTypedefHpp
 #if defined __WIN32||defined __WIN64
 #include <windows.h>
 typedef HWND windowType;

@@ -23,8 +23,8 @@ extern const char *_GoStringPtr(_GoString_ s);
 
 #line 2 "CImage.go"
 
-#include<stdlib.h>
-#include<stdio.h>
+#include <stdlib.h>
+#include <stdio.h>
 typedef struct{
   unsigned long
     width,

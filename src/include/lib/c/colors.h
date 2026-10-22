@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdlib.h>
 #if defined __cplusplus || defined c_plusplus
-extern "C"{
+extern "C" {
 #endif
   typedef enum
   {

@@ -123,7 +123,8 @@ window::window(application *app, const char *title)
 
   XMapRaised(this->app->display, this->id);
 
-  this->onResize = [](XResizeRequestEvent *event, void *extraArgs){
+  this->onResize = [](XResizeRequestEvent *event, void *extraArgs)
+{
     window *self = (window *) extraArgs;
     for(unsigned long i = 0; i < self->subwidget.size;i++)
       XResizeWindow(self->app->display, self->id, event->width,event->height);
@@ -168,14 +169,14 @@ bool window::addEventListener(unsigned char eventState, void (*listener)(event *
 {
   if (0 > eventState && eventState > eventState_lastEvent)
   {
-    failureMessage("Invalid event identifier\n");
+    errorMessage("Invalid event identifier\n");
     return 0;
   }
   event eventClass;
   eventClass.target = this;
   this->eventMask = setBit<long>(this->eventMask, eventState);
   XSelectInput(this->app->display, this->id, this->eventMask);
-  this->app->events.push(eventClass);
+  this->app->eventQueue.push(eventClass);
   return 1;
 }
 
@@ -183,11 +184,11 @@ bool window::removeEventListener(unsigned char eventState)
 {
   if (0 > eventState && eventState > eventState_lastEvent)
   {
-    failureMessage("Invalid event identifier\n");
+    errorMessage("Invalid event identifier\n");
     return 0;
   }
   this->eventMask = clearBit<long>(this->eventMask, eventState);
   XSelectInput(this->app->display, this->id, this->eventMask);
-  this->app->events.pop();
+  this->app->eventQueue.pop();
   return 1;
 }

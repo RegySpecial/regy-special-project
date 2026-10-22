@@ -7,9 +7,10 @@ and modified by me
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include"../include/CGO/CImage.h"
-#include<limits.h>
-int main(int argc,char*argv[]){
+#include "../include/CGO/CImage.h"
+#include <limits.h>
+int main(int argc,char*argv[])
+{
     // --- Setup ---
     Display *display = XOpenDisplay(NULL);
     struct RetrieveDataFromJpegImage_return jpeg=RetrieveDataFromJpegImage("/usr/share/backgrounds/lorikeet.jpg");
@@ -51,7 +52,8 @@ int main(int argc,char*argv[]){
     XEvent event;
     while (1) {
         XNextEvent(display, &event);
-        if(event.type==Expose){
+        if(event.type==Expose)
+{
             XCopyArea(display,pixmap,window,gc,0,0,jpeg.r0,jpeg.r1,0,0);
         }
 
