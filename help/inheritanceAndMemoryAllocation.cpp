@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 
-template<typename T>
+template <typename T>
 class alloc
 {
 public:
@@ -22,7 +22,7 @@ public:
   }
 };
 
-template<typename T>
+template <typename T>
 class alloc1
 : public alloc<T>
 {
@@ -30,7 +30,7 @@ public:
   alloc1(T *pointer, size_t size);
 };
 
-template<typename T>
+template <typename T>
 alloc1<T>::alloc1(T *pointer, size_t size) : alloc<T>::alloc(pointer, size)
 {
   coso:

@@ -954,7 +954,7 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-template<typename accumulationValueDataType>
+template <typename accumulationValueDataType>
 accumulationValueDataType
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue)
 {
@@ -968,7 +968,7 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-template<typename accumulationValueDataType>
+template <typename accumulationValueDataType>
 accumulationValueDataType
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue, sizeDataType size)
 {
@@ -982,7 +982,7 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-template<typename accumulationValueDataType>
+template <typename accumulationValueDataType>
 accumulationValueDataType
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
 {
@@ -996,7 +996,7 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-template<typename accumulationValueDataType>
+template <typename accumulationValueDataType>
 accumulationValueDataType
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue)
 {
@@ -1010,7 +1010,7 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-template<typename accumulationValueDataType>
+template <typename accumulationValueDataType>
 accumulationValueDataType
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue, sizeDataType size)
 {
@@ -1024,7 +1024,7 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-template<typename accumulationValueDataType>
+template <typename accumulationValueDataType>
 accumulationValueDataType
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
 {
@@ -1038,7 +1038,7 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-template<typename accumulationValueDataType>
+template <typename accumulationValueDataType>
 accumulationValueDataType
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue)
 {
@@ -1052,7 +1052,7 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-template<typename accumulationValueDataType>
+template <typename accumulationValueDataType>
 accumulationValueDataType
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue, sizeDataType size)
 {
@@ -1066,7 +1066,7 @@ template
   typename sizeDataType,
   typename capacityDataType
 >
-template<typename accumulationValueDataType>
+template <typename accumulationValueDataType>
 accumulationValueDataType
 dynamicArray<itemsDataType, sizeDataType, capacityDataType>::reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
 {

@@ -3,7 +3,7 @@ int factorial(unsigned int x)
   return !x ? 1 : x * factorial(--x);
 }
 
-template<typename domainArgument=long double>
+template <typename domainArgument=long double>
 long double pow(domainArgument x, domainArgument y)
 {
   long double result = 1;
@@ -31,7 +31,7 @@ double ythRootOfX(double x,double y)
     result = result - (pow(result, y) - x) / (y * pow(result, y - 1));
   return result;
 }
-template<typename domainArgument>
+template <typename domainArgument>
 long double sin(domainArgument theta)
 {
   long double result = 0;

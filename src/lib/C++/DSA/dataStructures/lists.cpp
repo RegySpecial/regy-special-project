@@ -4,7 +4,7 @@
 *@date (First version [Linux/Parrot OS]) 2026 March 7th Saturday, 16:12:08
 *@license GNU General Public License to stop private corporation to not share source code
 */
-template<typename dataType>
+template <typename dataType>
 class linkedList{
 public:
   dataType value;
@@ -97,7 +97,7 @@ public:
   }
 };
 
-template<typename dataType>
+template <typename dataType>
 class doubleLinkedList{
 public:
   dataType value;

@@ -6,11 +6,11 @@
 *@date (First version [Linux/Parrot OS]) 2026 June 16th Tuesday, 19:11:26
 *@license GNU General Public License to stop private corporation to not share source code
 */
-template<typename returnDataType=unsigned long long>
+template <typename returnDataType = unsigned long long>
 returnDataType stringToNumber(const char*string)
 {
   returnDataType number = 0;
-  for (unsigned long i = *string == '+' || *string == '-';string[i];i++)
+  for (unsigned long i = *string == '+' || *string == '-'; string[i]; i++)
     if ('0' <= string[i] && string[i] <= '9')
       number = (number * 10) + (string[i] - '0');
     else if (string[i] == '.')
@@ -18,7 +18,7 @@ returnDataType stringToNumber(const char*string)
   return number;
 }
 
-template<typename numberDataType=unsigned long long>
+template <typename numberDataType=unsigned long long>
 void numberToBase(char*outputBuffer,numberDataType number,unsigned char base)
 {
   for (unsigned long long c = 0;outputBuffer[c];outputBuffer[c++] = 0);
@@ -29,7 +29,7 @@ void numberToBase(char*outputBuffer,numberDataType number,unsigned char base)
     }
 }
 /*1st overload of numberToBase*/
-template<typename numberDataType=unsigned long long,typename sizeDataType = unsigned long long>
+template <typename numberDataType=unsigned long long,typename sizeDataType = unsigned long long>
 void numberToBase(char*outputBuffer,sizeDataType size,numberDataType number,unsigned char base)
 {
   for (sizeDataType c = 0;c < size;outputBuffer[c++] = 0);
@@ -40,7 +40,7 @@ void numberToBase(char*outputBuffer,sizeDataType size,numberDataType number,unsi
     }
 }
 
-template<typename numberDataType=unsigned long long>
+template <typename numberDataType=unsigned long long>
 numberDataType grayCode(numberDataType number)
 {
   numberDataType resultingCode = 0,
@@ -54,7 +54,7 @@ numberDataType grayCode(numberDataType number)
   return (resultingCode |= Gn1);
 }
 
-template<typename numberDataType=unsigned long long>
+template <typename numberDataType=unsigned long long>
 numberDataType hammingDistance(numberDataType firstNumber, numberDataType secondNumber)
 {
   numberDataType result = 0;

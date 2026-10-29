@@ -14,7 +14,7 @@ struct hashTableItems
   struct hashTableItems<key, value> *next;
 };
 
-template<
+template <
   typename keyDataType,
   typename valueDataType,
   typename sizeDataType = unsigned long long,
