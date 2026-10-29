@@ -30,7 +30,7 @@ typedef struct{
     width,
     height,
     **pixels;
-  char*mime;
+  char *mime;
 }image;
 
 #line 1 "cgo-generated-wrapper"
@@ -100,28 +100,28 @@ extern "C" {
 struct RetrieveImageData_return {
 	GoInt r0; /* width */
 	GoInt r1; /* height */
-	char* r2; /* mime */
-	char* r3; /* data */
+	char * r2; /* mime */
+	char * r3; /* data */
 };
-extern struct RetrieveImageData_return RetrieveImageData(char* path);
-extern void CleanImageData(char* data);
+extern struct RetrieveImageData_return RetrieveImageData(char * path);
+extern void CleanImageData(char * data);
 
 /* Return type for RetrieveDataFromJpegImage */
 struct RetrieveDataFromJpegImage_return {
 	GoInt r0; /* width */
 	GoInt r1; /* height */
-	char* r2; /* data */
+	char * r2; /* data */
 };
-extern struct RetrieveDataFromJpegImage_return RetrieveDataFromJpegImage(char* path);
+extern struct RetrieveDataFromJpegImage_return RetrieveDataFromJpegImage(char * path);
 
 /* Return type for RetrieveDataFromPngImage */
 struct RetrieveDataFromPngImage_return {
 	GoInt r0; /* width */
 	GoInt r1; /* height */
-	char* r2; /* data */
+	char * r2; /* data */
 };
-extern struct RetrieveDataFromPngImage_return RetrieveDataFromPngImage(char* path);
-extern void RetrieveGifData(char* path);
+extern struct RetrieveDataFromPngImage_return RetrieveDataFromPngImage(char * path);
+extern void RetrieveGifData(char * path);
 
 #ifdef __cplusplus
 }

@@ -189,7 +189,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
           "Hardware Information:",
           sizeof "Hardware Information:"-1
         );
-        for(unsigned char moreInformationIndex=0;moreInformationIndex<3;moreInformationIndex++)
+        for (unsigned char moreInformationIndex=0;moreInformationIndex<3;moreInformationIndex++)
           XDrawString
           (
             self->root->display,

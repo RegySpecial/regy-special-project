@@ -1,6 +1,6 @@
 #include "../../include/main/c++/mainScreenButtons.hpp"
 
-mainScreenButton::mainScreenButton(mainWindow*root,const char*text)
+mainScreenButton::mainScreenButton(mainWindow*root,const char *text)
 {
   this->root = root;
   this->text = {

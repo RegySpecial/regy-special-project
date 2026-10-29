@@ -94,7 +94,7 @@ cmyk rgbaToCmyk(rgba rgbaStruct)
   unsigned char max = rgbaStruct.red;
   for (unsigned char i = 1; i < 3; i++)
   {
-    unsigned char *color = (unsigned char*) &rgbaStruct;
+    unsigned char *color = (unsigned char *) &rgbaStruct;
     if (color[i] > max)
       max = color[i];
   }
@@ -111,7 +111,7 @@ cmyka rgbaToCmyka(rgba rgbaStruct)
   unsigned char max = rgbaStruct.red; 
   for (unsigned char i = 1; i < 3; i++)
   {
-    unsigned char *color=(unsigned char*) &rgbaStruct;
+    unsigned char *color=(unsigned char *) &rgbaStruct;
     if (color[i] > max)
       max = color[i];
   }

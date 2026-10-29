@@ -57,7 +57,7 @@ void formTextBox::onKeyDown(XKeyPressedEvent *event, void *extraArgs)
         beep(1000,100);
       else{
         self.pointer-=1;
-        for(unsigned char I=self.pointer;gameCtxtStruct.userName[I];I++)
+        for (unsigned char I=self.pointer;gameCtxtStruct.userName[I];I++)
           gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I+1];
         self.textSize-=1;
       }
@@ -78,7 +78,7 @@ void formTextBox::onKeyDown(XKeyPressedEvent *event, void *extraArgs)
     case 119://canc key case
       if(self.pointer<self.textSize)
 {
-        for(unsigned char I=self.pointer;gameCtxtStruct.userName[I]!=0;I++)
+        for (unsigned char I=self.pointer;gameCtxtStruct.userName[I]!=0;I++)
           gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I+1];
         self.textSize-=1;
       }else
@@ -89,7 +89,7 @@ void formTextBox::onKeyDown(XKeyPressedEvent *event, void *extraArgs)
         beep(1000,100);
       else{
         self.textSize+=1;
-        for(unsigned char I=self.textSize;I>self.pointer;I--)
+        for (unsigned char I=self.textSize;I>self.pointer;I--)
           gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I-1];
         gameCtxtStruct.userName[self.pointer]=trueKey;
         self.pointer+=1;

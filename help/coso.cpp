@@ -2,14 +2,14 @@
 #include <getopt.h>
 #include <unistd.h>
 #include <stdlib.h>
-int main(int argc,char*argv[])
+int main(int argc,char *argv[])
 {
   const struct option optLong[]={
     {"help",optional_argument,NULL,'h'},
     {"user",required_argument,NULL,'u'}
   };
   int args,subArgs;
-  char*helpOptions[]={
+  char *helpOptions[]={
     "user",
     "id",
     NULL

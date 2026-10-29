@@ -9,7 +9,7 @@ and modified by me
 #include <stdio.h>
 #include "../include/CGO/CImage.h"
 #include <limits.h>
-int main(int argc,char*argv[])
+int main(int argc,char *argv[])
 {
     // --- Setup ---
     Display *display = XOpenDisplay(NULL);

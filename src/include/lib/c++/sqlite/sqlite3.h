@@ -9940,7 +9940,7 @@ SQLITE_API int sqlite3_vtab_in(sqlite3_index_info*, int iCons, int bHandle);
 ** of the IN constraint using code like the following:
 **
 ** <blockquote><pre>
-** &nbsp;  for(rc=sqlite3_vtab_in_first(pList, &pVal);
+** &nbsp;  for (rc=sqlite3_vtab_in_first(pList, &pVal);
 ** &nbsp;      rc==SQLITE_OK && pVal;
 ** &nbsp;      rc=sqlite3_vtab_in_next(pList, &pVal)
 ** &nbsp;  ){
@@ -12753,7 +12753,7 @@ struct Fts5PhraseIter {
 **
 **       Fts5PhraseIter iter;
 **       int iCol, iOff;
-**       for(pApi->xPhraseFirst(pFts, iPhrase, &iter, &iCol, &iOff);
+**       for (pApi->xPhraseFirst(pFts, iPhrase, &iter, &iCol, &iOff);
 **           iCol>=0;
 **           pApi->xPhraseNext(pFts, &iter, &iCol, &iOff)
 **       ){
@@ -12783,7 +12783,7 @@ struct Fts5PhraseIter {
 **
 **       Fts5PhraseIter iter;
 **       int iCol;
-**       for(pApi->xPhraseFirstColumn(pFts, iPhrase, &iter, &iCol);
+**       for (pApi->xPhraseFirstColumn(pFts, iPhrase, &iter, &iCol);
 **           iCol>=0;
 **           pApi->xPhraseNextColumn(pFts, &iter, &iCol)
 **       ){

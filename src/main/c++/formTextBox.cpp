@@ -116,7 +116,7 @@ formTextBox::formTextBox(form *root)
         else
         {
           msgStruct->self->textSize += 1;
-          for(unsigned char I = msgStruct->self->textSize; I>msgStruct->self->pointer; I--)
+          for (unsigned char I = msgStruct->self->textSize; I>msgStruct->self->pointer; I--)
             msgStruct->gameCtxtStruct->userName[I] = msgStruct->gameCtxtStruct->userName[I - 1];
           msgStruct->gameCtxtStruct->userName[msgStruct->self->pointer] = trueKey;
           msgStruct->self->pointer += 1;

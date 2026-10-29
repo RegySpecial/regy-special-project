@@ -7,7 +7,7 @@ typedef struct{
     width,
     height,
     **pixels;
-  char*mime;
+  char *mime;
 }image;
 */
 import "C"

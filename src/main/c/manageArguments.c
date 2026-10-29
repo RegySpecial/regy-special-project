@@ -172,7 +172,7 @@ gameContextStructure manageHelpFlag(int argc, char *argv[])
           for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++)
             if (!strcmp(suboptionValue, userSuboptions[index]))
             {
-              char* const suboptionCopy = userSuboptions[index];
+              char * const suboptionCopy = userSuboptions[index];
               *suboptionCopy -= 'z' + 'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
               printf("Usage: %s -[u|-user=]%s=<user%s>\n",*argv,helpSuboptions[index],suboptionCopy);
               printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,userExplanation[index]);
@@ -183,7 +183,7 @@ gameContextStructure manageHelpFlag(int argc, char *argv[])
           puts("Subflags:");
           for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++)
 {
-            char* const suboptionCopy = helpSuboptions[index];
+            char * const suboptionCopy = helpSuboptions[index];
                         *suboptionCopy-='z'+'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
             printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,helpExplanation[index]);
           }
@@ -198,7 +198,7 @@ gameContextStructure manageHelpFlag(int argc, char *argv[])
           for (unsigned char index = 0; index < sizeof backgroundSuboptions / sizeof *backgroundSuboptions; index++)
             if (!strcmp(suboptionValue, backgroundSuboptions[index])) 
             {
-              char* const suboptionCopy = backgroundSuboptions[index];
+              char * const suboptionCopy = backgroundSuboptions[index];
               *suboptionCopy -= 'z' + 'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
               printf("Usage: %s [-b|--background=]%s=<background%s>\n",*argv,backgroundSuboptions[index],suboptionCopy);
               printf("\t%s=<background%s> %s\n",backgroundSuboptions[index],suboptionCopy,backgroundExplanation[index]);
@@ -209,7 +209,7 @@ gameContextStructure manageHelpFlag(int argc, char *argv[])
               puts("Subflags:");
               for (unsigned char index = 0; index < sizeof helpSuboptions / sizeof *helpSuboptions; index++)
 {
-                char* const suboptionCopy = backgroundSuboptions[index];
+                char * const suboptionCopy = backgroundSuboptions[index];
                             *suboptionCopy-='z'+'Z';//lowerCase = upperCase + 'z' - 'Z' , upperCase = lowerCase + 'Z' - 'z'
                 printf("\t%s=<user%s> %s\n",helpSuboptions[index],suboptionCopy,helpExplanation[index]);
               }
@@ -302,8 +302,8 @@ gameContextStructure manageBackgroundFlag(int argc, char *argv[])
           {
             hsl HSL={};
             unsigned char index = 0;
-            for (char* paramGet = strtok(colorFuntionString + 4, ","); paramGet; paramGet = strtok(NULL, ","), index++)
-              ((unsigned char*) &HSL)[index] = atoi(paramGet);
+            for (char * paramGet = strtok(colorFuntionString + 4, ","); paramGet; paramGet = strtok(NULL, ","), index++)
+              ((unsigned char *) &HSL)[index] = atoi(paramGet);
             
             rgb trueColor = hslToRgb(HSL);
             gCtxtStruct.backgroundColor = trueColor.red << 16 | trueColor.green << 8 | trueColor.blue;
@@ -312,8 +312,8 @@ gameContextStructure manageBackgroundFlag(int argc, char *argv[])
           {
             hsla HSLA={};
             unsigned char index = 0;
-            for (char* paramGet = strtok(colorFuntionString + 5, ","); paramGet; paramGet = strtok(NULL, ","), index++)
-              ((unsigned char*) &HSLA)[index] = atoi(paramGet);
+            for (char * paramGet = strtok(colorFuntionString + 5, ","); paramGet; paramGet = strtok(NULL, ","), index++)
+              ((unsigned char *) &HSLA)[index] = atoi(paramGet);
             
             rgba trueColor = hslaToRgba(HSLA);
             gCtxtStruct.backgroundColor = trueColor.red << 16 | trueColor.green << 8 | trueColor.blue;
@@ -322,24 +322,24 @@ gameContextStructure manageBackgroundFlag(int argc, char *argv[])
           {
             rgb RGB={};
             unsigned char index = 0;
-            for (char* paramGet = strtok(colorFuntionString + 4, ","); paramGet; paramGet = strtok(NULL, ","), index++)
-              ((unsigned char*) &RGB)[index] = atoi(paramGet);
+            for (char * paramGet = strtok(colorFuntionString + 4, ","); paramGet; paramGet = strtok(NULL, ","), index++)
+              ((unsigned char *) &RGB)[index] = atoi(paramGet);
             gCtxtStruct.backgroundColor = RGB.red << 16 | RGB.green << 8 | RGB.blue;
           }
           else if (!strcmp(colorFuntionString,"rgba"))
           {
             rgba RGBA={};
             unsigned char index = 0;
-            for (char* paramGet = strtok(colorFuntionString + 5, ","); paramGet; paramGet = strtok(NULL, ","), index++)
-              ((unsigned char*) &RGBA)[index] = atoi(paramGet);
+            for (char * paramGet = strtok(colorFuntionString + 5, ","); paramGet; paramGet = strtok(NULL, ","), index++)
+              ((unsigned char *) &RGBA)[index] = atoi(paramGet);
             gCtxtStruct.backgroundColor = RGBA.red << 16 | RGBA.green << 8 | RGBA.blue;
           }
           else if (!strcmp(colorFuntionString,"cmyk"))
           {
             cmyk CMYK={};
             unsigned char index = 0;
-            for (char* paramGet = strtok(colorFuntionString + 5, ","); paramGet; paramGet = strtok(NULL, ","), index++)
-              ((unsigned char*) &CMYK)[index] = atoi(paramGet);
+            for (char * paramGet = strtok(colorFuntionString + 5, ","); paramGet; paramGet = strtok(NULL, ","), index++)
+              ((unsigned char *) &CMYK)[index] = atoi(paramGet);
             
             rgb trueColor = cmykToRgb(CMYK);
             gCtxtStruct.backgroundColor = trueColor.red << 16 | trueColor.green << 8 | trueColor.blue;
@@ -348,8 +348,8 @@ gameContextStructure manageBackgroundFlag(int argc, char *argv[])
           {
             cmyka CMYKA={};
             unsigned char index = 0;
-            for (char* paramGet = strtok(colorFuntionString + 6, ","); paramGet; paramGet = strtok(NULL, ","), index++)
-              ((unsigned char*) &CMYKA)[index] = atoi(paramGet);
+            for (char * paramGet = strtok(colorFuntionString + 6, ","); paramGet; paramGet = strtok(NULL, ","), index++)
+              ((unsigned char *) &CMYKA)[index] = atoi(paramGet);
             
             rgba trueColor = cmykaToRgba(CMYKA);
             gCtxtStruct.backgroundColor = trueColor.red << 16 | trueColor.green << 8 | trueColor.blue;
@@ -465,7 +465,7 @@ gameContextStructure manageCommandLineArguments(int argc, char *argv[])
   
   while ((flag = getopt_long_only(argc, argv, "h::u:b:a:d", options, NULL)) != -1)
   {
-    gameContextStructure (*argumentManagementFunction[])(int, char**) = {manageHelpFlag,manageUserFlag,manageBackgroundFlag,manageAudioFlag,manageDebugFlag};
+    gameContextStructure (*argumentManagementFunction[])(int, char **) = {manageHelpFlag,manageUserFlag,manageBackgroundFlag,manageAudioFlag,manageDebugFlag};
     gCtxtStruct = argumentManagementFunction[flag](argc, argv);
   }
   return gCtxtStruct;

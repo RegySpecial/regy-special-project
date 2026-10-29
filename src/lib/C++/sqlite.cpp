@@ -43,7 +43,7 @@ class SQLite
     }BTreePageHeader;
     struct{
     }BTreeCell;
-    SQLite(char*databaseFilePath)
+    SQLite(char *databaseFilePath)
     {
       this->databaseFile=fopen(databaseFilePath,"rb");
       if(this->databaseFile==NULL)
@@ -65,7 +65,7 @@ class SQLite
       this->databaseFile=NULL;
     }
 };
-int main(int argc,char*argv[])
+int main(int argc,char *argv[])
 {
   if(argc==2)
   {

@@ -14,7 +14,7 @@ typedef struct{
   unsigned int width,height;
 }Coordinates;
 
-int main(int argc,char*argv[]) {
+int main(int argc,char *argv[]) {
   Display* display = XOpenDisplay(NULL);
   if(display==NULL) {
     std::cerr << "Failed to open display\n";
@@ -167,7 +167,7 @@ int main(int argc,char*argv[]) {
      submitButtonGC=XCreateGC(display,submitButton,GCForeground,&textBoxTextGCValues); 
   register char text[41];
   std::cout<<window<<' '<<form<<' '<<textBox<<' '<<submitButton<<'\n';
-  for(unsigned char textI=0;running;)
+  for (unsigned char textI=0;running;)
   {
     XNextEvent(display,&event);
     switch(event.xany.window,event.xany.type)

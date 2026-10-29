@@ -7,7 +7,7 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 template <typename returnDataType = unsigned long long>
-returnDataType stringToNumber(const char*string)
+returnDataType stringToNumber(const char *string)
 {
   returnDataType number = 0;
   for (unsigned long i = *string == '+' || *string == '-'; string[i]; i++)
@@ -19,22 +19,22 @@ returnDataType stringToNumber(const char*string)
 }
 
 template <typename numberDataType=unsigned long long>
-void numberToBase(char*outputBuffer,numberDataType number,unsigned char base)
+void numberToBase(char *outputBuffer, numberDataType number, unsigned char base)
 {
-  for (unsigned long long c = 0;outputBuffer[c];outputBuffer[c++] = 0);
+  for (unsigned long long c = 0; outputBuffer[c]; outputBuffer[c++] = 0);
   if (2 <= base && base <= 36)
-    for (unsigned char bit = 0;bit < sizeof number * 8;bit++) {
+    for (unsigned char bit = 0; bit < sizeof number * 8; bit++) {
       outputBuffer[sizeof number * 8 - bit - 1] = "0123456789abcdefghijklmnopqrstuvwxyz"[number % base];
       number /= base;
     }
 }
 /*1st overload of numberToBase*/
 template <typename numberDataType=unsigned long long,typename sizeDataType = unsigned long long>
-void numberToBase(char*outputBuffer,sizeDataType size,numberDataType number,unsigned char base)
+void numberToBase(char *outputBuffer, sizeDataType size, numberDataType number, unsigned char base)
 {
-  for (sizeDataType c = 0;c < size;outputBuffer[c++] = 0);
+  for (sizeDataType c = 0; c < size; outputBuffer[c++] = 0);
   if (2 <= base && base <= 36)
-    for (unsigned char bit = 0;bit < sizeof number * 8;bit++) {
+    for (unsigned char bit = 0; bit < sizeof number * 8; bit++) {
       outputBuffer[sizeof number * 8 - bit - 1] = "0123456789abcdefghijklmnopqrstuvwxyz"[number % base];
       number /= base;
     }
@@ -46,7 +46,8 @@ numberDataType grayCode(numberDataType number)
   numberDataType resultingCode = 0,
                  Gn = number >> (sizeof number * 8) & 1,
                  Gn1 = 0;
-  for (unsigned long bit = sizeof number * 8;--bit;) {
+  for (unsigned long bit = sizeof number * 8; --bit;)
+  {
     Gn1 ^= (number >> bit & 1);
     resultingCode |= Gn1 << bit;
   }

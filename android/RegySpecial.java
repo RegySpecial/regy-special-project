@@ -44,9 +44,9 @@ class RegySpecial
 			);
       GridLayout gridLayout=new GridLayout(2,2,10,10);
       buttonGrid.setLayout(gridLayout);
-      for(final String[] buttonRow:buttonTextGrid)
+      for (final String[] buttonRow:buttonTextGrid)
       {
-        for(final String text:buttonRow)
+        for (final String text:buttonRow)
         {
           JButton button=new JButton(text);
 					buttonGrid.add(button);

@@ -34,7 +34,7 @@ extern "C" {
 
   typedef struct
   {
-    const char*messageTypeString,
+    const char *messageTypeString,
               *messageString;
     rgb textColor,
         backgroundColor;

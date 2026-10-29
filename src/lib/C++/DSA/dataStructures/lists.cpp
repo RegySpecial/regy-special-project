@@ -75,7 +75,7 @@ public:
 {
     if(position==1)this->push(value);
     linkedList<dataType>newNode(value);
-    for(unsigned int index=0; index<position; index++)
+    for (unsigned int index=0; index<position; index++)
 {
       if(index==position)
 {
@@ -112,7 +112,7 @@ public:
   void forEach(void (*callbackFunction)(dataType,unsigned int))
 {
     unsigned long nodeIndex=0;
-    for(linkedList*head=this->node;head!=NULL;nodeIndex++)
+    for (linkedList*head=this->node;head!=NULL;nodeIndex++)
 {
       callback(*head,nodeIndex);
       head=head->node;
@@ -142,7 +142,7 @@ public:
 {
     if(position==1)this->push(value);
     linkedList<dataType>newNode(value);
-    for(unsigned int index=0; index<position; index++)
+    for (unsigned int index=0; index<position; index++)
 {
       if(index==position)
 {
@@ -159,7 +159,7 @@ public:
   }
   void traverse()
 {
-    for(linkedList<dataType>*head=this;head!=NULL;)
+    for (linkedList<dataType>*head=this;head!=NULL;)
 {
       std::cout<<"Value "<<head->value<<'\n';
       head=head->node;

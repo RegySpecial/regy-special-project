@@ -21,9 +21,9 @@ void gridLayout(
   unsigned int yGap
 )
 {
-  for(unsigned int y=0;y<rows;y++)
+  for (unsigned int y=0;y<rows;y++)
   {
-    for(unsigned int x=0;x<columns;x++)
+    for (unsigned int x=0;x<columns;x++)
     {
       XMoveResizeWindow(
         display,

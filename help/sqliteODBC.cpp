@@ -43,7 +43,7 @@ namespace sql{
       }
   };
 }
-int main(int argc,char*argv[],char*envp[])
+int main(int argc,char *argv[],char *envp[])
 {
   void*SQLEnvironment,
       *SQLStatement,
@@ -65,7 +65,7 @@ int main(int argc,char*argv[],char*envp[])
   if(SQLReturn!=SQL_SUCCESS&&SQLReturn!=SQL_SUCCESS_WITH_INFO)
     PrintSQLDiagnosticError(SQLEnvironment,SQL_HANDLE_ENV,"Errore nello stabilire della connessione");
   
-  SQLReturn=SQLDriverConnect(SQLConnection,NULL,(SQLCHAR*)"DSN=MySQLiteDB;",SQL_NTS,NULL,0,NULL,SQL_DRIVER_COMPLETE);
+  SQLReturn=SQLDriverConnect(SQLConnection,NULL,(SQLchar *)"DSN=MySQLiteDB;",SQL_NTS,NULL,0,NULL,SQL_DRIVER_COMPLETE);
   if(SQLReturn!=SQL_SUCCESS&&SQLReturn!=SQL_SUCCESS_WITH_INFO)
     PrintSQLDiagnosticError(SQLConnection,SQL_HANDLE_DBC,"Errore nella connessione al driver");
   
@@ -75,12 +75,12 @@ int main(int argc,char*argv[],char*envp[])
   
   if(argc==1)
   {
-    SQLReturn=SQLExecDirectA(SQLStatement,(SQLCHAR*)"select distinct name from User where id=1",SQL_NTS);
-    if(SQL_NO_DATA==SQLReturn)SQLReturn=SQLExecDirectA(SQLStatement,(SQLCHAR*)"insert into User select 1,\"Player 1\"",SQL_NTS);
+    SQLReturn=SQLExecDirectA(SQLStatement,(SQLchar *)"select distinct name from User where id=1",SQL_NTS);
+    if(SQL_NO_DATA==SQLReturn)SQLReturn=SQLExecDirectA(SQLStatement,(SQLchar *)"insert into User select 1,\"Player 1\"",SQL_NTS);
   }
   else
   {
-    SQLReturn=SQLPrepareA(SQLStatement,(SQLCHAR*)"select distinct name from User where name=?",SQL_NTS);
+    SQLReturn=SQLPrepareA(SQLStatement,(SQLchar *)"select distinct name from User where name=?",SQL_NTS);
     SQLReturn=SQLBindParameter(SQLStatement,1,SQL_PARAM_INPUT,SQL_C_CHAR,SQL_VARCHAR,40,0,(void*)userInput,sizeof (userInput),NULL);
     SQLReturn=SQLExecute(SQLStatement);
   }

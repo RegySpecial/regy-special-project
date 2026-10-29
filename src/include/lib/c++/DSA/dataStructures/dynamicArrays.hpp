@@ -33,9 +33,18 @@ public:
   typedef bool (*logicalPredicate1_predicate)(itemsDataType, sizeDataType);
   typedef bool (*logicalPredicate2_predicate)(itemsDataType, sizeDataType, dynamicArrayPointer);
 
-  typedef itemsDataType (*map_callback)(itemsDataType);
-  typedef itemsDataType (*map1_callback)(itemsDataType, sizeDataType);
-  typedef itemsDataType (*map2_callback)(itemsDataType, sizeDataType, dynamicArrayPointer);
+  typedef itemsDataType (*valueModification_callback)(itemsDataType);
+  typedef itemsDataType (*valueModification1_callback)(itemsDataType, sizeDataType);
+  typedef itemsDataType (*valueModification2_callback)(itemsDataType, sizeDataType, dynamicArrayPointer);
+
+  template <typename accumulationValueDataType>
+  using reduce_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType);
+  template <typename accumulationValueDataType>
+  using reduce1_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType, sizeDataType);
+  template <typename accumulationValueDataType>
+  using reduce2_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType, sizeDataType, dynamicArrayPointer);
+
+  typedef itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType);
   
   itemsDataType *items = NULL;
   sizeDataType size = 0;
@@ -331,7 +340,6 @@ public:
     return filteredDynamicArray;
   }
   
-  
   bool every(logicalPredicate_predicate everyFunction)
   {
     bool everyCondition = 1;
@@ -454,7 +462,6 @@ public:
     return someCondition;
   }
   
-  
   bool some(logicalPredicate2_predicate someFunction)
   {
     bool someCondition = 0;
@@ -528,7 +535,6 @@ public:
     return xsomeCondition;
   }
   
-  
   bool xsome(logicalPredicate2_predicate xsomeFunction)
   {
     bool xsomeCondition = 0;
@@ -553,7 +559,7 @@ public:
     return xsomeCondition;
   }
   
-  dynamicArraySelf map(itemsDataType (*mapFunction)(itemsDataType))
+  dynamicArraySelf map(valueModification_callback mapFunction)
   {
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
     for (sizeDataType index = 0; index < this->size; index++)
@@ -561,7 +567,7 @@ public:
     return mapDynamicArray;
   }
   
-  dynamicArraySelf map(itemsDataType (*mapFunction)(itemsDataType), sizeDataType size)
+  dynamicArraySelf map(valueModification_callback mapFunction, sizeDataType size)
   {
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
     for (sizeDataType index = 0; index < size && size <= this->size; index++)
@@ -569,7 +575,7 @@ public:
     return mapDynamicArray;
   }
   
-  dynamicArraySelf map(itemsDataType (*mapFunction)(itemsDataType), sizeDataType left, sizeDataType right)
+  dynamicArraySelf map(valueModification_callback mapFunction, sizeDataType left, sizeDataType right)
   {
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
     for (; 0 <= left && left < right && right <= this->size; left++)
@@ -577,7 +583,7 @@ public:
     return mapDynamicArray;
   }
   
-  dynamicArraySelf map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType))
+  dynamicArraySelf map(valueModification1_callback mapFunction)
   {
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
     for (sizeDataType index = 0; index < this->size; index++)
@@ -585,7 +591,7 @@ public:
     return mapDynamicArray;
   }
   
-  dynamicArraySelf map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType), sizeDataType size)
+  dynamicArraySelf map(valueModification1_callback mapFunction, sizeDataType size)
   {
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
     for (sizeDataType index = 0; index < size && size <= this->size; index++)
@@ -593,7 +599,7 @@ public:
     return mapDynamicArray;
   }
   
-  dynamicArraySelf map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType), sizeDataType left, sizeDataType right)
+  dynamicArraySelf map(valueModification1_callback mapFunction, sizeDataType left, sizeDataType right)
   {
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
     for (; 0 <= left && left < right && right <= this->size; left++)
@@ -601,7 +607,7 @@ public:
     return mapDynamicArray;
   }
   
-  dynamicArraySelf map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *))
+  dynamicArraySelf map(valueModification2_callback mapFunction)
   {
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
     for (sizeDataType index = 0; index < this->size; index++)
@@ -609,7 +615,7 @@ public:
     return mapDynamicArray;
   }
   
-  dynamicArraySelf map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType size)
+  dynamicArraySelf map(valueModification2_callback mapFunction, sizeDataType size)
   {
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
     for (sizeDataType index = 0; index < size && size <= this->size; index++)
@@ -617,7 +623,7 @@ public:
     return mapDynamicArray;
   }
   
-  dynamicArraySelf map(itemsDataType (*mapFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), sizeDataType left, sizeDataType right)
+  dynamicArraySelf map(valueModification2_callback mapFunction, sizeDataType left, sizeDataType right)
   {
     dynamicArray<itemsDataType, sizeDataType, capacityDataType>mapDynamicArray(0,this->capacity);
     for (; 0 <= left && left < right && right <= this->size; left++)
@@ -626,95 +632,232 @@ public:
   }
   
   template <typename accumulationValueDataType>
-  accumulationValueDataType
-  reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue)
+  accumulationValueDataType reduce(reduce_callback<accumulationValueDataType> reductionFunction, accumulationValueDataType accumulationValue)
   {
     for (sizeDataType index = 0; index < this->size; index++)
-      accumulationValue = reduceFunction(this->at(index));
+      accumulationValue = reductionFunction(this->at(index));
     return accumulationValue;
   }
   
   template <typename accumulationValueDataType>
-  accumulationValueDataType
-  reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue, sizeDataType size)
+  accumulationValueDataType reduce(reduce_callback<accumulationValueDataType> reductionFunction, accumulationValueDataType accumulationValue, sizeDataType size)
   {
     for (sizeDataType index = 0; index < size && size <= this->size; index++)
-      accumulationValue = reduceFunction(this->at(index));
+      accumulationValue = reductionFunction(this->at(index));
     return accumulationValue;
   }
   
   template <typename accumulationValueDataType>
-  accumulationValueDataType
-  reduce(itemsDataType (*reduceFunction)(itemsDataType), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
+  accumulationValueDataType reduce(reduce_callback<accumulationValueDataType> reductionFunction, accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
   {
     for (; 0 <= left && left < right && right <= this->size; left++)
-      accumulationValue = reduceFunction(this->at(left));
+      accumulationValue = reductionFunction(this->at(left));
     return accumulationValue;
   }
   
   template <typename accumulationValueDataType>
   accumulationValueDataType
-  reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue)
+  reduce(reduce1_callback<accumulationValueDataType> reductionFunction, accumulationValueDataType accumulationValue)
   {
     for (sizeDataType index = 0; index < this->size; index++)
-      accumulationValue = reduceFunction(this->at(index), index);
+      accumulationValue = reductionFunction(this->at(index), index);
     return accumulationValue;
   }
   
   template <typename accumulationValueDataType>
   accumulationValueDataType
-  reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue, sizeDataType size)
+  reduce(reduce1_callback<accumulationValueDataType> reductionFunction, accumulationValueDataType accumulationValue, sizeDataType size)
   {
     for (sizeDataType index = 0; index < size && size <= this->size; index++)
-      accumulationValue = reduceFunction(this->at(index), index);
+      accumulationValue = reductionFunction(this->at(index), index);
     return accumulationValue;
   }
   
   template <typename accumulationValueDataType>
-  accumulationValueDataType
-  reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
+  accumulationValueDataType reduce(reduce1_callback<accumulationValueDataType> reductionFunction, accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
   {
     for (; 0 <= left && left < right && right <= this->size; left++)
-      accumulationValue = reduceFunction(this->at(left), left);
+      accumulationValue = reductionFunction(this->at(left), left);
     return accumulationValue;
   }
   
   template <typename accumulationValueDataType>
-  accumulationValueDataType
-  reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue)
+  accumulationValueDataType reduce(reduce2_callback<accumulationValueDataType> reductionFunction, accumulationValueDataType accumulationValue)
   {
     for (sizeDataType index = 0; index < this->size; index++)
-      accumulationValue = reduceFunction(this->at(index), index, this);
+      accumulationValue = reductionFunction(this->at(index), index, this);
     return accumulationValue;
   }
   
   template <typename accumulationValueDataType>
-  accumulationValueDataType
-  reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue, sizeDataType size)
+  accumulationValueDataType reduce(reduce2_callback<accumulationValueDataType> reductionFunction, accumulationValueDataType accumulationValue, sizeDataType size)
   {
     for (sizeDataType index = 0; index < size && size <= this->size; index++)
-      accumulationValue = reduceFunction(this->at(index), index, this);
+      accumulationValue = reductionFunction(this->at(index), index, this);
     return accumulationValue;
   }
   
   template <typename accumulationValueDataType>
-  accumulationValueDataType
-  reduce(itemsDataType (*reduceFunction)(itemsDataType,sizeDataType,dynamicArray<itemsDataType, sizeDataType, capacityDataType> *), accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
+  accumulationValueDataType reduce(reduce2_callback<accumulationValueDataType> reductionFunction, accumulationValueDataType accumulationValue, sizeDataType left, sizeDataType right)
   {
     for (; 0 <= left && left < right && right <= this->size; left++)
-      accumulationValue = reduceFunction(this->at(left), left, this);
+      accumulationValue = reductionFunction(this->at(left), left, this);
     return accumulationValue;
   }
+
+  itemsDataType find(logicalPredicate_predicate searchFunction)
+  {
+    for (sizeDataType index = 0; index < this->size; index++)
+      if (searchFunction(this->at(index)))
+        return this->at(index);
+    return;
+  }
+
+  itemsDataType find(logicalPredicate_predicate searchFunction, sizeDataType size)
+  {
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
+      if (searchFunction(this->at(index)))
+        return this->at(index);
+    return;
+  }
+
+  itemsDataType find(logicalPredicate_predicate searchFunction, sizeDataType left, sizeDataType right)
+  {
+    for (; 0 <= left && left < right && right <= this->size; left++)
+      if (searchFunction(this->at(left)))
+        return this->at(left);
+    return;
+  }
+
+  itemsDataType find(logicalPredicate1_predicate searchFunction)
+  {
+    for (sizeDataType index = 0; index < this->size; index++)
+      if (searchFunction(this->at(index), index))
+        return this->at(index);
+    return;
+  }
+
+  itemsDataType find(logicalPredicate1_predicate searchFunction, sizeDataType size)
+  {
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
+      if (searchFunction(this->at(index), index))
+        return this->at(index);
+    return;
+  }
+
+  itemsDataType find(logicalPredicate1_predicate searchFunction, sizeDataType left, sizeDataType right)
+  {
+    for (; 0 <= left && left < right && right <= this->size; left++)
+      if (searchFunction(this->at(left), left))
+        return this->at(left);
+    return;
+  }
+
+  itemsDataType find(logicalPredicate2_predicate searchFunction)
+  {
+    for (sizeDataType index = 0; index < this->size; index++)
+      if (searchFunction(this->at(index), index, this))
+        return this->at(index);
+    return;
+  }
+
+  itemsDataType find(logicalPredicate2_predicate searchFunction, sizeDataType size)
+  {
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
+      if (searchFunction(this->at(index), index, this))
+        return this->at(index);
+    return;
+  }
+
+  itemsDataType find(logicalPredicate2_predicate searchFunction, sizeDataType left, sizeDataType right)
+  {
+    for (; 0 <= left && left < right && right <= this->size; left++)
+      if (searchFunction(this->at(left), left, this))
+        return this->at(left);
+    return;
+  }
+
+  sizeDataType findIndex(logicalPredicate_predicate searchFunction)
+  {
+    for (sizeDataType index = 0; index < this->size; index++)
+      if (searchFunction(this->at(index)))
+        return index;
+    return;
+  }
+
+  sizeDataType findIndex(logicalPredicate_predicate searchFunction, sizeDataType size)
+  {
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
+      if (searchFunction(this->at(index)))
+        return index;
+    return;
+  }
+
+  sizeDataType findIndex(logicalPredicate_predicate searchFunction, sizeDataType left, sizeDataType right)
+  {
+    for (; 0 <= left && left < right && right <= this->size; left++)
+      if (searchFunction(this->at(left)))
+        return left;
+    return;
+  }
+
+  sizeDataType findIndex(logicalPredicate1_predicate searchFunction)
+  {
+    for (sizeDataType index = 0; index < this->size; index++)
+      if (searchFunction(this->at(index), index))
+        return index;
+    return;
+  }
+
+  sizeDataType findIndex(logicalPredicate1_predicate searchFunction, sizeDataType size)
+  {
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
+      if (searchFunction(this->at(index), index))
+        return index;
+    return;
+  }
+
+  sizeDataType findIndex(logicalPredicate1_predicate searchFunction, sizeDataType left, sizeDataType right)
+  {
+    for (; 0 <= left && left < right && right <= this->size; left++)
+      if (searchFunction(this->at(left), left))
+        return left;
+    return;
+  }
+
+  sizeDataType findIndex(logicalPredicate2_predicate searchFunction)
+  {
+    for (sizeDataType index = 0; index < this->size; index++)
+      if (searchFunction(this->at(index), index, this))
+        return index;
+    return;
+  }
+
+  sizeDataType findIndex(logicalPredicate2_predicate searchFunction, sizeDataType size)
+  {
+    for (sizeDataType index = 0; index < size && size <= this->size; index++)
+      if (searchFunction(this->at(index), index, this))
+        return index;
+    return;
+  }
+
+  sizeDataType findIndex(logicalPredicate2_predicate searchFunction, sizeDataType left, sizeDataType right)
+  {
+    for (; 0 <= left && left < right && right <= this->size; left++)
+      if (searchFunction(this->at(left), left, this))
+        return left;
+    return;
+  }
   
-  void sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType), sizeDataType left, sizeDataType right)
+  void sort(comparisonFunction comparison, sizeDataType left, sizeDataType right)
   {
     if (0 <= left && left < right && right <= this->size)
     {
       sizeDataType i = left - 1;
       itemsDataType tmp;
-      for (;left < right; left++)
+      for (; left < right; left++)
       {
-        if (comparisonFunction(this->at(left), this->at(right)) < 0)
+        if (comparison(this->at(left), this->at(right)))
         {
           i++;
           tmp = this->items[i];
@@ -726,19 +869,19 @@ public:
       tmp = this->items[i];
       this->items[i] = this->at(right);
       this->at(right) = tmp;
-      this->sort(comparisonFunction, 0, i - 1);
-      this->sort(comparisonFunction, i + 1, right);
+      this->sort(comparison, 0, i - 1);
+      this->sort(comparison, i + 1, right);
     }
   }
   
-  inline void sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType), sizeDataType size)
+  inline void sort(comparisonFunction comparison, sizeDataType size)
   {
-    this->sort(comparisonFunction, 0, size);
+    this->sort(comparison, 0, size);
   }
   
-  inline void sort(itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType))
+  inline void sort(comparisonFunction comparison)
   {
-    this->sort(comparisonFunction, this->size);
+    this->sort(comparison, this->size);
   }
   
   void reverse()
@@ -763,7 +906,7 @@ public:
   
   void reverse(sizeDataType left, sizeDataType right)
   {
-    for(;0 <= left && left < right / 2 && right <= this->size; left++)
+    for (;0 <= left && left < right / 2 && right <= this->size; left++)
     {
       itemsDataType tmp = this->items[left];
       this->items[left] = this->items[this->size - left - 1];

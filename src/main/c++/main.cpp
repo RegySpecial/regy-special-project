@@ -73,7 +73,7 @@ typedef enum OptionsDialogElementId{
   OptionsDialog_ConfirmButton,
   OptionsDialog_DoNotConfirmButton
 }OptionsDialogElementId;
-void PrintSQLDiagnosticError(void* SQLHandle,SQLSMALLINT type,const char* text)
+void PrintSQLDiagnosticError(void* SQLHandle,SQLSMALLINT type,const char * text)
 {
   SQLCHAR state[6],message[256];
   SQLINTEGER nativeError;
@@ -101,7 +101,7 @@ void MainScreen(HWND MainScreenWindow)
   PAINTSTRUCT mainScreenPaintStructure;
   HDC mainScreenPaint=BeginPaint(MainScreenWindow,&mainScreenPaintStructure);
   Gdiplus::Graphics graphics(mainScreenPaint);
-  for(float transparency=255;transparency>0;transparency--)
+  for (float transparency=255;transparency>0;transparency--)
 {
     graphics.Clear(0);
     Gdiplus::ColorMatrix matrix={
@@ -132,7 +132,7 @@ void PaintTheIntro(HWND IntroMainWindow)
   stringAlignment.SetAlignment(Gdiplus::StringAlignmentCenter);
   stringAlignment.SetLineAlignment(Gdiplus::StringAlignmentCenter);
   Gdiplus::RectF fontPosition(0,GetSystemMetrics(SM_CYFULLSCREEN)*9/10,GetSystemMetrics(SM_CXFULLSCREEN),font.GetSize()*2);
-  for(float transparency=0,dimensions=0;transparency<=255&&dimensions<=logo.GetWidth()/2;transparency++,dimensions++)
+  for (float transparency=0,dimensions=0;transparency<=255&&dimensions<=logo.GetWidth()/2;transparency++,dimensions++)
 {
     graphics.Clear(0);
     Gdiplus::SolidBrush authorStringForeground(Gdiplus::Color(transparency,255,255,255));
@@ -164,7 +164,7 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
       MoveWindow(GetDlgItem(hwnd,6),25,DialogSize.width/2-125,DialogSize.width/2-25,100,1);
       MoveWindow(GetDlgItem(hwnd,7),DialogSize.width/2+12.5,DialogSize.width/2-125,DialogSize.width/2-25,100,1);
       MoveWindow(GetDlgItem(hwnd,0),20,20,DialogSize.width-40,20,1);
-      for(int difficultyButtonID=1;difficultyButtonID<5;difficultyButtonID++)MoveWindow(GetDlgItem(hwnd,difficultyButtonID),20+((DialogSize.width-40)/4)*(difficultyButtonID-1),40,(DialogSize.width-40)/4,20,1);
+      for (int difficultyButtonID=1;difficultyButtonID<5;difficultyButtonID++)MoveWindow(GetDlgItem(hwnd,difficultyButtonID),20+((DialogSize.width-40)/4)*(difficultyButtonID-1),40,(DialogSize.width-40)/4,20,1);
       MoveWindow(GetDlgItem(hwnd,5),20,60,DialogSize.width-40,200,1);
       break;
     case WM_COMMAND:
@@ -182,13 +182,13 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
           SQLReturn=SQLAllocHandle(SQL_HANDLE_DBC, SQLEnvironment, &SQLConnection);
           if(SQLReturn!=SQL_SUCCESS&&SQLReturn!=SQL_SUCCESS_WITH_INFO)
             PrintSQLDiagnosticError(SQLEnvironment,SQL_HANDLE_ENV,"Errore nello stabilire della connessione");
-          SQLReturn=SQLDriverConnectA(SQLConnection,NULL,(SQLCHAR*)"DSN=MySQLiteDB;",SQL_NTS,NULL,0,NULL,SQL_DRIVER_COMPLETE);
+          SQLReturn=SQLDriverConnectA(SQLConnection,NULL,(SQLchar *)"DSN=MySQLiteDB;",SQL_NTS,NULL,0,NULL,SQL_DRIVER_COMPLETE);
           if(SQLReturn!=SQL_SUCCESS&&SQLReturn!=SQL_SUCCESS_WITH_INFO)
             PrintSQLDiagnosticError(SQLEnvironment,SQL_HANDLE_ENV,"Errore nella connessione al driver");
           SQLReturn=SQLAllocHandle(SQL_HANDLE_STMT,SQLConnection,&SQLStatement);
           if(SQLReturn!=SQL_SUCCESS&&SQLReturn!=SQL_SUCCESS_WITH_INFO)
             PrintSQLDiagnosticError(SQLEnvironment,SQL_HANDLE_ENV,"Errore nella connessione al driver");
-          SQLReturn=SQLExecDirectA(SQLStatement,(SQLCHAR*)"select * from User", SQL_NTS);
+          SQLReturn=SQLExecDirectA(SQLStatement,(SQLchar *)"select * from User", SQL_NTS);
           if(SQLFetch(SQLStatement)==SQL_SUCCESS)
 {
             AnimateWindow(hwnd,100,AW_HIDE|AW_BLEND);
@@ -213,7 +213,7 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
           EndDialog(hwnd,7);
           break;
         default:
-          const char*modeInformationArray[]={
+          const char *modeInformationArray[]={
             "1.I pulsanti di suggerimento e per saltare i rompicapi si ricaricano più velocemente (30 secondi)","2.I rompicapi non richiedono competenze particolari","3.Le azioni disponibili sono presenti all'interno della mappa",
             "1.I pulsanti di suggerimento e per saltare i rompicapi si ricaricano più lentamente (2 minuti)","2.I rompicapi richiedono competenze leggermente più avanzate","3.Le azioni disponibili sono presenti all'interno della mappa",
             "1.I pulsanti di suggerimento e per saltare i rompicapi si ricaricano ancora più lentamente (5 minuti)","2.I rompicapi richiedono competenze più avanzate (livello scuola superiore)","3.Nessuna azione disponibili all'interno della mappa",
@@ -248,7 +248,7 @@ int __stdcall PlayDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wPara
       titleGraphics.DrawString(L"Difficoltà gioco",-1,&font,titleRect,&titleAlign,&titleBrush);
       EndPaint(hwnd,&paintStructure);
       EndPaint(GetDlgItem(hwnd,0),&titlePaint);
-      for(unsigned char INDEX=1; index<5; index++)
+      for (unsigned char INDEX=1; index<5; index++)
 {
         PAINTSTRUCT buttonPaint;
         const HDC paintButtons=BeginPaint(GetDlgItem(hwnd,INDEX),&buttonPaint);
@@ -268,7 +268,7 @@ int __stdcall OptionsDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wP
   switch(uMsg)
 {
     case WM_INITDIALOG:
-      for(const int id:{0,1})SendMessage(GetDlgItem(hwnd,id),TBM_SETRANGE,1,MAKELONG(0,100));
+      for (const int id:{0,1})SendMessage(GetDlgItem(hwnd,id),TBM_SETRANGE,1,MAKELONG(0,100));
       MoveWindow(hwnd,20,20,DialogSize.width,DialogSize.height,1);
       MoveWindow(GetDlgItem(hwnd,0),25,50,DialogSize.width-50,100,1);
       MoveWindow(GetDlgItem(hwnd,1),25,150,DialogSize.width-50,100,1);
@@ -304,7 +304,7 @@ int __stdcall OptionsDialogProcedure(HWND hwnd,unsigned int uMsg,unsigned int wP
       graphics.FillRectangle(&brush,0,0,DialogSize.width,DialogSize.height);
       graphics.DrawRectangle(&pen,0,0,DialogSize.width,DialogSize.height);
       EndPaint(hwnd,&dialogBackground);
-      for(const int id:{2,3})
+      for (const int id:{2,3})
 {
         const wchar_t *textes[]={L"Conferma",L"Non Confermare"};
         PAINTSTRUCT buttonStyle;
@@ -365,10 +365,10 @@ long __stdcall WindowProc(HWND hwnd, unsigned int uMsg, unsigned int wParam, lon
       return DefWindowProc(hwnd, uMsg, wParam, lParam);
   }
 }
-int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdshow)
+int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char * cmdline,int cmdshow)
 {
   char user[40];
-  for(char*args=strtok(cmdline," ");args!=NULL;args=strtok(NULL," "))
+  for (char *args=strtok(cmdline," ");args!=NULL;args=strtok(NULL," "))
 {
     if(strcmp(args,"help")==0)
 {
@@ -385,7 +385,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
   }
   if(strcmp(cmdline,"")==0)
 {
-    char*programName=GetCommandLine();
+    char *programName=GetCommandLine();
     int helpProcess=system(strcat(programName," help"));
     if(!helpProcess)
 {
@@ -447,11 +447,11 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
     );
     HWND mainScreenButtons[2][2];
     unsigned char i=0;
-    for(unsigned char buttonY=0,buttonId=MainWindow_UsernameTextView;buttonY<2;buttonY++)
+    for (unsigned char buttonY=0,buttonId=MainWindow_UsernameTextView;buttonY<2;buttonY++)
 {
-      for(unsigned char buttonX=0;buttonX<2;buttonX++)
+      for (unsigned char buttonX=0;buttonX<2;buttonX++)
 {
-        const char*textes[2][2]={{"Play","Exit"},{"Options","More Information"}};    
+        const char *textes[2][2]={{"Play","Exit"},{"Options","More Information"}};    
         /*
           Grid Calculation
           e[x][y].x=grid.x+grid.xPadding+grid.width/grid.columns*x
@@ -491,7 +491,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
         });
       }
     }
-    const HWND form=CreateDialogParamA(windowClass.hInstance,(char*)0,MainWindow,formCallback,0);
+    const HWND form=CreateDialogParamA(windowClass.hInstance,(char *)0,MainWindow,formCallback,0);
     MSG mainWindowMessage;
     while(GetMessage(&mainWindowMessage,NULL,0,0))
 {
@@ -509,7 +509,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hInstPrev,char* cmdline,int cmdsh
   }
 }
 #else
-int main(int argc,char*argv[],char*envp[])
+int main(int argc,char *argv[],char *envp[])
 {
   gameContextStructure gameCtxtStruct={{},0,0};
   unsigned char dialogIndex=0,
@@ -762,7 +762,7 @@ int main(int argc,char*argv[],char*envp[])
     return 1;
   }
 
-  for(dialogIndex=0;dialogIndex<5;dialogIndex++)
+  for (dialogIndex=0;dialogIndex<5;dialogIndex++)
 {
     dialogs[dialogIndex]=XCreateWindow(
       display,
@@ -779,7 +779,7 @@ int main(int argc,char*argv[],char*envp[])
       &mainScreenDialogsAttributes
     );
 
-    for(dialogButtonsIndex=0;dialogButtonsIndex<2;dialogButtonsIndex++)
+    for (dialogButtonsIndex=0;dialogButtonsIndex<2;dialogButtonsIndex++)
 {
       dialogButtons[dialogIndex][dialogButtonsIndex]=XCreateWindow(
         display,
@@ -805,9 +805,9 @@ int main(int argc,char*argv[],char*envp[])
     }else printf("\e[38;2;255;255;255m[\e[38;2;0;255;0mOK\e[38;2;255;255;255m]Dialog #%i has been created successfully\n",dialogIndex);
   }
 
-  for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
+  for (mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
 {
-    for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+    for (mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
 {
       /*
         Grid Calculation
@@ -849,7 +849,7 @@ int main(int argc,char*argv[],char*envp[])
     }
   }
 
-  for(soundSliderIndex=0;soundSliderIndex<3;soundSliderIndex++)
+  for (soundSliderIndex=0;soundSliderIndex<3;soundSliderIndex++)
 {
     soundSliders[soundSliderIndex]=XCreateWindow(
       display,
@@ -895,7 +895,7 @@ int main(int argc,char*argv[],char*envp[])
      userInputGC=XCreateGC(display,formTextBox,GCForeground,&userInputGCValues),
      soundSliderGC=XCreateGC(display,soundSliders[0],GCForeground,&soundSliderGCValues);
   
-  for(dialogIndex=0;dialogIndex<5;dialogIndex++)
+  for (dialogIndex=0;dialogIndex<5;dialogIndex++)
 {
     dialogsGCs[dialogIndex]=XCreateGC(
       display,
@@ -904,7 +904,7 @@ int main(int argc,char*argv[],char*envp[])
       &dialogsGCValues[dialogIndex]
     );
   }
-  for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++)
+  for (gameModeIndex=0;gameModeIndex<5;gameModeIndex++)
 {
     /*
       Grid Calculation
@@ -931,7 +931,7 @@ int main(int argc,char*argv[],char*envp[])
     gameModeGCs[gameModeIndex]=XCreateGC(display,gameModeButton[gameModeIndex],GCForeground,&gameModeGCValues[gameModeIndex]);
   }
 
-  for(helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++)
+  for (helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++)
 {
     helpRechargeButtons[helpRechargeButtonIndex]=XCreateWindow(
       display,
@@ -948,12 +948,12 @@ int main(int argc,char*argv[],char*envp[])
       &modeButtonsAttributes
     );
   }
-  for(XEvent event;readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_eventLoop);)
+  for (XEvent event;readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_eventLoop);)
 {//while main window event loop is running 
     XNextEvent(display,&event);
-    for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++)
+    for (gameModeIndex=0;gameModeIndex<5;gameModeIndex++)
 {
-      const char*modeTextes[5]={"Semplice","Intermedia","Avanzata","Estrema","Personalizzata"};
+      const char *modeTextes[5]={"Semplice","Intermedia","Avanzata","Estrema","Personalizzata"};
       if(event.xany.window==gameModeButton[gameModeIndex]&&event.type==Expose)
         XDrawString(
           display,
@@ -978,7 +978,7 @@ int main(int argc,char*argv[],char*envp[])
       );
 
     if(event.xany.window==dialogs[dialogType_play]&&event.type==Expose)
-      for(unsigned char gameModeInformationPoint=0;gameModeInformationPoint<3;gameModeInformationPoint++)
+      for (unsigned char gameModeInformationPoint=0;gameModeInformationPoint<3;gameModeInformationPoint++)
         XDrawString(
           display,
           dialogs[dialogType_play],
@@ -1004,8 +1004,8 @@ int main(int argc,char*argv[],char*envp[])
 
     if(event.xany.window==dialogs[dialogType_options]&&event.type==Expose)
 {
-      const char*optionsTextes[3]={"Volume:","Musica:","Suoni:"};
-      for(unsigned int optionIndex=0;optionIndex<3;optionIndex++)
+      const char *optionsTextes[3]={"Volume:","Musica:","Suoni:"};
+      for (unsigned int optionIndex=0;optionIndex<3;optionIndex++)
         XDrawString(
           display,
           dialogs[dialogType_options],
@@ -1028,8 +1028,8 @@ int main(int argc,char*argv[],char*envp[])
         "Hardware Information:",
         sizeof "Hardware Information:"-1
       );
-      const char*moreInformationTextes[3]={cpu,os,byteOrder};
-      for(unsigned int moreInformationIndex=0;moreInformationIndex<3;moreInformationIndex++)
+      const char *moreInformationTextes[3]={cpu,os,byteOrder};
+      for (unsigned int moreInformationIndex=0;moreInformationIndex<3;moreInformationIndex++)
         XDrawString(
           display,
           dialogs[dialogType_moreInformation],
@@ -1070,7 +1070,7 @@ int main(int argc,char*argv[],char*envp[])
           break;
         case ResizeRequest:
         
-          for(dialogIndex=0;dialogIndex<5;dialogIndex++)
+          for (dialogIndex=0;dialogIndex<5;dialogIndex++)
             XMoveResizeWindow(
               display,
               dialogs[dialogIndex],
@@ -1080,8 +1080,8 @@ int main(int argc,char*argv[],char*envp[])
               event.xresizerequest.height-40
             );
 
-          for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
-            for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+          for (mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
+            for (mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
 {
               XMoveResizeWindow(
                 display,
@@ -1104,9 +1104,9 @@ int main(int argc,char*argv[],char*envp[])
           break;
       }
     }
-    for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
+    for (mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
 {
-      for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+      for (mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
 {
         if(event.xany.window==mainScreenButtons[mainScreenButtonY][mainScreenButtonX]&&!readBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow))
 {
@@ -1168,7 +1168,7 @@ int main(int argc,char*argv[],char*envp[])
       }
     }
 
-    for(soundSliderIndex=0;soundSliderIndex<3;soundSliderIndex++)
+    for (soundSliderIndex=0;soundSliderIndex<3;soundSliderIndex++)
 {
       if(event.xany.window==soundSliders[soundSliderIndex]&&event.type==ButtonPress)
 {
@@ -1185,10 +1185,10 @@ int main(int argc,char*argv[],char*envp[])
       }
     }
 
-    for(dialogIndex=0;dialogIndex<5;dialogIndex++)
+    for (dialogIndex=0;dialogIndex<5;dialogIndex++)
 {
-      const char*dialogButtonsTextes[2]={"OK","Cancel"};
-      for(dialogButtonsIndex=0;dialogButtonsIndex<2;dialogButtonsIndex++)
+      const char *dialogButtonsTextes[2]={"OK","Cancel"};
+      for (dialogButtonsIndex=0;dialogButtonsIndex<2;dialogButtonsIndex++)
 {
         if(event.xany.window==dialogButtons[dialogIndex][dialogButtonsIndex]&&event.type==ButtonPress)
 {
@@ -1207,8 +1207,8 @@ int main(int argc,char*argv[],char*envp[])
             strlen(dialogButtonsTextes[dialogButtonsIndex])
           );
         }
-        for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
-          for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+        for (mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
+          for (mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
             XDrawString(
               display,
               mainScreenButtons[mainScreenButtonY][mainScreenButtonX],
@@ -1221,7 +1221,7 @@ int main(int argc,char*argv[],char*envp[])
       }
     }
     
-    for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++)
+    for (gameModeIndex=0;gameModeIndex<5;gameModeIndex++)
 {
       if(event.xany.window==gameModeButton[gameModeIndex]&&event.type==ButtonPress)
 {
@@ -1229,7 +1229,7 @@ int main(int argc,char*argv[],char*envp[])
         XSetForeground(display,gameModeGCs[gameModeIndex],gameModeGCValues[gameModeIndex].foreground);
         if(gameModeIndex<4)
 {
-          for(helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++)
+          for (helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++)
 {
             XUnmapWindow(display,helpRechargeButtons[helpRechargeButtonIndex]);
             XDrawString(
@@ -1242,7 +1242,7 @@ int main(int argc,char*argv[],char*envp[])
               1
             );
           }
-          for(gameModeInformationPoint=0;gameModeInformationPoint<3;gameModeInformationPoint++)
+          for (gameModeInformationPoint=0;gameModeInformationPoint<3;gameModeInformationPoint++)
             XDrawString(
               display,
               dialogs[dialogType_play],
@@ -1272,7 +1272,7 @@ int main(int argc,char*argv[],char*envp[])
             "Difficoltà enigmi:",
             sizeof "Difficoltà enigmi:"-1
           );
-          for(helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++)
+          for (helpRechargeButtonIndex=0;helpRechargeButtonIndex<2;helpRechargeButtonIndex++)
 {
             XMapRaised(display,helpRechargeButtons[helpRechargeButtonIndex]);
             XDrawString(
@@ -1296,8 +1296,8 @@ int main(int argc,char*argv[],char*envp[])
         gameCtxtStruct.generalPurposeMask=clearBit<unsigned char>(gameCtxtStruct.generalPurposeMask,generalPurposeMaskBits_dialogBindToWindow);
         XUnmapSubwindows(display,form);
         XUnmapWindow(display,form);
-        for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
-          for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+        for (mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
+          for (mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
             XDrawString(
               display,
               mainScreenButtons[mainScreenButtonY][mainScreenButtonX],
@@ -1332,8 +1332,8 @@ int main(int argc,char*argv[],char*envp[])
         5
       );
 
-      for(mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
-        for(mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
+      for (mainScreenButtonY=0;mainScreenButtonY<2;mainScreenButtonY++)
+        for (mainScreenButtonX=0;mainScreenButtonX<2;mainScreenButtonX++)
 {
           XDrawString(
             display,
@@ -1372,7 +1372,7 @@ int main(int argc,char*argv[],char*envp[])
                 beep(1000,100);
               else{
                 keyHandler.pointer-=1;
-                for(unsigned char I=keyHandler.pointer;gameCtxtStruct.userName[I]!=0;I++)
+                for (unsigned char I=keyHandler.pointer;gameCtxtStruct.userName[I]!=0;I++)
                   gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I+1];
                 keyHandler.size-=1;
               }
@@ -1393,7 +1393,7 @@ int main(int argc,char*argv[],char*envp[])
             case 119://canc key case
               if(keyHandler.pointer<keyHandler.size)
 {
-                for(unsigned char I=keyHandler.pointer;gameCtxtStruct.userName[I]!=0;I++)
+                for (unsigned char I=keyHandler.pointer;gameCtxtStruct.userName[I]!=0;I++)
                   gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I+1];
                 keyHandler.size-=1;
               }else
@@ -1404,7 +1404,7 @@ int main(int argc,char*argv[],char*envp[])
                 beep(1000,100);
               else{
                 keyHandler.size+=1;
-                for(unsigned char I=keyHandler.size;I>keyHandler.pointer;I--)
+                for (unsigned char I=keyHandler.size;I>keyHandler.pointer;I--)
                   gameCtxtStruct.userName[I]=gameCtxtStruct.userName[I-1];
                 gameCtxtStruct.userName[keyHandler.pointer]=trueKey;
                 keyHandler.pointer+=1;
@@ -1429,13 +1429,13 @@ int main(int argc,char*argv[],char*envp[])
   CleanImageData(logo.r2);
   XFreeGC(display,soundSliderGC);
   XFreeGC(display,userInputGC);
-  for(dialogIndex=0;dialogIndex<5;dialogIndex++)
+  for (dialogIndex=0;dialogIndex<5;dialogIndex++)
 {
     XFreeGC(display,dialogsGCs[dialogIndex]);
     XDestroySubwindows(display,dialogs[dialogIndex]);
     XDestroyWindow(display,dialogs[dialogIndex]);
   }
-  for(gameModeIndex=0;gameModeIndex<5;gameModeIndex++)if(gameModeGCs[gameModeIndex])XFreeGC(display,gameModeGCs[gameModeIndex]);
+  for (gameModeIndex=0;gameModeIndex<5;gameModeIndex++)if(gameModeGCs[gameModeIndex])XFreeGC(display,gameModeGCs[gameModeIndex]);
   XFreeGC(display,mainScreenButtonsGC);
   XDestroySubwindows(display,mainWindow);
   XDestroyWindow(display,mainWindow);

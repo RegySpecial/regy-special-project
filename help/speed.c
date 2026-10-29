@@ -3,7 +3,7 @@
 
 int main()
 {
-    const char* archs[] = {
+    const char * archs[] = {
         "aix","ppc64",
         "android","386",
         "android","amd64",

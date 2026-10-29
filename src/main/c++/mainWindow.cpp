@@ -126,7 +126,7 @@ window::window(application *app, const char *title)
   this->onResize = [](XResizeRequestEvent *event, void *extraArgs)
 {
     window *self = (window *) extraArgs;
-    for(unsigned long i = 0; i < self->subwidget.size;i++)
+    for (unsigned long i = 0; i < self->subwidget.size;i++)
       XResizeWindow(self->app->display, self->id, event->width,event->height);
   };
 #endif

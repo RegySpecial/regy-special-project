@@ -17,7 +17,7 @@ long double pow(domainArgument x, domainArgument y)
 double sum(double numbers[],unsigned long long left,unsigned long long right)
 {
   double value=0;
-  for(;left<right;left++)value+=numbers[left];
+  for (;left<right;left++)value+=numbers[left];
   return value;
 }
 double average(double numbers[],unsigned long long left,unsigned long long right)
