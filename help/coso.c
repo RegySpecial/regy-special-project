@@ -3,14 +3,15 @@
 void noRepeat(int array[], unsigned long *size)
 {
   for (unsigned long i = 0; i < *size - 1; i++)
-    for (unsigned long j = i + 1; j < *size; j++)
+    for (unsigned long j = i + 1; j < *size;)
       if (array[i] == array[j])
       {
-        for (unsigned long k = j; k < *size - 1; k++)
+        (*size)--;
+        for (unsigned long k = j; k < *size; k++)
           array[k] = array[k + 1];
-        --*size;
-        noRepeat(array, size);
       }
+      else
+        j++;
 }
 
 int main()
