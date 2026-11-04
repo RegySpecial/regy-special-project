@@ -42,14 +42,22 @@ extern "C" {
   }
   messageStructure;
 
-  int customizedMessage(messageStructure *messageStructureReference);
+  int customizedMessage(messageStructure*messageStructureReference);
+
+  void variableArguments_errorMessage(const char *errorMessageFormat, va_list variableArguments);
+
+  void variableArguments_successMessage(const char *successMessageFormat, va_list variableArguments);
+
+  void variableArguments_warningMessage(const char *warningMessageFormat, va_list variableArguments);
+
+  void variableArguments_informationMessage(const char *informationMessageFormat, va_list variableArguments);
 
   void errorMessage(const char *errorMessageFormat, ...);
-  
+
   void successMessage(const char *successMessageFormat, ...);
-  
+
   void warningMessage(const char *warningMessageFormat, ...);
-  
+
   void informationMessage(const char *informationMessageFormat, ...);
 #if defined __cplusplus || defined c_plusplus
 }

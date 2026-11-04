@@ -11,8 +11,8 @@ public class mainWindow : widget
 {
   public var id: NSWindow!
   public var argc: Int
-  public var argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
-  public var envp: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>
+  public var argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>
+  public var envp: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>
   public var application: NSApplication!
   init
   (

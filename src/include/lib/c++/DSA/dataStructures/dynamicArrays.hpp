@@ -949,12 +949,12 @@ class dynamicArray
     dynamicArraySelf join(dynamicArrayPointer sourceDynamicArray)
     {
       dynamicArraySelf returnSet;
-      returnSet->merge(sourceDynamicArray);
+      returnSet.merge(sourceDynamicArray);
       
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
+      for (sizeDataType i = 0; i < returnSet.size - 1; i++)
+        for (sizeDataType j = i + 1; j < returnSet.size;)
+          if (returnSet.at(i) == returnSet.at(j))
+            returnSet.remove(j);
           else
             j++;
       
@@ -964,12 +964,12 @@ class dynamicArray
     dynamicArraySelf join(dynamicArrayPointer sourceDynamicArray, sizeDataType size)
     {
       dynamicArraySelf returnSet;
-      returnSet->merge(sourceDynamicArray, size);
+      returnSet.merge(sourceDynamicArray, size);
        
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
+      for (sizeDataType i = 0; i < returnSet.size - 1; i++)
+        for (sizeDataType j = i + 1; j < returnSet.size;)
+          if (returnSet.at(i) == returnSet.at(j))
+            returnSet.remove(j);
           else
             j++;
       
@@ -979,12 +979,12 @@ class dynamicArray
     dynamicArraySelf join(dynamicArrayPointer sourceDynamicArray, sizeDataType left, sizeDataType right)
     {
       dynamicArraySelf returnSet;
-      returnSet->merge(sourceDynamicArray, left, right);
+      returnSet.merge(sourceDynamicArray, left, right);
        
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
+      for (sizeDataType i = 0; i < returnSet.size - 1; i++)
+        for (sizeDataType j = i + 1; j < returnSet.size;)
+          if (returnSet.at(i) == returnSet.at(j))
+            returnSet.remove(j);
           else
             j++;
       

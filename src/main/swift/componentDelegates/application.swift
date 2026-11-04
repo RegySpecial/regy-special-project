@@ -10,6 +10,7 @@ NSApplicationDelegate
   var winDelegate: windowDelegate!
   public func applicationDidFinishLaunching(_ applicationDidFinishLaunchingNotification: Notification)
   {
+    
     self.win = NSWindow(
       contentRect: CGRect(x: 0, y: 0, width: 500, height: 500),
       styleMask: [.titled, .closable, .miniaturizable, .resizable],

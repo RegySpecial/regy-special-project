@@ -44,38 +44,58 @@ int customizedMessage(messageStructure*messageStructureReference)
   );
 }
 
+void variableArguments_errorMessage(const char *errorMessageFormat, va_list variableArguments)
+{
+  fprintf(stderr, "\e[97m[\e[91mError\e[97m]\e[0m");
+  vfprintf(stderr, errorMessageFormat, variableArguments);
+}
+
+void variableArguments_successMessage(const char *successMessageFormat, va_list variableArguments)
+{ 
+  printf("\e[97m[\e[92mSuccess\e[97m]\e[0m");
+  vprintf(successMessageFormat, variableArguments);
+}
+
+void variableArguments_warningMessage(const char *warningMessageFormat, va_list variableArguments)
+{ 
+  printf("\e[97m[\e[93mWarning\e[97m]\e[0m");
+  vprintf(warningMessageFormat, variableArguments);
+}
+
+void variableArguments_informationMessage(const char *informationMessageFormat, va_list variableArguments)
+{
+  printf("\e[97m[\e[94mInformation\e[97m]\e[0m");
+  vprintf(informationMessageFormat, variableArguments);
+}
+
 void errorMessage(const char *errorMessageFormat, ...)
 {
-  va_list varArgs;
-  va_start(varArgs, errorMessageFormat);
-  fprintf(stderr, "\e[38;2;255;255;255m[\e[38;2;255;0;0mError\e[38;2;255;255;255m]\e[0m");
-  vfprintf(stderr, errorMessageFormat, varArgs);
-  va_end(varArgs);
+  va_list variableArguments;
+  va_start(variableArguments, errorMessageFormat);
+  variableArguments_errorMessage(errorMessageFormat, variableArguments);
+  va_end(variableArguments);
 }
 
 void successMessage(const char *successMessageFormat, ...)
 {
-  va_list varArgs;
-  va_start(varArgs, successMessageFormat);
-  printf("\e[38;2;255;255;255m[\e[38;2;0;255;0mSuccess\e[38;2;255;255;255m]\e[0m");
-  vprintf(successMessageFormat, varArgs);
-  va_end(varArgs);
+  va_list variableArguments;
+  va_start(variableArguments, successMessageFormat);
+  variableArguments_successMessage(successMessageFormat, variableArguments);
+  va_end(variableArguments);
 }
 
 void warningMessage(const char *warningMessageFormat, ...)
 {
-  va_list varArgs;
-  va_start(varArgs, warningMessageFormat);
-  printf("\e[38;2;255;255;255m[\e[38;2;255;255;0mWarning\e[38;2;255;255;255m]\e[0m");
-  vprintf(warningMessageFormat, varArgs);
-  va_end(varArgs);
+  va_list variableArguments;
+  va_start(variableArguments, warningMessageFormat);
+  variableArguments_warningMessage(warningMessageFormat, variableArguments);
+  va_end(variableArguments);
 }
 
 void informationMessage(const char *informationMessageFormat, ...)
 {
-  va_list varArgs;
-  va_start(varArgs, informationMessageFormat);
-  printf("\e[38;2;255;255;255m[\e[38;2;0;0;255mInformation\e[38;2;255;255;255m]\e[0m");
-  vprintf(informationMessageFormat, varArgs);
-  va_end(varArgs);
+  va_list variableArguments;
+  va_start(variableArguments, informationMessageFormat);
+  variableArguments_informationMessage(informationMessageFormat, variableArguments);
+  va_end(variableArguments);
 }

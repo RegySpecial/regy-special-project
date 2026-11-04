@@ -1,4 +1,5 @@
 import AppKit
+import AVKit
 
 class windowDelegate
 :
@@ -20,17 +21,27 @@ NSApplicationDelegate
   var winDelegate: windowDelegate!
   public func applicationDidFinishLaunching(_ a: Notification)
   {
+    let screen: NSScreen = NSScreen.main as! NSScreen
     self.win = NSWindow(
-      contentRect: CGRect(x: 0, y: 0, width: 500, height: 500),
+      contentRect: CGRect(x: 0, y: 0, width: screen.frame.width, height: screen.frame.height),
       styleMask: [.titled, .closable, .miniaturizable, .resizable],
       backing: .buffered,
-      defer: true
+      defer: true,
+      screen: screen
     )
     self.win.title = "Vaffanculo"
     self.win.setIsVisible(true)
     self.win.makeKeyAndOrderFront(nil)
     self.winDelegate = windowDelegate()
     self.win.delegate = self.winDelegate
+    self.win.backgroundColor = NSColor(red: 1, green: 0, blue: 0, alpha: 1)
+
+    let button: NSButton = NSButton(title: "Morte Bianca", target: nil, action: nil)
+    let buttonCell: NSButtonCell = NSButtonCell(textCell: "Morte Bianca")
+    buttonCell.backgroundColor = NSColor(red: 0, green: 0, blue: 1, alpha: 1)
+    button.setButtonType(.onOff)
+    button.cell = buttonCell
+    self.win.contentView?.addSubview(button)
   }
 }
 
@@ -44,4 +55,14 @@ if a.applicationIconImage == nil
   print("Application image is \(a.applicationIconImage): Not Found!")
   a.terminate(nil)
 }
+
+let soundSource = URL(fileURLWithPath: "bin/blob/audio/music/co.ag/Still_so_much_Rage_-_Dark_Ambient_Music.mp3")
+let avplayer: AVPlayer = AVPlayer(url: soundSource)
+if avplayer.error != nil
+{
+  print("Failed to play AVPlayer")
+  a.terminate(nil)
+}
+avplayer.play()
+
 a.run()

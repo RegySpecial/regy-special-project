@@ -68,13 +68,27 @@ int main(int argc, char *argv[], char *envp[])
       "riscv64",
       "s390"
      };
-
+  
+  bool invalideCpuArchitecture = 1,
+       invalideOperatingSystem = 1;
   for (unsigned char i = 0; i < sizeof cpuArchitectures / sizeof *cpuArchitectures; i++)
-    if (argv[1] != cpuArchitectures[i])
-    {
-      errorMessage("Invalid cpu architecture\n");
-      return 1;
-    }
+    invalideCpuArchitecture = argv[1] != cpuArchitectures[i]; 
+  
+  if (invalideCpuArchitecture)
+  {
+    errorMessage("%s is an invalid cpu architecture\n", argv[1]);
+    return 1;
+  }
+
+  for (unsigned char i = 0; i < sizeof operatingSystems / sizeof *operatingSystems; i++)
+    invalideOperatingSystem = argv[2] != operatingSystems[i]; 
+  
+  if (invalideOperatingSystem)
+  {
+    errorMessage("%s is an invalid operating system\n", argv[1]);
+    return 1;
+  }
+  
   int cmd = system("echo coso");
   return 0;
 }

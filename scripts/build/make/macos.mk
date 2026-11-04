@@ -2,10 +2,11 @@
 #@author Regy Special
 #@date 2026 January 16th Friday, 21:11:03
 #@license GNU General Public License to stop private corporation to not share source code
-cConsoleLibrary = src/lib/c/console.c
+cConsoleLibrary-header = src/include/lib/c/console.h
+cConsoleLibrary =        src/lib/c/console.c
 
-amd64-ios-machO-cConsoleLibrary =    bin/lib/static/c/o/mach-o/ios/amd64/console.o
-amd64-macos-machO-cConsoleLibrary =  bin/lib/static/c/o/mach-o/macos/amd64/console.o
+amd64-ios-machO-cConsoleLibrary =   bin/lib/static/c/o/mach-o/ios/amd64/console.o
+amd64-macos-machO-cConsoleLibrary = bin/lib/static/c/o/mach-o/macos/amd64/console.o
 arm64-ios-machO-cConsoleLibrary =   bin/lib/static/c/o/mach-o/ios/arm64/console.o
 arm64-macos-machO-cConsoleLibrary = bin/lib/static/c/o/mach-o/macos/arm64/console.o
 
@@ -205,7 +206,10 @@ apple-formTextBox =       src/main/swift/formTextBox.swift
 
 build-amd64-macos-machO-testManageArguments: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
 	g++ -std=c++26 -Wall -O $(testManageArguments) $(amd64-macos-machO-manageArguments) -o $(amd64-macos-machO-testManageArguments)
-
+build-amd64-macos-machO-testConsole: $(cConsoleLibrary) $(cConsoleLibrary-header)
+	gcc -Wall -Wextra -std=c2x -O3 -c $(cConsoleLibrary) -o bin/lib/static/c/o/mach-o/macos/x86_64/console.o
+	swiftc -O -import-objc-header $(cConsoleLibrary-header) test/swift/escape.swift bin/lib/static/c/o/mach-o/macos/x86_64/console.o -o test/swift/escape
+ 
 apple-main = src/main/swift/main.swift
 
 #object files

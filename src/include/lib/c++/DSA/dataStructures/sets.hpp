@@ -159,12 +159,14 @@ class set
         return;
       }
 
+      bool itemIsAlreadyInTheSet = 0;
       for (sizeDataType i = 0; i < this->size; i++)
-        if (item == this->items[i])
-        {
-          errorMessage("Cannot push the item that is already in the set");
-          return;
-        }
+        itemIsAlreadyInTheSet |= item == this->items[i];
+      if (itemIsAlreadyInTheSet)
+      {
+        errorMessage("Cannot push the item that is already in the set");
+        return;
+      }
     
       if (this->size == this->capacity)
       {
@@ -207,12 +209,14 @@ class set
     
     void push(itemsDataType item)
     {
+      bool itemIsAlreadyInTheSet = 0;
       for (sizeDataType i = 0; i < this->size; i++)
-        if (item == this->items[i])
-        {
-          errorMessage("Cannot push the item that is already in the set");
-          return;
-        }
+        itemIsAlreadyInTheSet |= item == this->items[i];
+      if (itemIsAlreadyInTheSet)
+      {
+        errorMessage("Cannot push the item that is already in the set");
+        return;
+      }
       
       if (this->size == this->capacity)
       {
@@ -947,24 +951,6 @@ class set
       }
     }
     
-    void merge(setPointer sourceSet)
-    {
-      for (sizeDataType index = 0; index < sourceSet->size; index++)
-        this->push(sourceSet->at(index));
-    }
-    
-    void merge(setPointer sourceSet, sizeDataType size)
-    {
-      for (sizeDataType index = 0; index < size && size <= sourceSet->size; index++)
-        this->push(sourceSet->at(index));
-    }
-    
-    void merge(setPointer sourceSet, sizeDataType left, sizeDataType right)
-    {
-      for (; 0 <= left && left < right && right <= sourceSet->size; left++)
-        this->push(sourceSet->at(left));
-    }
-    
     void copy(setPointer sourceSet)
     {
       for (sizeDataType index = 0; index < this->size && index < sourceSet->size; index++)
@@ -985,45 +971,51 @@ class set
     
     setSelf join(setPointer sourceSet)
     {
-      setSelf returnSet;
-      returnSet->merge(sourceSet);
-      
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
-          else
-            j++;
+      setSelf returnSet(this->items, this->size, this->capacity);
+
+      for (sizeDataType sourceSetIndex = 0; sourceSetIndex < sourceSet->size; sourceSetIndex++)
+      {
+        bool itemIsNotInTheSet = 1;
+        for (sizeDataType returnSetIndex = 0; returnSetIndex < returnSet.size; returnSetIndex++)
+          itemIsNotInTheSet &= sourceSet->at(sourceSetIndex) != returnSet.at(returnSetIndex);
+        
+        if (itemIsNotInTheSet)
+          returnSet.push(sourceSet->at(sourceSetIndex));
+      }
       
       return returnSet;
     }
     
     setSelf join(setPointer sourceSet, sizeDataType size)
     {
-      setSelf returnSet;
-      returnSet->merge(sourceSet, size);
-       
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
-          else
-            j++;
+      setSelf returnSet(this->items, this->size, this->capacity);
+
+      for (sizeDataType sourceSetIndex = 0; sourceSetIndex < size && size <= sourceSet->size; sourceSetIndex++)
+      {
+        bool itemIsNotInTheSet = 1;
+        for (sizeDataType returnSetIndex = 0; returnSetIndex < returnSet.size; returnSetIndex++)
+          itemIsNotInTheSet &= sourceSet->at(sourceSetIndex) != returnSet.at(returnSetIndex);
+        
+        if (itemIsNotInTheSet)
+          returnSet.push(sourceSet->at(sourceSetIndex));
+      }
       
       return returnSet;
     }
     
     setSelf join(setPointer sourceSet, sizeDataType left, sizeDataType right)
     {
-      setSelf returnSet;
-      returnSet->merge(sourceSet, left, right);
-       
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
-          else
-            j++;
+      setSelf returnSet(this->items, this->size, this->capacity);
+
+      for (; 0 <= left && left < right && right <= sourceSet->size; left++)
+      {
+        bool itemIsNotInTheSet = 1;
+        for (sizeDataType returnSetIndex = 0; returnSetIndex < returnSet.size; returnSetIndex++)
+          itemIsNotInTheSet &= sourceSet->at(left) != returnSet.at(returnSetIndex);
+        
+        if (itemIsNotInTheSet)
+          returnSet.push(sourceSet->at(left));
+      }
       
       return returnSet;
     }
@@ -1031,17 +1023,16 @@ class set
     setSelf intersect(setPointer sourceSet)
     {
       setSelf returnSet;
-      for (sizeDataType thisIndex = 0; thisIndex < this->size; thisIndex++)
-        for (sizeDataType sourceIndex = 0; sourceIndex < sourceSet->size; sourceIndex++)
-          if (sourceSet->at(sourceIndex) == this->at(thisIndex))
-            returnSet.push(sourceSet->at(sourceIndex));
-      
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
-          else
-            j++;
+
+      for (sizeDataType sourceSetIndex = 0; sourceSetIndex < sourceSet->size; sourceSetIndex++)
+      {
+        bool itemIsInTheSet = 0;
+        for (sizeDataType thisIndex = 0; thisIndex < returnSet.size; thisIndex++)
+          itemIsNotInTheSet |= sourceSet->at(sourceSetIndex) == this->at(thisIndex);
+        
+        if (itemIsInTheSet)
+          returnSet.push(sourceSet->at(sourceSetIndex));
+      }
       
       return returnSet;
     }
@@ -1049,17 +1040,16 @@ class set
     setSelf intersect(setPointer sourceSet, sizeDataType size)
     {
       setSelf returnSet;
-      for (sizeDataType thisIndex = 0; thisIndex < size && size <= this->size; thisIndex++)
-        for (sizeDataType sourceIndex = 0; sourceIndex < size && size <= sourceSet->size; sourceIndex++)
-          if (sourceSet->at(sourceIndex) == this->at(thisIndex))
-            returnSet.push(sourceSet->at(sourceIndex));
-       
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
-          else
-            j++;
+
+      for (sizeDataType sourceSetIndex = 0; sourceSetIndex < size && size sourceSet->size; sourceSetIndex++)
+      {
+        bool itemIsInTheSet = 0;
+        for (sizeDataType returnSetIndex = 0; returnSetIndex < returnSet.size; returnSetIndex++)
+          itemIsNotInTheSet |= sourceSet->at(sourceSetIndex) == returnSet.at(returnSetIndex);
+        
+        if (itemIsInTheSet)
+          returnSet.push(sourceSet->at(sourceSetIndex));
+      }
       
       return returnSet;
     }
@@ -1067,36 +1057,29 @@ class set
     setSelf intersect(setPointer sourceSet, sizeDataType left, sizeDataType right)
     {
       setSelf returnSet;
-      for (sizeDataType thisIndex = left; 0 <= thisIndex && thisIndex < right && right <= this->size; thisIndex++)
-        for (; 0 <= left && left < right && right <= sourceSet->size; sourceIndex++)
-          if (sourceSet->at(left) == this->at(thisIndex))
-            returnSet.push(sourceSet->at(sourceIndex));
-  
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
-          else
-            j++;
+
+      for (; 0 <= left && left < right && right <= sourceSet->size; left++)
+      {
+        bool itemIsInTheSet = 0;
+        for (sizeDataType returnSetIndex = 0; returnSetIndex < returnSet.size; returnSetIndex++)
+          itemIsNotInTheSet |= sourceSet->at(left) == returnSet.at(returnSetIndex);
+        
+        if (itemIsInTheSet)
+          returnSet.push(sourceSet->at(left));
+      }
       
       return returnSet;
     }
   
     setSelf discrimate(setPointer sourceSet)
     {
-      setSelf returnSet;
-      for (sizeDataType thisIndex = 0; thisIndex < this->size; thisIndex++)
-        for (sizeDataType sourceIndex = 0; sourceIndex < sourceSet->size; sourceIndex++)
-          if (sourceSet->at(sourceIndex) == this->at(thisIndex))
-            returnSet.push(sourceSet->at(sourceIndex));
-      
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
-          else
-            j++;
-      
+      setSelf returnSet = this->join(sourceSet),
+              intersectionSet = this->intersect(sourceSet);
+
+      for (sizeDataType intersectionSetIndex = 0; intersectionSetIndex < intersectionSet.size; intersectionSetIndex++)
+        for (sizeDataType returnSetIndex = 0; returnSetIndex < returnSet.size; returnSetIndex++)
+          if (intersectionSet.at(intersectionSetIndex) == returnSet.at(returnSetIndex))
+            returnSet.remove(returnSetIndex)
       return returnSet;
     }
     
@@ -1108,10 +1091,10 @@ class set
           if (sourceSet->at(sourceIndex) == this->at(thisIndex))
             returnSet.push(sourceSet->at(sourceIndex));
       
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
+      for (sizeDataType i = 0; i < returnSet.size - 1; i++)
+        for (sizeDataType j = i + 1; j < returnSet.size;)
+          if (returnSet.at(i) == returnSet.at(j))
+            returnSet.remove(j);
           else
             j++;
       
@@ -1126,10 +1109,10 @@ class set
           if (sourceSet->at(left) == this->at(thisIndex))
             returnSet.push(sourceSet->at(sourceIndex));
   
-      for (sizeDataType i = 0; i < returnSet->size - 1; i++)
-        for (sizeDataType j = i + 1; j < returnSet->size;)
-          if (returnSet->at(i) == returnSet->at(j))
-            returnSet->remove(j);
+      for (sizeDataType i = 0; i < returnSet.size - 1; i++)
+        for (sizeDataType j = i + 1; j < returnSet.size;)
+          if (returnSet.at(i) == returnSet.at(j))
+            returnSet.remove(j);
           else
             j++;
       
