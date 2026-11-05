@@ -8,42 +8,13 @@
 */
 #ifndef consoleH
 #define consoleH
-#include "colors.h" /*rgb*/
-#include <stdio.h>  /*fprintf stderr printf sprintf*/
-#include <stdarg.h> /*va_list va_start va_end*/
+#include <stdio.h>
+#include <stdarg.h>
+#include <time.h>
+#include <locale.h>
 #if defined __cplusplus || defined c_plusplus
 extern "C" {
 #endif
-  typedef enum
-  : unsigned char
-  {
-    textStyleMaskBit_reset,
-    textStyleMaskBit_bold,
-    textStyleMaskBit_faint,
-    textStyleMaskBit_italic,
-    textStyleMaskBit_underline,
-    textStyleMaskBit_slowBlink,
-    textStyleMaskBit_rapidBlink,
-    textStyleMaskBit_invert,
-    textStyleMaskBit_hide,
-    textStyleMaskBit_strike,
-    textStyleMaskBit_backgroundColorEnabled,
-    textStyleMaskBit_textColorEnabled
-  }
-  textStyleMaskBit;
-
-  typedef struct
-  {
-    const char *messageTypeString,
-              *messageString;
-    rgb textColor,
-        backgroundColor;
-    unsigned long long textStyleMask;
-  }
-  messageStructure;
-
-  int customizedMessage(messageStructure*messageStructureReference);
-
   void variableArguments_errorMessage(const char *errorMessageFormat, va_list variableArguments);
 
   void variableArguments_successMessage(const char *successMessageFormat, va_list variableArguments);
