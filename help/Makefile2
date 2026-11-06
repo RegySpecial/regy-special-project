@@ -62,36 +62,36 @@ build-image-a: $(imageManipulationLibrary)
 # --- Linux Builds (Native & Cross) ---
 # x86_64
 build-linux-x64: build-image-a
-	g++ -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x64) -lX11 -lodbc -lGL
+	g++ -std=c++26 -Wall -Wextra -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x64) -lX11 -lodbc -lGL
 
 # i686 (32-bit)
 build-linux-x86: build-image-a
-	g++ -m32 -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x86) -lX11 -lodbc -lGL
+	g++ -m32 -std=c++26 -Wall -Wextra -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x86) -lX11 -lodbc -lGL
 
 # aarch64 (ARM64) - Requires cross-compiler
 build-linux-arm64: build-image-a
-	aarch64-linux-gnu-g++ -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_arm64) -lX11 -lodbc -lGL
+	aarch64-linux-gnu-g++ -std=c++26 -Wall -Wextra -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_arm64) -lX11 -lodbc -lGL
 
 # arm (32-bit)
 build-linux-arm: build-image-a
-	arm-linux-gnueabihf-g++ -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_arm) -lX11 -lodbc -lGL
+	arm-linux-gnueabihf-g++ -std=c++26 -Wall -Wextra -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_arm) -lX11 -lodbc -lGL
 
 # --- Windows Builds (Cross-Compile from Linux/Unix) ---
 # x86_64
 build-windows-x64: build-image-a
-	$(MinGWunix_cpp_x64) -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_x64) -lwinmm -lgdiplus -lgdi32 -lodbc32
+	$(MinGWunix_cpp_x64) -std=c++26 -Wall -Wextra -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_x64) -lwinmm -lgdiplus -lgdi32 -lodbc32
 
 # i686
 build-windows-x86: build-image-a
-	$(MinGWunix_cpp_x86) -m32 -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_x86) -lwinmm -lgdiplus -lgdi32 -lodbc32
+	$(MinGWunix_cpp_x86) -m32 -std=c++26 -Wall -Wextra -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_x86) -lwinmm -lgdiplus -lgdi32 -lodbc32
 
 # aarch64
 build-windows-arm64: build-image-a
-	$(MinGWunix_cpp_arm64) -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_arm64) -lwinmm -lgdiplus -lgdi32 -lodbc32
+	$(MinGWunix_cpp_arm64) -std=c++26 -Wall -Wextra -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_arm64) -lwinmm -lgdiplus -lgdi32 -lodbc32
 
 # arm (32-bit) - Note: MinGW-64 ARM support is experimental
 build-windows-arm: build-image-a
-	$(MinGWunix_cpp_arm) -std=c++26 -Wall -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_arm) -lwinmm -lgdiplus -lgdi32 -lodbc32
+	$(MinGWunix_cpp_arm) -std=c++26 -Wall -Wextra -O2 $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(windowsPE_arm) -lwinmm -lgdiplus -lgdi32 -lodbc32
 
 # --- macOS Builds (Native) ---
 # x86_64 (Intel)
@@ -108,10 +108,10 @@ build-macos-universal: $(mainFileMacOS)
 
 # --- Debug & Sanitize Variants (Example for x64) ---
 debug-linux-x64: build-image-a
-	g++ -std=c++26 -Wall -g $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x64)-debug -lX11 -lodbc -lGL
+	g++ -std=c++26 -Wall -Wextra -g $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x64)-debug -lX11 -lodbc -lGL
 
 sanitize-linux-x64: build-image-a
-	g++ -std=c++26 -Wall -g -fsanitize=address $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x64)-sanitize -lX11 -lodbc -lGL
+	g++ -std=c++26 -Wall -Wextra -g -fsanitize=address $(mainFileWindowsUNIX) $(bitManipulationLibrary) $(imageManipulationArchive) -o $(linuxELF_x64)-sanitize -lX11 -lodbc -lGL
 
 # --- Clean ---
 clean:

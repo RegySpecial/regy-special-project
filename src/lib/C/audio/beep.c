@@ -6,16 +6,22 @@
 */
 #include "../../../include/lib/c/audio/beep.h"
 //open driver /dev/tty0 to produce beep sound using ioctl system call
-void beep(unsigned long frequency,unsigned long time)
+bool beep(unsigned long frequency,unsigned long time)
 {
   #if defined __WIN32||defined __WIN64
-  Beep(frequency,time);
+  return Beep(frequency, time);
   #else
-  int tty0=open("/dev/tty0",O_RDONLY);
-  if(tty0==-1)
-    errorMessage("Cannot interact with /dev/tty0 to use beep!");
-  else
-    ioctl(tty0,KDMKTONE,(time<<16)+(1193180/frequency));
-  close(tty0);
+  int tty0 = open("/dev/tty0", O_RDONLY);
+
+  if(tty0 == -1)
+    return 0;
+  
+  if (ioctl(tty0, KDMKTONE, (time << 16) + (1193180 / frequency)) == -1)
+    return 0;
+  
+  if (close(tty0) == -1)
+    return 0;
+  
+  return 1;
   #endif
 }

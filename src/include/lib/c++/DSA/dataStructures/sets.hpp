@@ -16,30 +16,29 @@ class set
 {
   public:
     typedef set<itemsDataType, sizeDataType, capacityDataType> setSelf;
-    typedef setSelf *setPointer;
     
     typedef void (*forEach_callback)(itemsDataType);
     typedef void (*forEach1_callback)(itemsDataType, sizeDataType);
-    typedef void (*forEach2_callback)(itemsDataType, sizeDataType, setPointer);
+    typedef void (*forEach2_callback)(itemsDataType, sizeDataType, setSelf *);
   
     typedef setSelf (*filter_predicate)(itemsDataType);
     typedef setSelf (*filter1_predicate)(itemsDataType, sizeDataType);
-    typedef setSelf (*filter2_predicate)(itemsDataType, sizeDataType, setPointer);
+    typedef setSelf (*filter2_predicate)(itemsDataType, sizeDataType, setSelf *);
   
     typedef bool (*logicalPredicate_predicate)(itemsDataType);
     typedef bool (*logicalPredicate1_predicate)(itemsDataType, sizeDataType);
-    typedef bool (*logicalPredicate2_predicate)(itemsDataType, sizeDataType, setPointer);
+    typedef bool (*logicalPredicate2_predicate)(itemsDataType, sizeDataType, setSelf *);
   
     typedef itemsDataType (*valueModification_callback)(itemsDataType);
     typedef itemsDataType (*valueModification1_callback)(itemsDataType, sizeDataType);
-    typedef itemsDataType (*valueModification2_callback)(itemsDataType, sizeDataType, setPointer);
+    typedef itemsDataType (*valueModification2_callback)(itemsDataType, sizeDataType, setSelf *);
   
     template <typename accumulationValueDataType>
     using reduce_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType);
     template <typename accumulationValueDataType>
     using reduce1_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType, sizeDataType);
     template <typename accumulationValueDataType>
-    using reduce2_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType, sizeDataType, setPointer);
+    using reduce2_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType, sizeDataType, setSelf *);
   
     typedef itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType);
     
@@ -51,10 +50,7 @@ class set
     {
       this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to reallocate memory for the dynamic array");
         return;
-      }
     }
   
     set(capacityDataType capacity)
@@ -62,10 +58,7 @@ class set
       this->capacity = capacity;
       this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to allocate memory for the dynamic array");
         return;
-      }
     }
   
     set(itemsDataType *items, capacityDataType capacity)
@@ -74,10 +67,7 @@ class set
       this->size = this->capacity;
       this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to allocate memory for the dynamic array");
         return;
-      }
       for (sizeDataType index = 0; index < this->size; index++)
         this->items[index] = items[index];
       
@@ -100,10 +90,7 @@ class set
       this->capacity = capacity;
       this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to allocate memory for the dynamic array");
         return;
-      }
 
       for (sizeDataType i = 0; i < this->size; i++)
         this->items[i] = i;
@@ -115,10 +102,7 @@ class set
       this->size = size;
       this->items = (itemsDataType *) calloc(this->capacity,sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to allocate memory for the dynamic array");
         return;
-      }
       for (sizeDataType index = 0; index < this->size; index++)
         this->items[index] = items[index];
       
@@ -147,26 +131,18 @@ class set
     {
       if (0 <= index && index < this->size)
         return this->items[index];
-      else
-        errorMessage("Index out of range!");
     }
     
-    void insert(itemsDataType item, sizeDataType index)
+    bool insert(itemsDataType item, sizeDataType index)
     {
       if (index >= this->size)
-      {
-        errorMessage("Index out of range");
-        return;
-      }
+        return 0;
 
       bool itemIsAlreadyInTheSet = 0;
       for (sizeDataType i = 0; i < this->size; i++)
         itemIsAlreadyInTheSet |= item == this->items[i];
       if (itemIsAlreadyInTheSet)
-      {
-        errorMessage("Cannot push the item that is already in the set");
-        return;
-      }
+        return 0;
     
       if (this->size == this->capacity)
       {
@@ -180,10 +156,7 @@ class set
           itemsDataType *oldItems = this->items;
           this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
           if (!this->items)
-          {
-            errorMessage("Failed to reallocate memory for the dynamic array");
-            return;
-          }
+            return 0;
           free(oldItems);
           oldItems = NULL;
         }
@@ -192,31 +165,27 @@ class set
         this->items[i] = this->at(i - 1);
       this->items[index] = item;
       ++this->size;
+      return 1;
     }
     
-    void remove(sizeDataType index)
+    bool remove(sizeDataType index)
     {
-      if (index < this->size)
-      {
-        for (; index < this->size - 1; index++)
-          this->items[index] = this->at(index + 1);
-        this->items[this->size - 1] = 0;
-        --this->size;
-      }
-      else
-        errorMessage("Index out of range!");
+      if (index >= this->size)
+        return 0;
+      for (; index < this->size - 1; index++)
+        this->items[index] = this->at(index + 1);
+      this->items[this->size - 1] = 0;
+      --this->size;
+      return 1;
     }
     
-    void push(itemsDataType item)
+    bool push(itemsDataType item)
     {
       bool itemIsAlreadyInTheSet = 0;
       for (sizeDataType i = 0; i < this->size; i++)
         itemIsAlreadyInTheSet |= item == this->items[i];
       if (itemIsAlreadyInTheSet)
-      {
-        errorMessage("Cannot push the item that is already in the set");
-        return;
-      }
+        return 0;
       
       if (this->size == this->capacity)
       {
@@ -230,21 +199,19 @@ class set
           itemsDataType *oldItems = this->items;
           this->items = (itemsDataType *) calloc(this->capacity,sizeof (itemsDataType));
           if (!this->items)
-          {
-            errorMessage("Failed to reallocate memory for the dynamic array");
-            return;
-          }
+            return 0;
           free(oldItems);
           oldItems = NULL;
         }
       }
       this->items[this->size] = item;
       ++this->size;
+      return 1;
     }
     
-    inline void pop()
+    inline bool pop()
     {
-      this->remove(this->size - 1);
+      return this->remove(this->size - 1);
     }
     
     void forEach(forEach_callback forEachFunction)
@@ -951,25 +918,25 @@ class set
       }
     }
     
-    void copy(setPointer sourceSet)
+    void copy(setSelf *sourceSet)
     {
       for (sizeDataType index = 0; index < this->size && index < sourceSet->size; index++)
         this->items[index] = sourceSet->at(index);
     }
     
-    void copy(setPointer sourceSet, sizeDataType size)
+    void copy(setSelf *sourceSet, sizeDataType size)
     {
       for (sizeDataType index = 0; index < size && size <= this->size && size <= sourceSet->size; index++)
         this->items[index] = sourceSet->at(index);
     }
     
-    void copy(setPointer sourceSet, sizeDataType left, sizeDataType right)
+    void copy(setSelf *sourceSet, sizeDataType left, sizeDataType right)
     {
       for (; 0 <= left && left < right && right <= this->size && right <= sourceSet->size; left++)
         this->items[left] = sourceSet->at(left);
     }
     
-    setSelf join(setPointer sourceSet)
+    setSelf join(setSelf *sourceSet)
     {
       setSelf returnSet(this->items, this->size, this->capacity);
 
@@ -986,7 +953,7 @@ class set
       return returnSet;
     }
     
-    setSelf join(setPointer sourceSet, sizeDataType size)
+    setSelf join(setSelf *sourceSet, sizeDataType size)
     {
       setSelf returnSet(this->items, this->size, this->capacity);
 
@@ -1003,7 +970,7 @@ class set
       return returnSet;
     }
     
-    setSelf join(setPointer sourceSet, sizeDataType left, sizeDataType right)
+    setSelf join(setSelf *sourceSet, sizeDataType left, sizeDataType right)
     {
       setSelf returnSet(this->items, this->size, this->capacity);
 
@@ -1020,7 +987,7 @@ class set
       return returnSet;
     }
     
-    setSelf intersect(setPointer sourceSet)
+    setSelf intersect(setSelf *sourceSet)
     {
       setSelf returnSet;
 
@@ -1037,7 +1004,7 @@ class set
       return returnSet;
     }
     
-    setSelf intersect(setPointer sourceSet, sizeDataType size)
+    setSelf intersect(setSelf *sourceSet, sizeDataType size)
     {
       setSelf returnSet;
 
@@ -1054,7 +1021,7 @@ class set
       return returnSet;
     }
     
-    setSelf intersect(setPointer sourceSet, sizeDataType left, sizeDataType right)
+    setSelf intersect(setSelf *sourceSet, sizeDataType left, sizeDataType right)
     {
       setSelf returnSet;
 
@@ -1071,7 +1038,7 @@ class set
       return returnSet;
     }
   
-    setSelf discrimate(setPointer sourceSet)
+    setSelf discrimate(setSelf *sourceSet)
     {
       setSelf returnSet = this->join(sourceSet),
               intersectionSet = this->intersect(sourceSet);
@@ -1083,7 +1050,7 @@ class set
       return returnSet;
     }
     
-    setSelf discrimate(setPointer sourceSet, sizeDataType size)
+    setSelf discrimate(setSelf *sourceSet, sizeDataType size)
     {
       setSelf returnSet;
       for (sizeDataType thisIndex = 0; thisIndex < size && size <= this->size; thisIndex++)
@@ -1101,7 +1068,7 @@ class set
       return returnSet;
     }
     
-    setSelf discrimate(setPointer sourceSet, sizeDataType left, sizeDataType right)
+    setSelf discrimate(setSelf *sourceSet, sizeDataType left, sizeDataType right)
     {
       setSelf returnSet;
       for (sizeDataType thisIndex = left; 0 <= thisIndex && thisIndex < right && right <= this->size; thisIndex++)

@@ -1,7 +1,7 @@
 #ifndef buildSystemH
 #define buildSystemH
 #include <stdlib.h>
-#include "../../lib/c/console.h"
+#include "../../main/c/console.h"
 
 #if defined __cplusplus || defined c_plusplus
 extern "C" {

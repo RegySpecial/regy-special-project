@@ -11,13 +11,13 @@ arm64-ios-machO-cConsoleLibrary =   bin/lib/static/c/o/mach-o/ios/arm64/console.
 arm64-macos-machO-cConsoleLibrary = bin/lib/static/c/o/mach-o/macos/arm64/console.o
 
 build-amd64-ios-machO-cConsoleLibrary: $(cConsoleLibrary)
-	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(amd64-ios-machO-cConsoleLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cConsoleLibrary) -o $(amd64-ios-machO-cConsoleLibrary)
 build-amd64-macos-machO-cConsoleLibrary: $(cConsoleLibrary)
-	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(amd64-macos-machO-cConsoleLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cConsoleLibrary) -o $(amd64-macos-machO-cConsoleLibrary)
 build-arm64-ios-machO-cConsoleLibrary: $(cConsoleLibrary)
-	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(amd64-ios-machO-cConsoleLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cConsoleLibrary) -o $(amd64-ios-machO-cConsoleLibrary)
 build-arm64-macos-machO-cConsoleLibrary: $(cConsoleLibrary)
-	gcc -std=c23 -Wall -O -c $(cConsoleLibrary) -o $(amd64-macos-machO-cConsoleLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cConsoleLibrary) -o $(amd64-macos-machO-cConsoleLibrary)
 
 cAudioBeepLibrary = src/lib/c/audio/beep.c
 
@@ -27,13 +27,13 @@ arm64-ios-machO-cAudioBeepLibrary =   bin/lib/static/c/o/mach-o/ios/arm64/audioB
 arm64-macos-machO-cAudioBeepLibrary = bin/lib/static/c/o/mach-o/macos/arm64/audioBeepLibrary.o
 
 build-amd64-ios-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
-	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(amd64-ios-machO-cAudioBeepLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cAudioBeepLibrary) -o $(amd64-ios-machO-cAudioBeepLibrary)
 build-amd64-macos-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
-	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(amd64-macos-machO-cAudioBeepLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cAudioBeepLibrary) -o $(amd64-macos-machO-cAudioBeepLibrary)
 build-arm64-ios-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
-	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(amd64-ios-machO-cAudioBeepLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cAudioBeepLibrary) -o $(amd64-ios-machO-cAudioBeepLibrary)
 build-arm64-macos-machO-cAudioBeepLibrary: $(cAudioBeepLibrary)
-	gcc -std=c23 -Wall -O -c $(cAudioBeepLibrary) -o $(amd64-macos-machO-cAudioBeepLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cAudioBeepLibrary) -o $(amd64-macos-machO-cAudioBeepLibrary)
 
 cColorsLibrary =    src/lib/c/colors.c
 
@@ -43,13 +43,13 @@ arm64-ios-machO-cColorsLibrary =   bin/lib/static/c/o/mach-o/ios/arm64/colors.o
 arm64-macos-machO-cColorsLibrary = bin/lib/static/c/o/mach-o/macos/arm64/colors.o
 
 build-amd64-ios-machO-cManageArguments: $(cColorsLibrary)
-	gcc -std=c23 -Wall -O -c $(cColorsLibrary) -o $(amd64-ios-machO-cColorsLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cColorsLibrary) -o $(amd64-ios-machO-cColorsLibrary)
 build-amd64-macos-machO-cManageArguments: $(cColorsLibrary)
-	gcc -std=c23 -Wall -O -c $(cColorsLibrary) -o $(amd64-macos-machO-cColorsLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cColorsLibrary) -o $(amd64-macos-machO-cColorsLibrary)
 build-arm64-ios-machO-cManageArguments: $(cColorsLibrary)
-	gcc -std=c23 -Wall -O -c $(cColorsLibrary) -o $(amd64-ios-machO-cColorsLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cColorsLibrary) -o $(amd64-ios-machO-cColorsLibrary)
 build-arm64-macos-machO-cAudioBeepLibrary: $(cManageArguments)
-	gcc -std=c23 -Wall -O -c $(cColorsLibrary) -o $(amd64-macos-machO-cColorsLibrary)
+	gcc -std=c23 -Wall -Wextra -O -c $(cColorsLibrary) -o $(amd64-macos-machO-cColorsLibrary)
 
 cManageArguments =   src/main/c/manageArguments.c
 
@@ -59,13 +59,13 @@ arm64-ios-machO-cManageArguments =   bin/lib/static/c/o/mach-o/ios/arm64/manageA
 arm64-macos-machO-cManageArguments = bin/lib/static/c/o/mach-o/macos/arm64/manageArguments.o
 
 build-amd64-ios-machO-cManageArguments: $(cManageArguments)
-	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(amd64-ios-machO-cManageArguments)
+	gcc -std=c23 -Wall -Wextra -O -c $(cManageArguments) -o $(amd64-ios-machO-cManageArguments)
 build-amd64-macos-machO-cManageArguments: $(cManageArguments)
-	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(amd64-macos-machO-cManageArguments)
+	gcc -std=c23 -Wall -Wextra -O -c $(cManageArguments) -o $(amd64-macos-machO-cManageArguments)
 build-arm64-ios-machO-cManageArguments: $(cManageArguments)
-	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(amd64-ios-machO-cManageArguments)
+	gcc -std=c23 -Wall -Wextra -O -c $(cManageArguments) -o $(amd64-ios-machO-cManageArguments)
 build-arm64-macos-machO-cAudioBeepLibrary: $(cManageArguments)
-	gcc -std=c23 -Wall -O -c $(cManageArguments) -o $(amd64-macos-machO-cManageArguments)
+	gcc -std=c23 -Wall -Wextra -O -c $(cManageArguments) -o $(amd64-macos-machO-cManageArguments)
 
 testManageArguments = test/c++/manageArguments.cpp
 
@@ -73,7 +73,7 @@ amd64-ios-machO-testManageArguments =   /home/regyspecial/Scrivania/testManageAr
 amd64-macos-machO-testManageArguments = /Users/*/Desktop/testManageArguments
 
 build-amd64-macos-machO-testManageArguments: $(testManageArguments) $(amd64-macos-machO-cManageArguments) $(amd64-macos-machO-cColorsLibrary) $(amd64-macos-machO-cAudioBeepLibrary)
-	g++ -std=c++26 -Wall -O $(testManageArguments) $(amd64-macos-machO-cManageArguments) $(amd64-macos-machO-cColorsLibrary) $(amd64-macos-machO-cAudioBeepLibrary) -o $(amd64-macos-machO-testManageArguments)
+	g++ -std=c++26 -Wall -Wextra -O $(testManageArguments) $(amd64-macos-machO-cManageArguments) $(amd64-macos-machO-cColorsLibrary) $(amd64-macos-machO-cAudioBeepLibrary) -o $(amd64-macos-machO-testManageArguments)
 
 goImageLibrary = src/lib/go/CImage.go
 
@@ -205,7 +205,7 @@ apple-form =              src/main/swift/form.swift
 apple-formTextBox =       src/main/swift/formTextBox.swift
 
 build-amd64-macos-machO-testManageArguments: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
-	g++ -std=c++26 -Wall -O $(testManageArguments) $(amd64-macos-machO-manageArguments) -o $(amd64-macos-machO-testManageArguments)
+	g++ -std=c++26 -Wall -Wextra -O $(testManageArguments) $(amd64-macos-machO-manageArguments) -o $(amd64-macos-machO-testManageArguments)
 build-amd64-macos-machO-testConsole: $(cConsoleLibrary) $(cConsoleLibrary-header)
 	gcc -Wall -Wextra -std=c2x -O3 -c $(cConsoleLibrary) -o bin/lib/static/c/o/mach-o/macos/x86_64/console.o
 	swiftc -O -import-objc-header $(cConsoleLibrary-header) test/swift/escape.swift bin/lib/static/c/o/mach-o/macos/x86_64/console.o -o test/swift/escape

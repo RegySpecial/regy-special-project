@@ -1,18 +1,10 @@
-cConsoleLibrary =   src/lib/c/console.c
-cAudioBeepLibrary = src/lib/c/audio/beep.c
-cColorsLibrary =    src/lib/c/colors.c
-cManageArguments =  src/main/c/manageArguments.c
-
-testManageArguments = test/c++/manageArguments.cpp
-
+-include include.mk
 amd64-testManageArguments = /home/regyspecial/Scrivania/amd64-testManageArguments
 amd64-testVideoGame =       /home/regyspecial/Scrivania/amd64-testVideoGame
 
 build-amd64-testManageArguments: $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments)
-	g++ -std=c++26 -Wall -O $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+	g++ -std=c++26 -Wall -Wextra -O $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
-cppDynamicArrays =        src/lib/c++/DSA/dataStructures/dynamicArrays.cpp
-amd64-testDynamicArrays = /home/regyspecial/Scrivania/amd64-testDynamicArrays
 build-amd64-testDynamicArrays: $(cppDynamicArrays)
 	g++ -std=c++26 -Wall -Wextra -O3 $(cppDynamicArrays) $(cConsoleLibrary) -o $(amd64-testDynamicArrays)
 
@@ -94,18 +86,10 @@ build-s390x-a-goImageLibrary: $(goImageLibrary)
 	GOOS=linux GOARCH=s390x go build -buildmode=c-archive -o $(goImageLibrary) $(s390x-a-goImageLibrary)
 	mv bin/lib/static/a/elf/linux/s390x/Cimage.h src/include/lib/go
 
-mainWindow =        src/main/c++/mainWindow.cpp
-mainScreenButtons = src/main/c++/mainScreenButtons.cpp
-mainDialogs =       src/main/c++/mainDialogs.cpp
-gameModeButtons =   src/main/c++/gameModeButtons.cpp
-form =              src/main/c++/form.cpp
-formTextBox =       src/main/c++/formTextBox.cpp
-testVideoGame =     test/videoGame.cpp
-
 build-amd64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox) $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(cAudioBeepLibrary) $(testVideoGame)
 	g++ \
 	-std=c++26 \
-	-Wall \
+	-Wall -Wextra \
 	-g \
 	-fsanitize=address \
 	$(mainWindow) \
@@ -123,14 +107,12 @@ build-amd64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(g
 	$(amd64-testVideoGame) \
 	-lX11
 
-main = src/main/c++/main.cpp
-
 amd64-regyspecial =  bin/exec/elf/linux/amd64/RegySpecial
 arm-regyspecial =  bin/exec/elf/linux/arm/RegySpecial
 riscv-regyspecial =  bin/exec/elf/linux/riscv/RegySpecial
 
 build-amd64:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
-	g++ -std=c++26 -Wall -O \
+	g++ -std=c++26 -Wall -Wextra -O \
 	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
@@ -140,7 +122,7 @@ build-amd64:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipula
 	-lX11 -lodbc -lGL
 
 debug-amd64:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
-	g++ -std=c++26 -Wall -g \
+	g++ -std=c++26 -Wall -Wextra -g \
 	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
@@ -150,7 +132,7 @@ debug-amd64:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipula
 	-lX11 -lodbc -lGL
 
 sanitize-amd64:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
-	g++ -std=c++26 -Wall -g -fsanitize=address \
+	g++ -std=c++26 -Wall -Wextra -g -fsanitize=address \
 	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
@@ -160,7 +142,7 @@ sanitize-amd64:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManip
 	-lX11 -lodbc -lGL
 
 build-amd64-save-temps: 
-	g++ -std=c++26 -Wall -O \
+	g++ -std=c++26 -Wall -Wextra -O \
 	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
@@ -170,7 +152,7 @@ build-amd64-save-temps:
 	-lX11 -lodbc -lGL -save-temps
 
 debug-amd64-save-temps:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
-	g++ -std=c++26 -Wall -g \
+	g++ -std=c++26 -Wall -Wextra -g \
 	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \
@@ -180,7 +162,7 @@ debug-amd64-save-temps:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cpp
 	-lX11 -lodbc -lGL -save-temps
 
 sanitize-amd64-save-temps:$(cAudioBeepLibrary) $(cConsoleLibrary) $(mainFile) $(cppBitManipulationLibrary) $(goImageLibraryArchive)
-	g++ -std=c++26 -Wall -g \
+	g++ -std=c++26 -Wall -Wextra -g \
 	$(cConsoleLibrary) \
 	$(mainFile) \
 	$(bitManipulationLibrary) \

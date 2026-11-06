@@ -7,7 +7,6 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include <getopt.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
@@ -16,7 +15,7 @@
 #include <regex.h>
 #include <ctype.h>
 #include "../../lib/c/audio/beep.h"
-#include "../../lib/c/console.h"
+#include "console.h"
 #include "generalPurposeMaskBits.h"
 #include "../../lib/c/colors.h"
 

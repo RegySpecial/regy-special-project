@@ -1,7 +1,7 @@
 build-o:
 	gcc \
         -c \
-        -Wall \
+        -Wall -Wextra \
         -O \
 	windows-unix/help/getoptions.c \
 	-o /Users/MarcoeGrazia/Desktop/sus.o 

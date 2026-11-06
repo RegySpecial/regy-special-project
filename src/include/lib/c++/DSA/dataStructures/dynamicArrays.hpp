@@ -6,9 +6,7 @@
 *@date (First version [Linux/Parrot OS]) 2026 March 7th Saturday, 16:12:08
 *@license GNU General Public License to stop private corporation to not share source code
 */
-#include <iostream>
 #include <stdlib.h>
-#include "../../../c/console.h"
 
 template
 <
@@ -20,30 +18,29 @@ class dynamicArray
 {
   public:
     typedef dynamicArray<itemsDataType, sizeDataType, capacityDataType> dynamicArraySelf;
-    typedef dynamicArraySelf *dynamicArrayPointer;
     
     typedef void (*forEach_callback)(itemsDataType);
     typedef void (*forEach1_callback)(itemsDataType, sizeDataType);
-    typedef void (*forEach2_callback)(itemsDataType, sizeDataType, dynamicArrayPointer);
+    typedef void (*forEach2_callback)(itemsDataType, sizeDataType, dynamicArraySelf *);
   
     typedef dynamicArraySelf (*filter_predicate)(itemsDataType);
     typedef dynamicArraySelf (*filter1_predicate)(itemsDataType, sizeDataType);
-    typedef dynamicArraySelf (*filter2_predicate)(itemsDataType, sizeDataType, dynamicArrayPointer);
+    typedef dynamicArraySelf (*filter2_predicate)(itemsDataType, sizeDataType, dynamicArraySelf *);
   
     typedef bool (*logicalPredicate_predicate)(itemsDataType);
     typedef bool (*logicalPredicate1_predicate)(itemsDataType, sizeDataType);
-    typedef bool (*logicalPredicate2_predicate)(itemsDataType, sizeDataType, dynamicArrayPointer);
+    typedef bool (*logicalPredicate2_predicate)(itemsDataType, sizeDataType, dynamicArraySelf *);
   
     typedef itemsDataType (*valueModification_callback)(itemsDataType);
     typedef itemsDataType (*valueModification1_callback)(itemsDataType, sizeDataType);
-    typedef itemsDataType (*valueModification2_callback)(itemsDataType, sizeDataType, dynamicArrayPointer);
+    typedef itemsDataType (*valueModification2_callback)(itemsDataType, sizeDataType, dynamicArraySelf *);
   
     template <typename accumulationValueDataType>
     using reduce_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType);
     template <typename accumulationValueDataType>
     using reduce1_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType, sizeDataType);
     template <typename accumulationValueDataType>
-    using reduce2_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType, sizeDataType, dynamicArrayPointer);
+    using reduce2_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType, sizeDataType, dynamicArraySelf *);
   
     typedef itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType);
     
@@ -55,10 +52,7 @@ class dynamicArray
     {
       this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to reallocate memory for the dynamic array");
         return;
-      }
     }
   
     dynamicArray(capacityDataType capacity)
@@ -66,10 +60,7 @@ class dynamicArray
       this->capacity = capacity;
       this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to allocate memory for the dynamic array");
         return;
-      }
     }
   
     dynamicArray(itemsDataType *items, capacityDataType capacity)
@@ -78,10 +69,7 @@ class dynamicArray
       this->size = this->capacity;
       this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to allocate memory for the dynamic array");
         return;
-      }
       for (sizeDataType index = 0; index < this->size; index++)
         this->items[index] = items[index];
     }
@@ -92,10 +80,7 @@ class dynamicArray
       this->capacity = capacity;
       this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to allocate memory for the dynamic array");
         return;
-      }
     }
     
     dynamicArray(itemsDataType *items, sizeDataType size, capacityDataType capacity)
@@ -104,10 +89,7 @@ class dynamicArray
       this->size = size;
       this->items = (itemsDataType *) calloc(this->capacity,sizeof (itemsDataType));
       if (!this->items)
-      {
-        errorMessage("Failed to allocate memory for the dynamic array");
         return;
-      }
       for (sizeDataType index = 0; index < this->size; index++)
         this->items[index] = items[index];
     }
@@ -124,17 +106,12 @@ class dynamicArray
     {
       if (0 <= index && index < this->size)
         return this->items[index];
-      else
-        errorMessage("Index out of range!");
     }
     
-    void insert(itemsDataType item, sizeDataType index)
+    bool insert(itemsDataType item, sizeDataType index)
     {
       if (index >= this->size)
-      {
-        errorMessage("Index out of range");
-        return;
-      }
+        return 0;
     
       if (this->size == this->capacity)
       {
@@ -148,10 +125,7 @@ class dynamicArray
           itemsDataType *oldItems = this->items;
           this->items = (itemsDataType *) calloc(this->capacity, sizeof (itemsDataType));
           if (!this->items)
-          {
-            errorMessage("Failed to reallocate memory for the dynamic array");
-            return;
-          }
+            return 0;
           free(oldItems);
           oldItems = NULL;
         }
@@ -160,22 +134,21 @@ class dynamicArray
         this->items[i] = this->at(i - 1);
       this->items[index] = item;
       ++this->size;
+      return 1;
     }
     
-    void remove(sizeDataType index)
+    bool remove(sizeDataType index)
     {
-      if (index < this->size)
-      {
-        for (; index < this->size - 1; index++)
-          this->items[index] = this->at(index + 1);
-        this->items[this->size - 1] = 0;
-        --this->size;
-      }
-      else
-        errorMessage("Index out of range!");
+      if (index >= this->size)
+        return 0;
+      for (; index < this->size - 1; index++)
+        this->items[index] = this->at(index + 1);
+      this->items[this->size - 1] = 0;
+      --this->size;
+      return 1;
     }
     
-    void push(itemsDataType item)
+    bool push(itemsDataType item)
     {
       if (this->size == this->capacity)
       {
@@ -189,21 +162,19 @@ class dynamicArray
           itemsDataType *oldItems = this->items;
           this->items = (itemsDataType *) calloc(this->capacity,sizeof (itemsDataType));
           if (!this->items)
-          {
-            errorMessage("Failed to reallocate memory for the dynamic array");
-            return;
-          }
+            return 0;
           free(oldItems);
           oldItems = NULL;
         }
       }
       this->items[this->size] = item;
       ++this->size;
+      return 1;
     }
     
-    inline void pop()
+    inline bool pop()
     {
-      this->remove(this->size - 1);
+      return this->remove(this->size - 1);
     }
     
     void forEach(forEach_callback forEachFunction)
@@ -910,43 +881,43 @@ class dynamicArray
       }
     }
     
-    void merge(dynamicArrayPointer sourceDynamicArray)
+    void merge(dynamicArraySelf *sourceDynamicArray)
     {
       for (sizeDataType index = 0; index < sourceDynamicArray->size; index++)
         this->push(sourceDynamicArray->at(index));
     }
     
-    void merge(dynamicArrayPointer sourceDynamicArray, sizeDataType size)
+    void merge(dynamicArraySelf *sourceDynamicArray, sizeDataType size)
     {
       for (sizeDataType index = 0; index < size && size <= sourceDynamicArray->size; index++)
         this->push(sourceDynamicArray->at(index));
     }
     
-    void merge(dynamicArrayPointer sourceDynamicArray, sizeDataType left, sizeDataType right)
+    void merge(dynamicArraySelf *sourceDynamicArray, sizeDataType left, sizeDataType right)
     {
       for (; 0 <= left && left < right && right <= sourceDynamicArray->size; left++)
         this->push(sourceDynamicArray->at(left));
     }
     
-    void copy(dynamicArrayPointer sourceDynamicArray)
+    void copy(dynamicArraySelf *sourceDynamicArray)
     {
       for (sizeDataType index = 0; index < this->size && index < sourceDynamicArray->size; index++)
         this->items[index] = sourceDynamicArray->at(index);
     }
     
-    void copy(dynamicArrayPointer sourceDynamicArray, sizeDataType size)
+    void copy(dynamicArraySelf *sourceDynamicArray, sizeDataType size)
     {
       for (sizeDataType index = 0; index < size && size <= this->size && size <= sourceDynamicArray->size; index++)
         this->items[index] = sourceDynamicArray->at(index);
     }
     
-    void copy(dynamicArrayPointer sourceDynamicArray, sizeDataType left, sizeDataType right)
+    void copy(dynamicArraySelf *sourceDynamicArray, sizeDataType left, sizeDataType right)
     {
       for (; 0 <= left && left < right && right <= this->size && right <= sourceDynamicArray->size; left++)
         this->items[left] = sourceDynamicArray->at(left);
     }
     
-    dynamicArraySelf join(dynamicArrayPointer sourceDynamicArray)
+    dynamicArraySelf join(dynamicArraySelf *sourceDynamicArray)
     {
       dynamicArraySelf returnSet;
       returnSet.merge(sourceDynamicArray);
@@ -961,7 +932,7 @@ class dynamicArray
       return returnSet;
     }
     
-    dynamicArraySelf join(dynamicArrayPointer sourceDynamicArray, sizeDataType size)
+    dynamicArraySelf join(dynamicArraySelf *sourceDynamicArray, sizeDataType size)
     {
       dynamicArraySelf returnSet;
       returnSet.merge(sourceDynamicArray, size);
@@ -976,7 +947,7 @@ class dynamicArray
       return returnSet;
     }
     
-    dynamicArraySelf join(dynamicArrayPointer sourceDynamicArray, sizeDataType left, sizeDataType right)
+    dynamicArraySelf join(dynamicArraySelf *sourceDynamicArray, sizeDataType left, sizeDataType right)
     {
       dynamicArraySelf returnSet;
       returnSet.merge(sourceDynamicArray, left, right);
@@ -991,7 +962,7 @@ class dynamicArray
       return returnSet;
     }
     
-    dynamicArraySelf intersect(dynamicArrayPointer sourceDynamicArray)
+    dynamicArraySelf intersect(dynamicArraySelf *sourceDynamicArray)
     {
       dynamicArraySelf returnDynamicArray;
       for (sizeDataType thisIndex = 0; thisIndex < this->size; thisIndex++)
@@ -1009,7 +980,7 @@ class dynamicArray
       return returnDynamicArray;
     }
     
-    dynamicArraySelf intersect(dynamicArrayPointer sourceDynamicArray, sizeDataType size)
+    dynamicArraySelf intersect(dynamicArraySelf *sourceDynamicArray, sizeDataType size)
     {
       dynamicArraySelf returnDynamicArray;
       for (sizeDataType thisIndex = 0; thisIndex < size && size <= this->size; thisIndex++)
@@ -1027,7 +998,7 @@ class dynamicArray
       return returnDynamicArray;
     }
     
-    dynamicArraySelf intersect(dynamicArrayPointer sourceDynamicArray, sizeDataType left, sizeDataType right)
+    dynamicArraySelf intersect(dynamicArraySelf *sourceDynamicArray, sizeDataType left, sizeDataType right)
     {
       dynamicArraySelf returnDynamicArray;
       for (sizeDataType thisIndex = left; 0 <= thisIndex && thisIndex < right && right <= this->size; thisIndex++)
@@ -1045,7 +1016,7 @@ class dynamicArray
       return returnDynamicArray;
     }
   
-    dynamicArraySelf discrimate(dynamicArrayPointer sourceDynamicArray)
+    dynamicArraySelf discrimate(dynamicArraySelf *sourceDynamicArray)
     {
       dynamicArraySelf returnDynamicArray;
       for (sizeDataType thisIndex = 0; thisIndex < this->size; thisIndex++)
@@ -1063,7 +1034,7 @@ class dynamicArray
       return returnDynamicArray;
     }
     
-    dynamicArraySelf discrimate(dynamicArrayPointer sourceDynamicArray, sizeDataType size)
+    dynamicArraySelf discrimate(dynamicArraySelf *sourceDynamicArray, sizeDataType size)
     {
       dynamicArraySelf returnDynamicArray;
       for (sizeDataType thisIndex = 0; thisIndex < size && size <= this->size; thisIndex++)
@@ -1081,7 +1052,7 @@ class dynamicArray
       return returnDynamicArray;
     }
     
-    dynamicArraySelf discrimate(dynamicArrayPointer sourceDynamicArray, sizeDataType left, sizeDataType right)
+    dynamicArraySelf discrimate(dynamicArraySelf *sourceDynamicArray, sizeDataType left, sizeDataType right)
     {
       dynamicArraySelf returnDynamicArray;
       for (sizeDataType thisIndex = left; 0 <= thisIndex && thisIndex < right && right <= this->size; thisIndex++)

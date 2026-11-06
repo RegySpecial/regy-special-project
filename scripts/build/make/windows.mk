@@ -11,7 +11,7 @@ testManageArguments = test/manageArguments.cpp
 amd64-testManageArguments =    C:/Users/*/Desktop/testManageArguments.exe
 
 build-amd64-testManageArguments: $(cManageArguments) $(cConsoleLibrary) $(testManageArguments)
-	$(MinGWcpp) -std=c++26 -Wall -O $(cManageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+	$(MinGWcpp) -std=c++26 -Wall -Wextra -O $(cManageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
 mainWindow =        src/main/c++/mainWindow.cpp
 mainScreenButtons = src/main/c++/mainScreenButtons.cpp
@@ -21,7 +21,7 @@ form =              src/main/c++/form.cpp
 formTextBox =       src/main/c++/formTextBox.cpp
 
 build-amd64-testVideoGame: $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox)
-	$(MinGWcpp) -std=c++26 -Wall -O $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox) -o $(amd64-testManageArguments)
+	$(MinGWcpp) -std=c++26 -Wall -Wextra -O $(mainWindow) $(mainScreenButtons) $(mainDialogs) $(gameModeButtons) $(form) $(formTextBox) -o $(amd64-testManageArguments)
 
 resourceScript = scripts/build/windows.rc
 

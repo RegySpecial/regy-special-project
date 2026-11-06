@@ -1,4 +1,4 @@
-cConsoleLibrary =   src/lib/c/console.c
+cConsoleLibrary =   src/main/c/console.c
 cAudioBeepLibrary = src/lib/c/audio/beep.c
 cColorsLibrary =    src/lib/c/colors.c
 cManageArguments =  src/main/c/manageArguments.c
@@ -11,7 +11,7 @@ amd64-testManageArguments = /home/regyspecial/Scrivania/amd64-testManageArgument
 amd64-testVideoGame =       /home/regyspecial/Scrivania/amd64-testVideoGame
 
 build-amd64-testManageArguments: $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments)
-	g++ -std=c++26 -Wall -O $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+	g++ -std=c++26 -Wall -Wextra -O $(cManageArguments) $(cColorsLibrary) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
 
 cppDynamicArrays =        src/lib/c++/DSA/dataStructures/dynamicArrays.cpp
 amd64-testDynamicArrays = /home/regyspecial/Scrivania/amd64-testDynamicArrays
@@ -51,3 +51,12 @@ gameModeButtons =   src/main/c++/gameModeButtons.cpp
 form =              src/main/c++/form.cpp
 formTextBox =       src/main/c++/formTextBox.cpp
 testVideoGame =     test/videoGame.cpp
+
+main = src/main/c++/main.cpp
+
+testBeep = test/src/c/beep.c
+
+test-amd64-beep-and-console: $(testBeep) $(cConsoleLibrary) $(cAudioBeepLibrary)
+	gcc -std=c23 -Wall -Wextra -O3 $(testBeep) $(cConsoleLibrary) $(cAudioBeepLibrary) -o /home/regyspecial/Scrivania/test-beep
+
+operatingSystem := $(shell uname -o)
