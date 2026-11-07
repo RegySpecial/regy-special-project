@@ -19,29 +19,29 @@ class RegySpecial
       frame.setUndecorated(true);
       frame.setResizable(true);
       frame.setBounds(
-				0,
-				0,
-				(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
-				(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()
-			);
+        0,
+        0,
+        (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
+        (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()
+      );
       frame.setVisible(true);
       frame.setLayout(null);
       textField.setBounds(
-				(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4),
-				(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/4),
-				(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
-				100
-			);
+        (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4),
+        (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/4),
+        (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
+        100
+      );
       textField.setBackground(new Color(0,128,255));
       textField.setForeground(Color.yellow);
       frame.add(textField);
       JPanel buttonGrid=new JPanel();
-			buttonGrid.setBounds(
-				0,
-				(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
-				(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()),
-				(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2)
-			);
+      buttonGrid.setBounds(
+        0,
+        (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
+        (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()),
+        (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2)
+      );
       GridLayout gridLayout=new GridLayout(2,2,10,10);
       buttonGrid.setLayout(gridLayout);
       for (final String[] buttonRow:buttonTextGrid)
@@ -49,10 +49,10 @@ class RegySpecial
         for (final String text:buttonRow)
         {
           JButton button=new JButton(text);
-					buttonGrid.add(button);
+          buttonGrid.add(button);
         }
       }
-			frame.add(buttonGrid);
+      frame.add(buttonGrid);
     }
     catch(Exception e)
     {

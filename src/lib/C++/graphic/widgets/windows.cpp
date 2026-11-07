@@ -4,7 +4,7 @@
 *@date (First version [Linux/Parrot OS]) 2026 July 6th Monday 15:50:56
 *@license GNU General Public License to stop private corporation to not share source code
 */
-#include "../../include/main/c++/mainWindow.hpp"
+#include "../../../../include/lib/c++/graphic/widgets/windows.hpp"
 window::window(application *app, const char *title)
 {
   #if defined __WIN32 || defined __WIN64
@@ -124,7 +124,7 @@ window::window(application *app, const char *title)
   XMapRaised(this->app->display, this->id);
 
   this->onResize = [](XResizeRequestEvent *event, void *extraArgs)
-{
+  {
     window *self = (window *) extraArgs;
     for (unsigned long i = 0; i < self->subwidget.size;i++)
       XResizeWindow(self->app->display, self->id, event->width,event->height);

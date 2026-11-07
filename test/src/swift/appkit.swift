@@ -41,6 +41,10 @@ NSApplicationDelegate
     buttonCell.backgroundColor = NSColor(red: 0, green: 0, blue: 1, alpha: 1)
     button.setButtonType(.onOff)
     button.cell = buttonCell
+    button.isBordered = true
+    button.bezelStyle = 
+    button.contentTintColor = NSColor(red: 1, green: 0, blue: 0, alpha: 1)
+    button.bezelColor = button.contentTintColor
     self.win.contentView?.addSubview(button)
   }
 }

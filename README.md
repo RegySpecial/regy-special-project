@@ -1,21 +1,37 @@
 # Regy Special Project
+
 ## Prefazione:
-Il seguente progetto ha lo scopo di sviluppare un videogioco performante indipendente da Toolkit grafici, audio, eccetera (salvo eccezioni per cui l'assenza di toolkit rende difficile la creazione, la progettazione, lo sviluppo e/o la manutenzione del software) o librerie non standard (salvo eccezioni per cui l'assenza di toolkit rende difficile la creazione, la progettazione, lo sviluppo e/o la manutenzione del software e/o l'uso delle librerie standard non è necessario) e non dipendenti dal sistema oprativo
+
+Il seguente progetto ha lo scopo di sviluppare un videogioco performante indipendente da Toolkit grafici, audio, eccetera (salvo eccezioni per cui l'assenza di toolkit rende difficile la creazione, la progettazione, lo sviluppo e/o la manutenzione del software) o librerie non standard (salvo eccezioni per cui l'assenza di toolkit rende difficile la creazione, la progettazione, lo sviluppo e/o la manutenzione del software e/o l'uso delle librerie standard non è necessario) e non dipendenti dal sistema oprativo.
 
 Requisiti fissati:
-  
-1. Sistemi Operativi: Multipiattaforma
 
+1. Sistemi Operativi: Multipiattaforma
 2. CPU: Multipiattaforma
 
 Risultati attuali:
 
 1. Sistemi Operativi: Windows,Linux,MacOS
-
 2. CPU: x86_64,AMD
 
-Linguaggi di programmazione|Sistema operativo|Librerie
----------------------------|-----------------|--------
-C/C++|Windows e cloni (React OS, GreenTeaOS)|WinAPI
-C/C++/Go|Unix e cloni (Linux, FreeBSD, NetBSD, OpenBSD...)|Xorg or Wayland Graphic Server
-C/Swift|MacOS e cloni (iOS, tvOS...)|Unix system calls,AppKit and UIKit Framework
+| Linguaggi di programmazione | Sistemi operativi | Librerie |
+| --- | --- | --- |
+| C/C++ | Windows e cloni (React OS, GreenTeaOS) | WinAPI |
+| C/C++/Go | Unix e cloni (Linux, FreeBSD, NetBSD, OpenBSD...) | Xorg or Wayland Graphic Server |
+| C/Swift | MacOS e cloni (iOS, tvOS...) | Unix system calls, AppKit, UIKit, AVKit and other Apple Frameworks |
+
+| Linguaggi di programmazione | Sistema operativo | Impiego |
+| --- | --- | --- |
+| C | Windows e cloni (React OS, GreenTeaOS) | WinAPI |
+| C++ | Windows e cloni (React OS, GreenTeaOS) | coso |
+| Go | Unix e cloni (Linux, FreeBSD, NetBSD, OpenBSD...) | Xorg or Wayland Graphic Server |
+| Swift | MacOS e cloni (iOS, tvOS...) | Unix system calls, AppKit, UIKit, AVKit and other Apple Frameworks |
+
+Struttura interna del progetto:
+
+|Sezione | Descrizione|
+|-|-|
+|bin|File binari|
+|src|Codice sorgente|
+|organization|Organizzazione del progetto|
+|help|File di aiuto per il progetto|

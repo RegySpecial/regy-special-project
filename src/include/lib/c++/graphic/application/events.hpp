@@ -1,6 +1,6 @@
 #ifndef eventsH
 #define eventsH
-#include "coreTypedef.hpp"
+#include "../coreTypedef.hpp"
 
 #if defined __cplusplus||defined c_plusplus
 extern "C" {
@@ -55,19 +55,21 @@ extern "C" {
 class event
 {
   public:
-    unsigned char state;
+    eventState state;
     application *app;
     widget *target;
     bool propagation;
+    event(widget *target, eventState state);
 };
 
 class mouseEvent
 : event
 {
   public:
-    unsigned button;
+    unsigned int button;
     int x,
         y;
+    mouseEvent(widget *target, eventState state);
 };
 
 class pointerEvent
@@ -76,9 +78,10 @@ class pointerEvent
   public:
     int x,
         y;
+    pointerEvent(widget *target, eventState state);
 };
 
-class windowEvent
+class widgetEvent
 : event
 {
   public:
@@ -86,13 +89,36 @@ class windowEvent
         y;
     unsigned int width,
                  height;
+    widgetEvent(widget *target, eventState state);
 };
 
 class keyboardEvent
 : event
 {
   public:
-    unsigned char key;
-    unsigned char specialKeyMask;
+    unsigned char key,
+                  specialKeyMask;
+    keyboardEvent(widget *target, eventState state);
+};
+
+class selectionEvent
+: event
+{
+  public:
+    unsigned long long x,
+                       y,
+                       width,
+                       height,
+                       textStart,
+                       textEnd;
+    char *textSelected;
+    selectionEvent(widget *target, eventState state);
+};
+
+class focusEvent
+: event
+{
+  public:
+    focusEvent(widget *target, eventState state);
 };
 #endif

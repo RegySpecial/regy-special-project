@@ -12,25 +12,25 @@ int main()
       popScanExit;
 
   char commandInput[10];
-	unsigned char mask = 0;
+  unsigned char mask = 0;
 
   do
   {
-		const char *commandList[] = {"push", "pop", "insert", "at", "remove", "exit"};
-		printf("Print the operation to execute with the dynamic array:");
-		scanfExit = scanf("%s", commandInput);
-
-		for (unsigned char commandIndex = 0; commandIndex < sizeof commandList / sizeof *commandList; commandIndex++)
-		  mask |= !strcasecmp(commandInput, commandList[commandIndex]);
+    const char *commandList[] = {"push", "pop", "insert", "at", "remove", "exit"};
+    printf("Print the operation to execute with the dynamic array:");
+    scanfExit = scanf("%s", commandInput);
     
-		if (!mask)
-		  errorMessage("INVALID COMMAND!");
+    for (unsigned char commandIndex = 0; commandIndex < sizeof commandList / sizeof *commandList; commandIndex++)
+      mask |= !strcasecmp(commandInput, commandList[commandIndex]);
+    
+    if (!mask)
+      errorMessage("INVALID COMMAND!");
     else if (!strcasecmp(commandInput, "push"))
       do
       {
         int numberToPush;
         printf("Print a number to push into the dynamic array:");
-	      pushScanExit = scanf("%d", &numberToPush);
+        pushScanExit = scanf("%d", &numberToPush);
         if(!pushScanExit)
           errorMessage("INVALID NUMBER TO PUSH!");
         else

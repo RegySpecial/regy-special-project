@@ -11,11 +11,11 @@ typedef wayland_window windowType;
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/XKBlib.h>
-#include "../../lib/c/audio/beep.h"
-#include "../../lib/c++/DSA/dataStructures/dynamicArrays.hpp"
-#include "../../lib/c++/DSA/algorithms/arrays.hpp"
-#include "../../main/c/manageArguments.h"
-#include "../../lib/c++/bitManipulation.hpp"
+#include "../../c/audio/beep.h"
+#include "../../c++/DSA/dataStructures/dynamicArrays.hpp"
+#include "../../c++/DSA/algorithms/arrays.hpp"
+#include "../../../main/c/manageArguments.h"
+#include "../../c++/bitManipulation.hpp"
 typedef Display displayConnection;
 typedef Window windowType;
 class application;

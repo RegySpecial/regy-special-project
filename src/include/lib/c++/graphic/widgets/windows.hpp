@@ -1,16 +1,16 @@
 #ifndef mainWindowHpp
 #define mainWindowHpp
-#include "application.hpp"
+#include "../application/application.hpp"
 #include "widget.hpp"
-#include "../c/manageArguments.h"
-#include "../../lib/c++/bitManipulation.hpp"
-#include "../c/generalPurposeMaskBits.h"
+#include "../../../../main/c/manageArguments.h"
+#include "../../../../lib/c++/bitManipulation.hpp"
+#include "../../../../main/c/generalPurposeMaskBits.h"
 
 class icon
 {
   public:
     unsigned long color : 24 = 0,
-                  *pixelMap;
+                  *pixels;
     unsigned int x = 0,
                  y = 0;
     int width =  0,
