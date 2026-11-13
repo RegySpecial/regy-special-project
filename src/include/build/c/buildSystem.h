@@ -63,7 +63,7 @@ extern "C" {
   
 
   static const char
-    cConsoleLibrary[] = "src/lib/c/console.c",
+    cConsole[] = "src/lib/c/console.c",
     cAudioBeepLibrary[] = "src/lib/c/audio/beep.c",
     cColorsLibrary[] = "src/lib/c/colors.c",
     cManageArguments[] = "src/main/c/manageArguments.c",

@@ -7,6 +7,7 @@
 *@license GNU General Public License to stop private corporation to not share source code
 */
 #include <stdlib.h>
+#include "../../concepts.hpp"
 
 template
 <
@@ -14,11 +15,23 @@ template
   typename sizeDataType = unsigned long long,
   typename capacityDataType = unsigned long long
 >
+requires unsignedNumber<sizeDataType> && unsignedNumber<capacityDataType>
 class dynamicArray
 {
+  private:
+    itemsDataType *items = NULL;
+    sizeDataType size = 0;
+    capacityDataType capacity = 32;
   public:
     typedef dynamicArray<itemsDataType, sizeDataType, capacityDataType> dynamicArraySelf;
     
+    typedef struct
+    {
+      itemsDataType item;
+      bool found;
+    }
+    itemFoundStruct;
+
     typedef void (*forEach_callback)(itemsDataType);
     typedef void (*forEach1_callback)(itemsDataType, sizeDataType);
     typedef void (*forEach2_callback)(itemsDataType, sizeDataType, dynamicArraySelf *);
@@ -43,10 +56,6 @@ class dynamicArray
     using reduce2_callback = accumulationValueDataType (*)(accumulationValueDataType, itemsDataType, sizeDataType, dynamicArraySelf *);
   
     typedef itemsDataType (*comparisonFunction)(itemsDataType, itemsDataType);
-    
-    itemsDataType *items = NULL;
-    sizeDataType size = 0;
-    capacityDataType capacity = 32;
   
     dynamicArray()
     {
@@ -101,11 +110,47 @@ class dynamicArray
       free(this->items);
       this->items = NULL;
     }
-  
-    itemsDataType at(sizeDataType index)
+
+    inline itemsDataType *getItems() const
     {
-      if (0 <= index && index < this->size)
-        return this->items[index];
+      return this->items;
+    }
+
+    inline sizeDataType getSize() const
+    {
+      return this->size;
+    }
+
+    inline capacityDataType getCapacity() const
+    {
+      return this->capacity;
+    }
+
+    bool setSize(sizeDataType size)
+    {
+      if (size > this->capacity)
+        return 0;
+      
+      this->size = size;
+      return 1;
+    }
+
+    bool setCapacity(capacityDataType capacity)
+    {
+      this->items = realloc(this->items, sizeof (itemsDataType) * this->capacity);
+
+      if (!this->items)
+        return 0;
+      
+      for (capacityDataType i = this->size; i < this->capacity; i++)
+        this->items = 0;
+      
+      return this->capacity;
+    }
+  
+    inline itemsDataType at(sizeDataType index)
+    {
+      return this->items[index];
     }
     
     bool insert(itemsDataType item, sizeDataType index)
@@ -118,8 +163,7 @@ class dynamicArray
         this->capacity *= 2;
         this->items = (itemsDataType *) realloc(this->items, this->capacity * sizeof (itemsDataType));
         if (this->items)
-          for (sizeDataType i = this->size + 1; i < this->capacity; i++)
-            this->items[i] = 0;
+          for (sizeDataType i = this->size + 1; i < this->capacity; this->items[i++] = 0);
         else
         {
           itemsDataType *oldItems = this->items;
@@ -1002,9 +1046,9 @@ class dynamicArray
     {
       dynamicArraySelf returnDynamicArray;
       for (sizeDataType thisIndex = left; 0 <= thisIndex && thisIndex < right && right <= this->size; thisIndex++)
-        for (; 0 <= left && left < right && right <= sourceDynamicArray->size; sourceIndex++)
+        for (; 0 <= left && left < right && right <= sourceDynamicArray->size; left++)
           if (sourceDynamicArray->at(left) == this->at(thisIndex))
-            returnDynamicArray.push(sourceDynamicArray->at(sourceIndex));
+            returnDynamicArray.push(sourceDynamicArray->at(left));
   
       for (sizeDataType i = 0; i < returnDynamicArray->size - 1; i++)
         for (sizeDataType j = i + 1; j < returnDynamicArray->size;)
@@ -1056,9 +1100,9 @@ class dynamicArray
     {
       dynamicArraySelf returnDynamicArray;
       for (sizeDataType thisIndex = left; 0 <= thisIndex && thisIndex < right && right <= this->size; thisIndex++)
-        for (; 0 <= left && left < right && right <= sourceDynamicArray->size; sourceIndex++)
+        for (; 0 <= left && left < right && right <= sourceDynamicArray->size; left++)
           if (sourceDynamicArray->at(left) == this->at(thisIndex))
-            returnDynamicArray.push(sourceDynamicArray->at(sourceIndex));
+            returnDynamicArray.push(sourceDynamicArray->at(left));
   
       for (sizeDataType i = 0; i < returnDynamicArray->size - 1; i++)
         for (sizeDataType j = i + 1; j < returnDynamicArray->size;)

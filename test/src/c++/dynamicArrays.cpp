@@ -7,9 +7,7 @@ int main()
 
   dynamicArray<int> dynamic_array(40);
 
-  int scanfExit,
-      pushScanExit,
-      popScanExit;
+  int pushScanExit;
 
   char commandInput[10];
   unsigned char mask = 0;
@@ -18,7 +16,7 @@ int main()
   {
     const char *commandList[] = {"push", "pop", "insert", "at", "remove", "exit"};
     printf("Print the operation to execute with the dynamic array:");
-    scanfExit = scanf("%s", commandInput);
+    scanf("%s", commandInput);
     
     for (unsigned char commandIndex = 0; commandIndex < sizeof commandList / sizeof *commandList; commandIndex++)
       mask |= !strcasecmp(commandInput, commandList[commandIndex]);

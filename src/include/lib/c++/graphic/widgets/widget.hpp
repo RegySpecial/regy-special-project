@@ -4,6 +4,13 @@
 
 class widget
 {
+  protected:
+    windowType id;
+    GC graphicId = 0;
+    long attributeMask =     0,
+         eventMask =         ExposureMask | ResizeRedirectMask | StructureNotifyMask,
+         dontPropagateMask = 0,
+         graphicMask =       0;
   public:
     unsigned int x = 0,
                  y = 0;
@@ -11,9 +18,8 @@ class widget
         height = 0;
     const char *title;
     application *app;
-    windowType id;
-    GC graphicId = 0;
     dynamicArray<widget> subwidget;
+    widget *parent;
     struct
     {
       unsigned int width = 1;
@@ -45,26 +51,10 @@ class widget
       font;
     }
     text;
-    long attributeMask =     0,
-         eventMask =         ExposureMask | ResizeRedirectMask | StructureNotifyMask,
-         dontPropagateMask = 0,
-         graphicMask =       0;
 
-    virtual int show(unsigned int microseconds) = 0;
-    virtual int hide(unsigned int microseconds) = 0;
-
-    void (*onClientMessage)(XClientMessageEvent *event, void *extraArgs);
-    void (*onResize)(XResizeRequestEvent *event, void *extraArgs);
-    void (*onButtonUp)(XButtonReleasedEvent *event, void *extraArgs);
-    void (*onButtonDown)(XButtonPressedEvent *event, void *extraArgs);
-    void (*onKeyUp)(XKeyReleasedEvent *event, void *extraArgs);
-    void (*onKeyDown)(XKeyPressedEvent *event, void *extraArgs);
-    void (*onExpose)(XExposeEvent *event, void *extraArgs);
-    void (*onPointerIn)(XEnterWindowEvent *event, void *extraArgs);
-    void (*onPointerOut)(XLeaveWindowEvent *event, void *extraArgs);
-    void (*onPointerMove)(XMotionEvent *event, void *extraArgs);
-    void (*onFocusIn)(XFocusInEvent *event, void *extraArgs);
-    void (*onFocusOut)(XFocusOutEvent *event, void *extraArgs);
-    void (*onAny)(XAnyEvent *event, void *extraArgs);
+    virtual bool show(unsigned int microseconds) = 0;
+    virtual bool hide(unsigned int microseconds) = 0;
+    virtual bool addEventListener(eventState eventId, void (*listener)(event *eventClass, widget *target, void *extraArguments)) = 0;
+    virtual bool removeEventListener(eventState eventId) = 0;
 };
 #endif

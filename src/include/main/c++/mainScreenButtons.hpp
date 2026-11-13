@@ -1,5 +1,5 @@
 #include "mainWindow.hpp"
-#include "dialogs.hpp"
+#include "dialog.hpp"
 class mainScreenButton : public widget
 {
   public:

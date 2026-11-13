@@ -4,7 +4,7 @@
 *@date (First version [Linux]) 2026 July 19th Sunday, 15:46:00
 *@license GNU General Public License to stop private corporation to not share source code
 */
-#include "../../include/main/c++/dialogs.hpp"
+#include "../../include/main/c++/dialog.hpp"
 
 dialog::dialog(mainWindow *root, unsigned char type)
 {

@@ -4,7 +4,7 @@
 *@date (First version [Linux]) 2026 July 20th Sunday, 15:46:00
 *@license GNU General Public License to stop private corporation to not share source code
 */
-#include "dialogs.hpp"
+#include "dialog.hpp"
 class gameModeButton : public widget
 {
   public:

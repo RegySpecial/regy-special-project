@@ -13,6 +13,7 @@ class application
     int cmdshow;
     application(HINSTANCE hInst, HINSTANCE hInstPrev, char *cmdline, int cmdshow);
     #else
+    unsigned long long identifier;
     int argc;
     char
       **argv,

@@ -8,44 +8,26 @@ extern "C" {
   typedef enum
   : unsigned char
   {
-  #if defined __WIN32||defined __WIN64
-  #else
-    eventState_keyDown = 2,
-  #endif
-    eventState_keyUp,
-    eventState_mouseDown,
-    eventState_mouseUp,
-    eventState_move,
-    eventState_enter,
-    eventState_leave,
-    eventState_focus, 
-    eventState_blur,
-    eventState_keyMap,
-    eventState_view,
-    eventState_graphicShow,
-    eventState_unview,
-    eventState_visible,
-    eventState_create,
-    eventState_destroy,
-    eventState_hide,
-    eventState_show,
-    eventState_askShow,
-    eventState_reparent,
-    eventState_config,
-    eventState_askConfig,
-    eventState_gravity,
-    eventState_resize,
-    eventState_circulate,
-    eventState_askCirculate,
-    eventState_property,
-    eventState_unselect,
-    eventState_askSelect, 
-    eventState_select,
-    eventState_colorMap,
-    eventState_message,
-    eventState_showing,
-    eventState_event,
-    eventState_lastEvent
+    eventState_mouse_press,
+    eventState_mouse_release,
+    eventState_pointer_in,
+    eventState_pointer_out,
+    eventState_pointer_move,
+    eventState_widget_create,
+    eventState_widget_destroy,
+    eventState_widget_move,
+    eventState_widget_resize,
+    eventState_widget_show,
+    eventState_widget_hide,
+    eventState_window_close,
+    eventState_window_miniaturize,
+    eventState_window_zoom,
+    eventState_keyboard_press,
+    eventState_keyboard_release,
+    eventState_selection_start,
+    eventState_selection_end,
+    eventState_focus_in,
+    eventState_focus_out
   }
   eventState;
 #if defined __cplusplus||defined c_plusplus
@@ -59,6 +41,7 @@ class event
     application *app;
     widget *target;
     bool propagation;
+    void (*listener)(event *eventClass, widget *target, void *extraArguments);
     event(widget *target, eventState state);
 };
 

@@ -3,8 +3,9 @@
 #include "../application/application.hpp"
 #include "widget.hpp"
 #include "../../../../main/c/manageArguments.h"
-#include "../../../../lib/c++/bitManipulation.hpp"
+#include "../../bitManipulation.hpp"
 #include "../../../../main/c/generalPurposeMaskBits.h"
+#include "image.hpp"
 
 class icon
 {
@@ -25,9 +26,9 @@ class window : public widget
     icon *icon;
     window(application *app, const char *title);
     ~window();
-    bool addEventListener(unsigned char eventState, void (*listener)(event *event, window *target, void *extraArguments));
-    bool removeEventListener(unsigned char eventState);
-    int show(unsigned int microseconds) override;
-    int hide(unsigned int microseconds) override;
+    bool addEventListener(eventState eventId, void (*listener)(event *eventClass, widget *target, void *extraArguments)) override;
+    bool removeEventListener(eventState eventId) override;
+    bool show(unsigned int microseconds) override;
+    bool hide(unsigned int microseconds) override;
 };
 #endif

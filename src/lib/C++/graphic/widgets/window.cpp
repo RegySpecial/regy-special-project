@@ -4,17 +4,33 @@
 *@date (First version [Linux/Parrot OS]) 2026 July 6th Monday 15:50:56
 *@license GNU General Public License to stop private corporation to not share source code
 */
-#include "../../../../include/lib/c++/graphic/widgets/windows.hpp"
+#include "../../../../include/lib/c++/graphic/widgets/window.hpp"
 window::window(application *app, const char *title)
 {
-  #if defined __WIN32 || defined __WIN64
+  this->app = app;
+
+  this->title = title;
+
   this->x = 0;
   this->y = 0;
-  this->width = GetSystemMetrics(SM_CXSCREEN);
-  this->height = GetSystemMetrics(SM_CYSCREEN);
-  this->title = title;
-  this->background.color = 0;
+  this->width = 
+  #if defined __WIN32 || defined __WIN64
+  GetSystemMetrics(SM_CXSCREEN)
+  #else
+  this->app->screen->width
+  #endif
+  ;
+  this->height = 
+  #if defined __WIN32 || defined __WIN64
+  GetSystemMetrics(SM_CYSCREEN)
+  #else
+  app->screen->height
+  #endif
+  ;
 
+  this->background.color = 0;
+  this->border.color = 0xffffff;
+  #if defined __WIN32 || defined __WIN64
   WNDCLASSA windowClass = {
     .style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC,
     .lpfnWndProc = WindowProc,
@@ -52,33 +68,10 @@ window::window(application *app, const char *title)
   );
 
   HANDLE_WM_PAINT(MainWindow,0,0,PaintTheIntro);
-#else
-  this->app = app;
-
-  this->title = title;
-
-  this->x = 0;
-  this->y = 0;
-  this->width = 
-  #if defined __WIN32 || defined __WIN64
-  GetSystemMetrics(SM_CXSCREEN)
   #else
-  this->app->screen->width
-  #endif
-  ;
-  this->height = 
-  #if defined __WIN32 || defined __WIN64
-  GetSystemMetrics(SM_CYSCREEN)
-  #else
-  app->screen->height
-  #endif
-  ;
-
-  this->background.color = 0;
-  this->border.color = 0xffffff;
   this->eventMask = ExposureMask | ResizeRedirectMask;
   this->attributeMask = CWBorderWidth | CWBackPixel | CWBorderPixel | CWEventMask;
-
+  
   XSetWindowAttributes mainWindowAttributes = {
     .background_pixel = this->background.color,
     .border_pixel = this->border.color,
@@ -122,14 +115,7 @@ window::window(application *app, const char *title)
   );
 
   XMapRaised(this->app->display, this->id);
-
-  this->onResize = [](XResizeRequestEvent *event, void *extraArgs)
-  {
-    window *self = (window *) extraArgs;
-    for (unsigned long i = 0; i < self->subwidget.size;i++)
-      XResizeWindow(self->app->display, self->id, event->width,event->height);
-  };
-#endif
+  #endif
 }
 
 window::~window()
@@ -138,12 +124,12 @@ window::~window()
   assert(UnregisterClassA(&windowClass));
   assert(DestroyWindow(this->id));
 #else
-  XDestroySubwindows(this->app->display, this->id);
-  XDestroyWindow(this->app->display, this->id);
+  assert(XDestroySubwindows(this->app->display, this->id));
+  assert(XDestroyWindow(this->app->display, this->id));
 #endif
 }
 
-int window::show(unsigned int microseconds)
+bool window::show(unsigned int microseconds)
 {
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
@@ -154,7 +140,7 @@ int window::show(unsigned int microseconds)
 #endif
 }
 
-int window::hide(unsigned int microseconds)
+bool window::hide(unsigned int microseconds)
 {
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
@@ -165,29 +151,32 @@ int window::hide(unsigned int microseconds)
 #endif
 }
 
-bool window::addEventListener(unsigned char eventState, void (*listener)(event *event, window *target, void *extraArguments))
+bool window::addEventListener(eventState eventId, void (*listener)(event *eventClass, widget *target, void *extraArguments))
 {
-  if (0 > eventState && eventState > eventState_lastEvent)
+  if (0 > eventId || eventId > eventState_focus_out)
   {
     errorMessage("Invalid event identifier\n");
     return 0;
   }
-  event eventClass;
-  eventClass.target = this;
-  this->eventMask = setBit<long>(this->eventMask, eventState);
+
+  event eventClass(this, eventId);
+  eventClass.listener = listener;
+
+  this->eventMask = setBit<long>(this->eventMask, eventId);
   XSelectInput(this->app->display, this->id, this->eventMask);
   this->app->eventQueue.push(eventClass);
   return 1;
 }
 
-bool window::removeEventListener(unsigned char eventState)
+bool window::removeEventListener(eventState eventId)
 {
-  if (0 > eventState && eventState > eventState_lastEvent)
+  if (0 > eventId || eventId > eventState_focus_out)
   {
     errorMessage("Invalid event identifier\n");
     return 0;
   }
-  this->eventMask = clearBit<long>(this->eventMask, eventState);
+
+  this->eventMask = clearBit<long>(this->eventMask, eventId);
   XSelectInput(this->app->display, this->id, this->eventMask);
   this->app->eventQueue.pop();
   return 1;

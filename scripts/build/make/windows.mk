@@ -2,7 +2,7 @@ MinGWc =       C:/MinGW/bin/gcc.exe
 MinGWcpp =     C:/MinGW/bin/g++.exe
 MinGWwindres = C:/MinGW/bin/windres.exe
 
-cConsoleLibrary = src/lib/c/console.c
+cConsole = src/lib/c/console.c
 cAudioBeepLibrary = src/lib/c/audio/beep.c
 cManageArguments =   src/main/c/manageArguments.c
 
@@ -10,8 +10,8 @@ testManageArguments = test/manageArguments.cpp
 
 amd64-testManageArguments =    C:/Users/*/Desktop/testManageArguments.exe
 
-build-amd64-testManageArguments: $(cManageArguments) $(cConsoleLibrary) $(testManageArguments)
-	$(MinGWcpp) -std=c++26 -Wall -Wextra -O $(cManageArguments) $(cConsoleLibrary) $(testManageArguments) -o $(amd64-testManageArguments)
+build-amd64-testManageArguments: $(cManageArguments) $(cConsole) $(testManageArguments)
+	$(MinGWcpp) -std=c++26 -Wall -Wextra -O $(cManageArguments) $(cConsole) $(testManageArguments) -o $(amd64-testManageArguments)
 
 mainWindow =        src/main/c++/mainWindow.cpp
 mainScreenButtons = src/main/c++/mainScreenButtons.cpp

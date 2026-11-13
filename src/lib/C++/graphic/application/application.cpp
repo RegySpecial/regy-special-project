@@ -1,4 +1,4 @@
-#include "../../include/main/c++/application.hpp"
+#include "../../../../include/lib/c++/graphic/application/application.hpp"
 
 #if defined __WIN32 || defined __WIN64
 application::application(HINSTANCE hInst, HINSTANCE hInstPrev, char *cmdline, int cmdshow)
@@ -75,7 +75,7 @@ void application::eventLoop(unsigned int microseconds)
   for (XEvent eventStructure; readBit<unsigned char>(this->gameContextContainer.generalPurposeMask, generalPurposeMaskBits_eventLoop);)
   {
     XNextEvent(this->display, &eventStructure);
-    for (unsigned long long eventQueueIndex = 0; eventQueueIndex < this->eventQueue.size; eventQueueIndex++)
+    for (unsigned long long eventQueueIndex = 0; eventQueueIndex < this->eventQueue.getSize(); eventQueueIndex++)
     {
       switch (eventStructure.type)
       {
