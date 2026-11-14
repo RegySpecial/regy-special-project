@@ -74,5 +74,72 @@
         <td>Unix system calls, AppKit, UIKit, AVKit and other Apple Frameworks
       </tr>
     </table>
+
+    <table>
+      <caption>Struttura classi:</caption>
+      <tr>
+        <td>ordine accessori</td>
+        <td>
+          <ol>
+            <li>privato</li>
+            <li>protetto</li>
+            <li>pubblico</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <td>ordine dati</td>
+        <td>
+          <ol>
+            <li>proprietà</li>
+            <li>metodi</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <td>ordine proprietà</td>
+        <td>
+          <ol>
+            <li>statiche</li>
+            <li>dinamiche</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <td>ordine metodi</td>
+        <td>
+          <ol>
+            <li>statici</li>
+            <li>dinamici</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <td>ordine funzione metodi</td>
+        <td>
+          <ol>
+            <li>costruttore</li>
+            <li>distruttore</li>
+            <li>ricevitori (getters)</li>
+            <li>modificatori (setters)</li>
+            <li>altro</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <td>ordine virtualità metodi</td>
+        <td>
+          <ol>
+            <li>virtuali</li>
+            <li>non virtuali</li>
+          </ol>
+        </td>
+      </tr>
+    </table>
+
+    <svg width="500" height="500">
+      <circle cx="250" cy="250" r="50" />
+      <text x="250" y="250" fill="red" stroke="blue">C</text>
+    </svg>
   </body>
 </html>

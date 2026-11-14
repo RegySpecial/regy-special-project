@@ -21,7 +21,7 @@ NSApplicationDelegate
   var winDelegate: windowDelegate!
   public func applicationDidFinishLaunching(_ a: Notification)
   {
-    let screen: NSScreen = NSScreen.main as! NSScreen
+    let screen = NSScreen.main as! NSScreen
     self.win = NSWindow(
       contentRect: CGRect(x: 0, y: 0, width: screen.frame.width, height: screen.frame.height),
       styleMask: [.titled, .closable, .miniaturizable, .resizable],
@@ -36,15 +36,15 @@ NSApplicationDelegate
     self.win.delegate = self.winDelegate
     self.win.backgroundColor = NSColor(red: 1, green: 0, blue: 0, alpha: 1)
 
-    let button: NSButton = NSButton(title: "Morte Bianca", target: nil, action: nil)
-    let buttonCell: NSButtonCell = NSButtonCell(textCell: "Morte Bianca")
-    buttonCell.backgroundColor = NSColor(red: 0, green: 0, blue: 1, alpha: 1)
-    button.setButtonType(.onOff)
-    button.cell = buttonCell
+    let button: NSButton = NSButton(title: "Mortebianca", target: nil, action: nil)
     button.isBordered = true
-    button.bezelStyle = 
-    button.contentTintColor = NSColor(red: 1, green: 0, blue: 0, alpha: 1)
-    button.bezelColor = button.contentTintColor
+    button.bezelColor = NSColor(red: 1, green: 0, blue: 0, alpha: 1)
+    let buttonCell = NSButtonCell(textCell: "Mortebianca")
+    button.cell = buttonCell
+    buttonCell.backgroundColor = NSColor(red: 0, green: 0, blue: 1, alpha: 1)
+    button.alignment = .center
+    button.font = NSFont(name: "phosphate", size: 10)
+    button.setButtonType(.onOff)
     self.win.contentView?.addSubview(button)
   }
 }
