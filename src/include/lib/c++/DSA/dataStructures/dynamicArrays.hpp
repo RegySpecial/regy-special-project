@@ -868,7 +868,7 @@ class dynamicArray
         itemsDataType tmp;
         for (; left < right; left++)
         {
-          if (comparison(this->at(left), this->at(right)))
+          if (comparison(this->at(left), this->at(right - 1)))
           {
             i++;
             tmp = this->at(i);
@@ -878,8 +878,8 @@ class dynamicArray
         }
         i++;
         tmp = this->at(i);
-        this->items[i] = this->at(right);
-        this->at(right) = tmp;
+        this->items[i] = this->at(right - 1);
+        this->at(right - 1) = tmp;
         this->sort(comparison, 0, i - 1);
         this->sort(comparison, i + 1, right);
       }
@@ -1112,6 +1112,58 @@ class dynamicArray
             j++;
       
       return returnDynamicArray;
+    }
+
+    dynamicArray<sizeDataType, sizeDataType, capacityDataType>
+    search(dynamicArraySelf *sourceDynamicArray)
+    {
+      sizeDataType longestPrefixSuffixTable[sourceDynamicArray->size] = {-1};
+      sizeDataType position = 1,
+                   candidate = 0;
+      
+      /*
+      algorithm kmp_table:
+      input:
+          an array of characters, W (the word to be analyzed)
+      output:
+          an array of integers, T (the table to be filled)
+  
+      define variables:
+          an integer, pos ← 1 (the current position we are computing in T)
+          an integer, cnd ← 0 (the zero-based index in W of the next character of the current candidate substring)
+  
+      let T[0] ← -1
+  
+      while pos < length(W) do
+          if W[pos] = W[cnd] then
+              let T[pos] ← T[cnd]
+          else
+              let T[pos] ← cnd
+              while cnd ≥ 0 and W[pos] ≠ W[cnd] do
+                  let cnd ← T[cnd]
+          let pos ← pos + 1, cnd ← cnd + 1
+  
+      let T[pos] ← cnd (only needed when all word occurrences are searched)
+      */
+      for (; position < sourceDynamicArray->size; position++, candidate++)
+      {
+        if (sourceDynamicArray->at(position) == sourceDynamicArray->at(candidate))
+          longestPrefixSuffixTable[position] = longestPrefixSuffixTable[candidate];
+        else
+          longestPrefixSuffixTable[position] = candidate;
+          for (; candidate >= 0 && sourceDynamicArray->at(position) != sourceDynamicArray->at(candidate); candidate = longestPrefixSuffixTable[candidate]);
+      }
+
+      longestPrefixSuffixTable[position] = candidate;
+
+      dynamicArray<sizeDataType, sizeDataType, capacityDataType> occurences;
+
+    }
+
+    dynamicArray<dynamicArraySelf, sizeDataType, capacityDataType>
+    split(dynamicArraySelf *sourceDynamicArray)
+    {
+
     }
 };
 #endif
