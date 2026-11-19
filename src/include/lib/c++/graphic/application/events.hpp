@@ -1,6 +1,6 @@
 #ifndef eventsH
 #define eventsH
-#include "../coreTypedef.hpp"
+#include "../core.hpp"
 
 #if defined __cplusplus||defined c_plusplus
 extern "C" {
@@ -27,9 +27,23 @@ extern "C" {
     eventState_selection_start,
     eventState_selection_end,
     eventState_focus_in,
-    eventState_focus_out
+    eventState_focus_out,
+    eventState_dragAndDrop_drag,
+    eventState_dragAndDrop_drop
   }
   eventState;
+  
+  constexpr eventState eventState_min = eventState_mouse_press,
+                       eventState_max = eventState_dragAndDrop_drop;
+
+  typedef enum
+  : unsigned char
+  {
+    focusEventCause_mouse,
+    focusEventCause_key,
+    focusEventCause_reparent
+  }
+  focusEventCause;
 #if defined __cplusplus||defined c_plusplus
 }
 #endif
@@ -102,6 +116,7 @@ class focusEvent
 : event
 {
   public:
+    focusEventCause cause;
     focusEvent(widget *target, eventState state);
 };
 #endif

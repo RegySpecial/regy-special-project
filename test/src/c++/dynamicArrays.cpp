@@ -1,4 +1,4 @@
-#include "../../../src/include/lib/c++/DSA/dataStructures/dynamicArrays.hpp"
+#include "../../../src/include/lib/c++/DSA/dataStructures/dynamicArray.hpp"
 #include "../../../src/include/main/c/console.h"
 #include <string.h>
 

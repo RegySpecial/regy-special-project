@@ -5,7 +5,7 @@
 class widget
 {
   protected:
-    windowType id;
+    windowType identifier;
     GC graphicId = 0;
     long attributeMask =     0,
          eventMask =         ExposureMask | ResizeRedirectMask | StructureNotifyMask,

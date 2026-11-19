@@ -21,6 +21,7 @@ class application
     displayConnection *display;
     gameContextStructure gameContextContainer;
     dynamicArray<event> eventQueue;
+    dynamicArray<unsigned int> errorQueue;
     #ifndef waylandEnabled
     Screen *screen;
     #endif

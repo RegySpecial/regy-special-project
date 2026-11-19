@@ -13,7 +13,7 @@ amd64-testVideoGame =       /home/regyspecial/Scrivania/amd64-testVideoGame
 build-amd64-testManageArguments: $(cManageArguments) $(cColorsLibrary) $(cConsole) $(testManageArguments)
 	g++ -std=c++26 -Wall -Wextra -O $(cManageArguments) $(cColorsLibrary) $(cConsole) $(testManageArguments) -o $(amd64-testManageArguments)
 
-cppDynamicArrays =        src/lib/c++/DSA/dataStructures/dynamicArrays.cpp
+cppDynamicArrays =        src/lib/c++/DSA/dataStructures/dynamicArray.cpp
 amd64-testDynamicArrays = /home/regyspecial/Scrivania/amd64-testDynamicArrays
 build-amd64-testDynamicArrays: $(cppDynamicArrays) $(cConsole)
 	g++ -std=c++26 -Wall -Wextra -O3 $(cppDynamicArrays) $(cConsole) -o $(amd64-testDynamicArrays)

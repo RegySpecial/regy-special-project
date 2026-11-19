@@ -52,7 +52,7 @@ window::window(application *app, const char *title)
 
   assert(RegisterClassA(&windowClass));
 
-  this->id = CreateWindowA
+  this->identifier = CreateWindowA
   (
     windowClass.lpszClassName,//window class name
     this->title,//window title
@@ -86,7 +86,7 @@ window::window(application *app, const char *title)
       .max_height = this->height
     };
   
-  this->id = XCreateWindow
+  this->identifier = XCreateWindow
   (
     app->display,
     app->screen->root,
@@ -105,7 +105,7 @@ window::window(application *app, const char *title)
   XSetStandardProperties
   (
     app->display,
-    this->id,
+    this->identifier,
     this->title,
     NULL,
     0,
@@ -113,8 +113,6 @@ window::window(application *app, const char *title)
     this->app->argc,
     &mainWindowBounds
   );
-
-  XMapRaised(this->app->display, this->id);
   #endif
 }
 
@@ -122,10 +120,10 @@ window::~window()
 {
 #if defined __WIN32 || defined __WIN64
   assert(UnregisterClassA(&windowClass));
-  assert(DestroyWindow(this->id));
+  assert(DestroyWindow(this->identifier));
 #else
-  assert(XDestroySubwindows(this->app->display, this->id));
-  assert(XDestroyWindow(this->app->display, this->id));
+  assert(XDestroySubwindows(this->app->display, this->identifier));
+  assert(XDestroyWindow(this->app->display, this->identifier));
 #endif
 }
 
@@ -133,10 +131,9 @@ bool window::show(unsigned int microseconds)
 {
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
-  return ShowWinodw(this->id, SW_NORMAL);
+  return ShowWinodw(this->identifier, SW_NORMAL);
 #else
-  usleep(microseconds);
-  return XMapRaised(this->app->display, this->id);
+  return usleep(microseconds) != -1 && XMapRaised(this->app->display, this->identifier);
 #endif
 }
 
@@ -144,16 +141,15 @@ bool window::hide(unsigned int microseconds)
 {
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
-  return ShowWinodw(this->id, SW_HIDE);
+  return ShowWinodw(this->identifier, SW_HIDE);
 #else
-  usleep(microseconds);
-  return XUnmapWindow(this->app->display, this->id);
+  return usleep(microseconds) != -1 && XUnmapWindow(this->app->display, this->identifier);
 #endif
 }
 
 bool window::addEventListener(eventState eventId, void (*listener)(event *eventClass, widget *target, void *extraArguments))
 {
-  if (0 > eventId || eventId > eventState_focus_out)
+  if (0 > eventId || eventId > eventState_max)
   {
     errorMessage("Invalid event identifier\n");
     return 0;
@@ -163,7 +159,7 @@ bool window::addEventListener(eventState eventId, void (*listener)(event *eventC
   eventClass.listener = listener;
 
   this->eventMask = setBit<long>(this->eventMask, eventId);
-  XSelectInput(this->app->display, this->id, this->eventMask);
+  XSelectInput(this->app->display, this->identifier, this->eventMask);
   this->app->eventQueue.push(eventClass);
   return 1;
 }
@@ -177,7 +173,7 @@ bool window::removeEventListener(eventState eventId)
   }
 
   this->eventMask = clearBit<long>(this->eventMask, eventId);
-  XSelectInput(this->app->display, this->id, this->eventMask);
+  XSelectInput(this->app->display, this->identifier, this->eventMask);
   this->app->eventQueue.pop();
   return 1;
 }

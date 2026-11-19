@@ -52,10 +52,10 @@ dialog::dialog(mainWindow *root, unsigned char type)
     .event_mask = this->eventMask
   };
 
-  this->id = XCreateWindow
+  this->identifier = XCreateWindow
   (
     this->root->display,
-    this->root->id,
+    this->root->identifier,
     this->x,
     this->y,
     this->width,
@@ -71,7 +71,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
   XSetStandardProperties
   (
     this->root->display,
-    this->id,
+    this->identifier,
     this->title,
     NULL,
     0,
@@ -80,22 +80,22 @@ dialog::dialog(mainWindow *root, unsigned char type)
     &dimensionConfiguration
   );
 
-  XMapRaised(this->root->display,this->id);
+  XMapRaised(this->root->display,this->identifier);
 
   XGCValues gcValues = {
     .foreground = this->text.color
   };
 
-  this->graphicId = XCreateGC(this->root->display,this->id,this->graphicMask,&gcValues);
+  this->graphicId = XCreateGC(this->root->display,this->identifier,this->graphicMask,&gcValues);
 
-  XMapRaised(this->root->display,this->id);
-  XMapSubwindows(this->root->display,this->id);
+  XMapRaised(this->root->display,this->identifier);
+  XMapSubwindows(this->root->display,this->identifier);
 
   this->onClientMessage = [](XClientMessageEvent *event, void *extraArgs)
 {
     dialog *self = (dialog*) extraArgs;
     if((Atom)event->data.l == XInternAtom(self->root->display, "WM_DELETE_WINDOW", 0))
-      XUnmapWindow(self->root->display, self->id);
+      XUnmapWindow(self->root->display, self->identifier);
   };
 
   this->onExpose = [](XExposeEvent *event, void *extraArgs)
@@ -132,7 +132,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
         XDrawString
         (
           self->root->display,
-          self->id,
+          self->identifier,
           self->graphicId,
           20,
           20,
@@ -145,7 +145,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
           XDrawString
           (
             self->root->display,
-            self->id,
+            self->identifier,
             self->graphicId,
             20,
             self->root->height/10+40+20*gameModeInformationPoint,
@@ -157,7 +157,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
         XDrawString
         (
           self->root->display,
-          self->id,
+          self->identifier,
           self->graphicId,
           20,
           20,
@@ -170,7 +170,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
           XDrawString
           (
             self->root->display,
-            self->id,
+            self->identifier,
             self->graphicId,
             20,
             20+20*(optionIndex+1),
@@ -182,7 +182,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
         XDrawString
         (
           self->root->display,
-          self->id,
+          self->identifier,
           self->graphicId,
           20,
           20,
@@ -193,7 +193,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
           XDrawString
           (
             self->root->display,
-            self->id,
+            self->identifier,
             self->graphicId,
             40,
             20+20*(moreInformationIndex+1),
@@ -203,7 +203,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
         XDrawString
         (
           self->root->display,
-          self->id,
+          self->identifier,
           self->graphicId,
           20,
           20+20*(3+1),
@@ -213,7 +213,7 @@ dialog::dialog(mainWindow *root, unsigned char type)
         XDrawString
         (
           self->root->display,
-          self->id,
+          self->identifier,
           self->graphicId,
           40,
           20 + 20 * (4 + 1),
@@ -224,24 +224,24 @@ dialog::dialog(mainWindow *root, unsigned char type)
     }
   };
 
-  this->root->subWindows.push(this->id);
+  this->root->subWindows.push(this->identifier);
 }
 
 dialog::~dialog()
 {
-  this->root->subWindows.remove(this->id);
+  this->root->subWindows.remove(this->identifier);
   XFreeGC(this->root->display, this->graphicId);
-  XDestroySubwindows(this->root->display, this->id);
+  XDestroySubwindows(this->root->display, this->identifier);
 }
 
 int dialog::show(unsigned int microseconds)
 {
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
-  return ShowWinodw(this->id, SW_NORMAL);
+  return ShowWinodw(this->identifier, SW_NORMAL);
 #else
   usleep(microseconds);
-  return XMapRaised(this->root->display, this->id);
+  return XMapRaised(this->root->display, this->identifier);
 #endif
 }
 
@@ -249,9 +249,9 @@ int dialog::hide(unsigned int microseconds)
 {
 #if defined __WIN32 || defined __WIN64
   Sleep(microseconds);
-  return ShowWinodw(this->id, SW_HIDE);
+  return ShowWinodw(this->identifier, SW_HIDE);
 #else
   usleep(microseconds);
-  return XUnmapWindow(this->root->display, this->id);
+  return XUnmapWindow(this->root->display, this->identifier);
 #endif
 }
